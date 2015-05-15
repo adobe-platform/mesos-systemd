@@ -22,3 +22,19 @@ read -p "Enter Zookeeper value: " ZOOKEEPER
 
 # update the scripts with zookeeper value
 sed -i "s/<ZK_ELB>/$ZOOKEEPER/g" *.service
+
+# start each of the services
+SERVICES="
+docker-cleanup.service
+docker-cleanup.timer
+chronos.service
+marathon.service
+mesos-master.service
+mesos-slave.service
+"
+
+for SERVICE in $SERVICES
+do
+  echo "Starting $SERVICE"
+  fleetctl start $SERVICE
+done

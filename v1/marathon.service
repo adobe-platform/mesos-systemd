@@ -5,7 +5,7 @@ Requires=docker.service mesos-master.service
 
 [Service]
 Environment=MARATHON_IMAGE=mesosphere/marathon:v0.8.1
-Environment=ZOOKEEPER=<ZK_IP>:2181
+Environment=ZOOKEEPER=<ZK_ELB>
 
 # Example of what it should resolve to
 # Environment=ZOOKEEPER=internal-coreos-control-etcd-852307729.us-west-2.elb.amazonaws.com:2181

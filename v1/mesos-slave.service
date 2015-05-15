@@ -5,7 +5,7 @@ Requires=docker.service
 
 [Service]
 Environment=MESOS_IMAGE=mesosphere/mesos-slave:0.22.1-1.0.ubuntu1404
-Environment=ZOOKEEPER=internal-coreos-control-etcd-852307729.us-west-2.elb.amazonaws.com:2181
+Environment=ZOOKEEPER=<ZK_ELB>
 
 Restart=on-failure
 RestartSec=20

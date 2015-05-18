@@ -21,7 +21,7 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
     --ip=$(/usr/bin/ip -o -4 addr list eth0 | grep global | awk \'{print $4}\' | cut -d/ -f1) \
     --zk=zk://${ZOOKEEPER}/mesos \
     --work_dir=/var/lib/mesos/master \
-    --quorum=1"
+    --quorum=2"
 ExecStop=/usr/bin/docker stop mesos_master
 
 [Install]

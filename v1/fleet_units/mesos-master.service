@@ -18,7 +18,6 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
     --privileged \
     --net=host \
     ${MESOS_IMAGE} \
-    --ip=$(/usr/bin/ip -o -4 addr list eth0 | grep global | awk \'{print $4}\' | cut -d/ -f1) \
     --zk=zk://${ZOOKEEPER}/mesos \
     --work_dir=/var/lib/mesos/master \
     --quorum=2"

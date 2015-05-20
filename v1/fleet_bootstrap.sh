@@ -14,6 +14,9 @@
 #   > worker nodes:
 #     > mesos-slave
 
+# cd to the correct directoy
+cd ./fleet_units
+
 # if .zookeeper exists, use its value
 if [[ -f /home/core/.zookeeper ]]
 then
@@ -44,3 +47,5 @@ do
   echo "Starting $SERVICE"
   fleetctl start $SERVICE
 done
+
+cd -

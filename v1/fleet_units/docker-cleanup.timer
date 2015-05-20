@@ -1,0 +1,16 @@
+[Unit]
+Description=Docker Cleanup
+After=docker.service
+Requires=docker.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Timer]
+# run 10 minutes after boot
+OnBootSec=10min
+# run every hour
+OnUnitActiveSec=1h
+
+[X-Fleet]
+Global=true

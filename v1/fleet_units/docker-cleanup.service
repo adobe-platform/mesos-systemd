@@ -1,0 +1,22 @@
+[Unit]
+Description=Docker Cleanup
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=on-failure
+RestartSec=20
+TimeoutStartSec=0
+ExecStart=/usr/bin/sh -c ' \
+  if [[ $(/usr/bin/docker ps -a | grep Exited | wc -l) -ne 0 ]]; \
+  then \
+    echo "starting docker cleanup"; \
+    /usr/bin/docker ps -a | grep Exited | awk \'{print $1}\' | xargs /usr/bin/docker rm ; \
+    /usr/bin/docker images -a | grep none | awk \'{print $3}\' | xargs /usr/bin/docker rmi ; \
+    echo "cleanup complete"; \
+  else \
+    echo "nothing to cleanup"; \
+  fi'
+
+[X-Fleet]
+Global=true

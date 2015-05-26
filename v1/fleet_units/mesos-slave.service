@@ -28,6 +28,7 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
     --work_dir=/var/lib/mesos/slave \
     --log_dir=/var/log/mesos/slave"
 ExecStop=/usr/bin/docker stop mesos_slave
+ExecStartPost=/usr/bin/docker pull ubuntu:14.04
 
 [Install]
 WantedBy=multi-user.target

@@ -30,6 +30,8 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
     --log_dir=/var/log/mesos/slave"
 ExecStop=/usr/bin/docker stop mesos_slave
 ExecStartPost=/usr/bin/docker pull cfortier/utility:latest
+ExecStartPost=/usr/bin/docker pull ubuntu:14.04
+ExecStartPost=/usr/bin/docker pull debian:jessie
 
 [Install]
 WantedBy=multi-user.target

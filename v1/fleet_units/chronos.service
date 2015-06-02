@@ -1,7 +1,7 @@
 [Unit]
 Description=Chronos
 After=docker.service mesos-master.service
-Requires=docker.service mesos-master.service
+Requires=docker.service
 
 [Service]
 Environment=CHRONOS_IMAGE=mesosphere/chronos:chronos-2.3.3-1.0.1.ubuntu1404-mesos-0.22.0-1.0.ubuntu1404

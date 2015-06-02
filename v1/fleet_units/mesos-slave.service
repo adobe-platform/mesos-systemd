@@ -26,8 +26,10 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
     --containerizers=docker \
     --master=zk://${ZOOKEEPER}/mesos \
     --work_dir=/var/lib/mesos/slave \
+    --executor_registration_timeout=10mins \
     --log_dir=/var/log/mesos/slave"
 ExecStop=/usr/bin/docker stop mesos_slave
+ExecStartPost=/usr/bin/docker pull cfortier/utility:latest
 
 [Install]
 WantedBy=multi-user.target

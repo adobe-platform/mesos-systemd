@@ -17,6 +17,7 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
     --name=mesos_slave \
     --net=host \
     --privileged \
+    -v /root/.dockercfg:/root/.dockercfg \
     -v /sys:/sys \
     -v /usr/bin/docker:/usr/bin/docker:ro \
     -v /var/run/docker.sock:/var/run/docker.sock \

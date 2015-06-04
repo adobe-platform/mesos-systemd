@@ -32,9 +32,16 @@ fi
 # update the scripts with zookeeper value
 sed -i "s/<ZK_ELB>/$ZOOKEEPER/g" *.service
 
+
 # setup datadog
 read -p "Enter datadog api key for this account: " DATADOG_KEY
 etcdctl set /ddapikey $DATADOG_KEY
+
+# set sumologic credentials
+read -p "sumologic access ID: " SUMOLOGIC_ACCESS_ID
+read -p "sumologic secret key: " SUMOLOGIC_SECRET
+etcdctl set /sumologic_id $SUMOLOGIC_ACCESS_ID
+etcdctl set /sumologic_secret $SUMOLOGIC_SECRET
 
 # start each of the services
 SERVICES="

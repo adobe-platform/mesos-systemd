@@ -1,0 +1,25 @@
+[Unit]
+Description=Sumologic Collector
+After=docker.service
+
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker stop sumologic
+ExecStartPre=-/usr/bin/docker rm -f sumologic
+ExecStartPre=/usr/bin/docker pull behance/docker-sumologic
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill sumologic
+ExecStartPre=-/usr/bin/docker rm sumologic
+ExecStart=/usr/bin/bash -c \
+    "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && \
+    /usr/bin/docker run --name sumologic \
+    -v /var/lib/docker/containers/:/tmp/clogs/
+    -e SUMO_NAME=docker_cluster \
+    -e SUMO_CATEGORY=container_logs \
+    behance/docker-sumologic \
+    `etcdctl get /sumologic_id` \
+    `etcdctl get /sumologic_secret`"
+ExecStop=/usr/bin/docker stop sumologic
+
+[X-Fleet]
+Global=true

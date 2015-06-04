@@ -32,6 +32,10 @@ fi
 # update the scripts with zookeeper value
 sed -i "s/<ZK_ELB>/$ZOOKEEPER/g" *.service
 
+# setup datadog
+read -p "Enter datadog api key for this account: " DATADOG_KEY
+etcdctl set /ddapikey $DATADOG_KEY
+
 # start each of the services
 SERVICES="
 docker-cleanup.service

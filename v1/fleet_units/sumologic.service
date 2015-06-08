@@ -16,9 +16,10 @@ ExecStart=/usr/bin/bash -c \
     -v /var/lib/docker/containers/:/tmp/clogs/
     -e SUMO_NAME=docker_cluster \
     -e SUMO_CATEGORY=container_logs \
-    behance/docker-sumologic \
-    `etcdctl get /sumologic_id` \
-    `etcdctl get /sumologic_secret`"
+    -e SUMO_COLLECTOR_NAME=mesos_app_collector \
+    -e SUMO_ACCESS_ID=`etcdctl get /sumologic_id` \
+    -e SUMO_ACCESS_KEY=`etcdctl get /sumologic_secret` \
+    behance/docker-sumologic"
 ExecStop=/usr/bin/docker stop sumologic
 
 [X-Fleet]

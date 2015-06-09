@@ -6,13 +6,14 @@ Requires=docker.service
 [Service]
 Environment=ZOOKEEPER_IMAGE=jplock/zookeeper:3.4.6
 
+User=core
 Restart=on-failure
 RestartSec=20
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill zookeeper
 ExecStartPre=-/usr/bin/docker rm zookeeper
 ExecStartPre=/usr/bin/docker pull ${ZOOKEEPER_IMAGE}
-ExecStart=/usr/bin/docker run --net=host -v /root/conf/myid:/tmp/zookeeper/myid -v /root/conf:/opt/zookeeper/conf --name=zookeeper ${ZOOKEEPER_IMAGE}
+ExecStart=/usr/bin/docker run --net=host -v /core/conf/myid:/tmp/zookeeper/myid -v /core/conf:/opt/zookeeper/conf --name=zookeeper ${ZOOKEEPER_IMAGE}
 ExecStop=/usr/bin/docker stop zookeeper
 
 [Install]

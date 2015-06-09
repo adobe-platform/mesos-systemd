@@ -1,16 +1,18 @@
 #!/bin/bash
 
+WORKING_DIR=/home/core/mesos-systemd/v1
+
 # copy the zookeeper service
-sudo cp ./zookeeper/zookeeper.service /etc/systemd/system
+sudo cp $WORKING_DIR/zookeeper/zookeeper.service /etc/systemd/system
 
 # copy the zookeeper configurations
-sudo cp -r ./zookeeper/root/conf /root
+sudo cp -r $WORKING_DIR/zookeeper/core/conf /core
 
 # edit the Zookeeper ID
-sudo vim /root/conf/myid
+sudo vim /core/conf/myid
 
 # edit the zookeeper config
-sudo vim +29 /root/conf/zoo.cfg
+sudo vim +29 /core/conf/zoo.cfg
 
 # enable and start zookeeper
 sudo systemctl enable zookeeper.service && sudo systemctl start zookeeper.service

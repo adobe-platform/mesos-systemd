@@ -13,7 +13,7 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill zookeeper
 ExecStartPre=-/usr/bin/docker rm zookeeper
 ExecStartPre=/usr/bin/docker pull ${ZOOKEEPER_IMAGE}
-ExecStart=/usr/bin/docker run --net=host -v /core/conf/myid:/tmp/zookeeper/myid -v /core/conf:/opt/zookeeper/conf --name=zookeeper ${ZOOKEEPER_IMAGE}
+ExecStart=/usr/bin/docker run --net=host -v /home/core/conf/myid:/tmp/zookeeper/myid -v /home/core/conf:/opt/zookeeper/conf --name=zookeeper ${ZOOKEEPER_IMAGE}
 ExecStop=/usr/bin/docker stop zookeeper
 
 [Install]

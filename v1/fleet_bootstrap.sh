@@ -15,7 +15,9 @@
 #     > mesos-slave
 
 # cd to the correct directoy
-cd ./fleet_units
+WORKING_DIR=/home/core/mesos-systemd/v1
+
+cd $WORKING_DIR/fleet_units
 
 # if .zookeeper exists, use its value
 if [[ -f /home/core/.zookeeper ]]
@@ -30,7 +32,7 @@ else
   read -p "Enter Zookeeper value: " ZOOKEEPER
 fi
 # update the scripts with zookeeper value
-sed -i "s/<ZK_ELB>/$ZOOKEEPER/g" *.service
+sudo sed -i "s/<ZK_ELB>/$ZOOKEEPER/g" *.service
 
 
 # setup datadog

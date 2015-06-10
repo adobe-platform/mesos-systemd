@@ -1,0 +1,17 @@
+[Unit]
+Description=Log Rotator for docker containers
+After=docker.service
+
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker stop logrotate
+ExecStartPre=-/usr/bin/docker rm -f logrotate
+ExecStartPre=/usr/bin/docker pull michaloo/logrotate
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill logrotate
+ExecStartPre=-/usr/bin/docker rm logrotate
+ExecStart=/usr/bin/docker run -v /var/lib/docker:/var/lib/docker michaloo/logrotate
+ExecStop=/usr/bin/docker stop logrotate
+
+[X-Fleet]
+Global=true

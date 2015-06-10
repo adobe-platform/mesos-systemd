@@ -12,7 +12,7 @@ ExecStartPre=/usr/bin/docker pull michaloo/logrotate
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill logrotate
 ExecStartPre=-/usr/bin/docker rm logrotate
-ExecStart=sudo /usr/bin/docker run --name logrotate -v /var/lib/docker:/var/lib/docker michaloo/logrotate
+ExecStart=sudo /usr/bin/docker run --name logrotate -v /var/lib/docker:/var/lib/docker behance/docker-gocron-logrotate
 ExecStop=/usr/bin/docker stop logrotate
 
 [X-Fleet]

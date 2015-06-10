@@ -3,6 +3,7 @@ Description=Sumologic Collector
 After=docker.service
 
 [Service]
+User=core
 Restart=always
 ExecStartPre=-/usr/bin/docker stop sumologic
 ExecStartPre=-/usr/bin/docker rm -f sumologic

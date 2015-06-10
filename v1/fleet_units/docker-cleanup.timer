@@ -7,6 +7,7 @@ Requires=docker.service
 WantedBy=multi-user.target
 
 [Timer]
+User=core
 # run 10 minutes after boot
 OnBootSec=10min
 # run every hour

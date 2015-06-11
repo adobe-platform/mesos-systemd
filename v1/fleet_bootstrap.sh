@@ -54,6 +54,7 @@ marathon.service
 mesos-master.service
 mesos-slave.service
 sumologic.service
+logrotate.service
 "
 
 for SERVICE in $SERVICES

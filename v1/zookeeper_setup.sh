@@ -15,6 +15,7 @@ sudo vim /home/core/conf/myid
 sudo vim +29 /home/core/conf/zoo.cfg
 
 # enable and start zookeeper
+echo "Enabling Zookeeper. This might take a few minutes to download the Docker image"
 sudo systemctl enable zookeeper.service && sudo systemctl start zookeeper.service
 
 echo "Done setting up Zookeeper"

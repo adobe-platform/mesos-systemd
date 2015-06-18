@@ -1,7 +1,7 @@
 [Unit]
 Description=MesosSlave
 After=docker.service dockercfg.service
-Requires=docker.service
+Requires=docker.service dockercfg.service
 
 [Service]
 Environment=MESOS_IMAGE=mesosphere/mesos-slave:0.22.1-1.0.ubuntu1404

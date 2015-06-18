@@ -1,6 +1,6 @@
 [Unit]
 Description=MesosSlave
-After=docker.service
+After=docker.service dockercfg.service
 Requires=docker.service
 
 [Service]

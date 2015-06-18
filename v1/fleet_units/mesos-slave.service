@@ -8,6 +8,7 @@ Environment=MESOS_IMAGE=mesosphere/mesos-slave:0.22.1-1.0.ubuntu1404
 Environment=ZOOKEEPER=<ZK_ELB>
 
 User=core
+KillMode=process
 Restart=on-failure
 RestartSec=20
 TimeoutStartSec=0
@@ -24,16 +25,18 @@ ExecStart=/usr/bin/sh -c "sudo /usr/bin/docker run \
     -v /usr/bin/docker:/usr/bin/docker:ro \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /lib64/libdevmapper.so.1.02:/lib/libdevmapper.so.1.02:ro \
+    -v /var/lib/mesos/slave:/var/lib/mesos/slave \
     ${MESOS_IMAGE} \
     --ip=$(/usr/bin/ip -o -4 addr list eth0 | grep global | awk \'{print $4}\' | cut -d/ -f1) \
-    --containerizers=docker \
+    --containerizers=docker,mesos \
     --executor_registration_timeout=10mins \
     --hostname=`curl -s http://169.254.169.254/latest/meta-data/public-hostname` \
+    --isolation=cgroups/cpu,cgroups/mem \
     --log_dir=/var/log/mesos \
     --master=zk://${ZOOKEEPER}/mesos \
     --work_dir=/var/lib/mesos/slave"
 ExecStop=/usr/bin/docker stop mesos_slave
-ExecStartPost=/usr/bin/docker pull cfortier/utility:latest
+ExecStartPost=/usr/bin/docker pull behance/utility:latest
 ExecStartPost=/usr/bin/docker pull ubuntu:14.04
 ExecStartPost=/usr/bin/docker pull debian:jessie
 

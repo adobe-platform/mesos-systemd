@@ -18,6 +18,7 @@ ExecStart=/usr/bin/sh -c "sudo /usr/bin/docker run \
     --name=mesos_master \
     --privileged \
     --net=host \
+    -v /var/lib/mesos/master:/var/lib/mesos/master \
     ${MESOS_IMAGE} \
     --hostname=`curl -s http://169.254.169.254/latest/meta-data/public-hostname` \
     --log_dir=/var/log/mesos \

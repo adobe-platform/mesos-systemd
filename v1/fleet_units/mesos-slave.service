@@ -28,7 +28,7 @@ ExecStart=/usr/bin/sh -c "sudo /usr/bin/docker run \
     -v /var/lib/mesos/slave:/var/lib/mesos/slave \
     ${MESOS_IMAGE} \
     --ip=$(/usr/bin/ip -o -4 addr list eth0 | grep global | awk \'{print $4}\' | cut -d/ -f1) \
-        --attributes=zone:$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)\;os:coreos \
+    --attributes=zone:$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)\;os:coreos \
     --containerizers=docker,mesos \
     --executor_registration_timeout=10mins \
     --hostname=`curl -s http://169.254.169.254/latest/meta-data/public-hostname` \

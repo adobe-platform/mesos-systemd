@@ -19,6 +19,7 @@ ExecStartPre=/usr/bin/docker pull ${MESOS_IMAGE}
 ExecStart=/usr/bin/sh -c "sudo /usr/bin/docker run \
     --name=mesos_slave \
     --net=host \
+    --pid=host \
     --privileged \
     -v /home/core/.dockercfg:/root/.dockercfg:ro \
     -v /sys:/sys \

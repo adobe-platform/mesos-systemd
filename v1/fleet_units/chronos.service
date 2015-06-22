@@ -22,9 +22,9 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
     /usr/bin/chronos \
     run_jar \
     --http_port 4400 \
-    --zk_hosts ${ZOOKEEPER} \
-    --master zk://${ZOOKEEPER}/mesos"
-
+    --master zk://${ZOOKEEPER}/mesos \
+    --mesos_framework_name chronos-`cat /etc/hostname` \
+    --zk_hosts ${ZOOKEEPER}"
 
 ExecStop=/usr/bin/docker stop chronos
 

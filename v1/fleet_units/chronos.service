@@ -18,6 +18,8 @@ ExecStartPre=/usr/bin/docker pull ${CHRONOS_IMAGE}
 ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
     --name chronos \
     --net=host \
+    --env LIBPROCESS_IP=$(/usr/bin/ip -o -4 addr list eth0 | grep global | awk \'{print $4}\' | cut -d/ -f1) \
+    --env LIBPROCESS_PORT=4401 \
     ${CHRONOS_IMAGE} \
     /usr/bin/chronos \
     run_jar \

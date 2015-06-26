@@ -17,7 +17,7 @@ ExecStart=/usr/bin/bash -c \
 "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && \
 sudo /usr/bin/docker run --name newrelic \
 -e NRSYSMOND_hostname=`hostname` -e NRSYSMOND_license_key=`etcdctl get newreliclicensekey` \
--v /var/run/docker.sock:/var/run/docker.sock -v /proc:/proc -v /sys:/sys -v /dev:/dev \
+-v /var/run/docker.sock:/var/run/docker.sock -v /sys:/sys -v /dev:/dev \
 --privileged --net=host --pid=host newrelic/nrsysmond"
 ExecStop=/usr/bin/docker stop newrelic
 

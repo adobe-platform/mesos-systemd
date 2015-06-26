@@ -39,6 +39,10 @@ sudo sed -i "s/<ZK_ELB>/$ZOOKEEPER/g" *.service
 read -p "Enter datadog api key for this account: " DATADOG_KEY
 etcdctl set /ddapikey $DATADOG_KEY
 
+# setup newrelic
+read -p "Enter newrelic license key for this account: " NEWRELIC_LICENSE
+etcdctl set /newreliclicensekey $NEWRELIC_LICENSE
+
 # set sumologic credentials
 read -p "sumologic access ID: " SUMOLOGIC_ACCESS_ID
 read -p "sumologic secret key: " SUMOLOGIC_SECRET
@@ -55,6 +59,7 @@ mesos-master.service
 mesos-slave.service
 sumologic.service
 logrotate.service
+newrelic.service
 "
 
 for SERVICE in $SERVICES

@@ -15,3 +15,5 @@ OnUnitActiveSec=1h
 
 [X-Fleet]
 Global=true
+MachineMetadata=role=worker
+MachineMetadata=role=proxy

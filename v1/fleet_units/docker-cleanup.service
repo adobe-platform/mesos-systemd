@@ -4,6 +4,8 @@ After=docker.service
 Requires=docker.service
 
 [Service]
+Environment=MAX_DOCKER=25
+
 User=core
 Restart=on-failure
 RestartSec=20
@@ -11,8 +13,8 @@ TimeoutStartSec=0
 ExecStart=/usr/bin/sh -c ' \
   if [[ $(/usr/bin/docker ps -a | grep Exited | awk \'{print $1 "\\t" $7 "\\t" $10}\' | grep week | wc -l) -ne 0 ]]; \
   then \
-    echo "starting docker cleanup"; \
-    /usr/bin/docker ps -a | grep Exited | awk \'{print $1 "\\t" $7 "\\t" $10}\' | grep week | awk \'{print $1}\' | head -n25 | xargs /usr/bin/docker rm -v ; \
+    echo "Starting docker cleanup with a max of: $MAX_DOCKER"; \
+    /usr/bin/docker ps -a | grep Exited | awk \'{print $1 "\\t" $7 "\\t" $10}\' | grep week | awk \'{print $1}\' | head -n $MAX_DOCKER | xargs /usr/bin/docker rm -v ; \
     /usr/bin/docker images -a | grep none | awk \'{print $3}\' | xargs /usr/bin/docker rmi ; \
     echo "cleanup complete"; \
   else \

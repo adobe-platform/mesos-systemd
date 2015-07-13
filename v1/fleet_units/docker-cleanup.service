@@ -12,7 +12,7 @@ ExecStart=/usr/bin/sh -c ' \
   if [[ $(/usr/bin/docker ps -a | grep Exited | awk \'{print $1 "\\t" $7 "\\t" $10}\' | grep week | wc -l) -ne 0 ]]; \
   then \
     echo "starting docker cleanup"; \
-    /usr/bin/docker ps -a | grep Exited | awk \'{print $1 "\\t" $7 "\\t" $10}\' | grep week | awk \'{print $1}\' | xargs /usr/bin/docker rm ; \
+    /usr/bin/docker ps -a | grep Exited | awk \'{print $1 "\\t" $7 "\\t" $10}\' | grep week | awk \'{print $1}\' | head -n25 | xargs /usr/bin/docker rm -v ; \
     /usr/bin/docker images -a | grep none | awk \'{print $3}\' | xargs /usr/bin/docker rmi ; \
     echo "cleanup complete"; \
   else \

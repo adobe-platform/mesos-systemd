@@ -17,7 +17,8 @@ ExecStart=/usr/bin/sh -c ' \
     echo "cleanup complete"; \
   else \
     echo "nothing to cleanup"; \
-  fi'
+  fi
+  sudo free -h'
 
 [X-Fleet]
 Global=true

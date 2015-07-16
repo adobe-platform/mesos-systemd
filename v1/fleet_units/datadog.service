@@ -11,7 +11,7 @@ User=core
 Restart=always
 ExecStartPre=-/usr/bin/docker stop dd-agent
 ExecStartPre=-/usr/bin/docker rm -f dd-agent
-ExecStartPre=/usr/bin/docker pull datadog/docker-dd-agent
+ExecStartPre=/usr/bin/docker pull behance/docker-dd-agent:latest
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill dd-agent
 ExecStartPre=-/usr/bin/docker rm dd-agent
@@ -21,7 +21,7 @@ ExecStart=/usr/bin/bash -c \
 -v /proc/mounts:/host/proc/mounts:ro \
 -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
 -e API_KEY=`etcdctl get /ddapikey` \
-datadog/docker-dd-agent"
+behance/docker-dd-agent"
 ExecStop=/usr/bin/docker stop dd-agent
 
 [X-Fleet]

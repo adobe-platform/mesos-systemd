@@ -4,7 +4,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-Environment=EXHIBITOR_IMAGE=mbabineau/zookeeper-exhibitor:3.4.6_1.5.4
+Environment=EXHIBITOR_IMAGE=mbabineau/zookeeper-exhibitor:3.4.6_1.5.5
 
 User=core
 Restart=on-failure
@@ -14,8 +14,8 @@ ExecStartPre=-/usr/bin/docker kill zookeeper-exhibitor
 ExecStartPre=-/usr/bin/docker rm zookeeper-exhibitor
 ExecStartPre=/usr/bin/docker pull ${EXHIBITOR_IMAGE}
 ExecStart=/usr/bin/docker run \
-          --net=host \
           --name=zookeeper-exhibitor \
+          -p 8181:8181 -p 2181:2181 -p 2888:2888 -p 3888:3888 \
           -e S3_BUCKET=`etcdctl get /zookeeper/s3_exhibitor_bucket` \
           -e S3_PREFIX=`etcdctl get /zookeeper/s3_exhibitor_prefix` \
           -e HOSTNAME=`curl -s http://169.254.169.254/latest/meta-data/public-hostname` \
@@ -24,3 +24,7 @@ ExecStop=/usr/bin/docker stop zookeeper-exhibitor
 
 [Install]
 WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=control

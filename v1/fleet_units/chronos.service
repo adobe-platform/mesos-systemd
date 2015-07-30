@@ -9,7 +9,7 @@ Environment=CHRONOS_IMAGE=mesosphere/chronos:chronos-2.3.4-1.0.81.ubuntu1404-mes
 Environment=ZOOKEEPER=<ZK_ELB>
 
 User=core
-Restart=on-failure
+Restart=always
 RestartSec=20
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill chronos

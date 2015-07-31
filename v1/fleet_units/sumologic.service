@@ -3,6 +3,9 @@ Description=Sumologic Collector
 After=docker.service
 
 [Service]
+Environment=PRODUCT=`cat /home/core/.product`
+Environment=TIER=`cat /home/core/.tier`
+
 User=core
 Restart=always
 ExecStartPre=-/usr/bin/docker stop sumologic
@@ -16,7 +19,7 @@ ExecStart=/usr/bin/bash -c \
     sudo /usr/bin/docker run --name sumologic \
     -v /var/lib/docker/containers/:/tmp/clogs/:ro \
     -e SUMO_NAME=docker_cluster \
-    -e SUMO_CATEGORY=container_logs \
+    -e SUMO_CATEGORY=be/${PRODUCT}/${TIER}/container-logs \
     -e SUMO_COLLECTOR_NAME=mesos_app_collector \
     -e SUMO_ACCESS_ID=`etcdctl get /sumologic_id` \
     -e SUMO_ACCESS_KEY=`etcdctl get /sumologic_secret` \

@@ -16,7 +16,7 @@ ExecStart=/usr/bin/bash -c \
     sudo /usr/bin/docker run --name sumologic \
     -v /var/lib/docker/containers/:/tmp/clogs/:ro \
     -e SUMO_NAME=docker_cluster \
-    -e SUMO_CATEGORY=container_logs \
+    -e SUMO_CATEGORY=be/`cat /home/core/.product`/`cat /home/core/.tier`/container-logs \
     -e SUMO_COLLECTOR_NAME=mesos_app_collector \
     -e SUMO_ACCESS_ID=`etcdctl get /sumologic_id` \
     -e SUMO_ACCESS_KEY=`etcdctl get /sumologic_secret` \

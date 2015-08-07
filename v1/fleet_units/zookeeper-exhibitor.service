@@ -4,7 +4,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-Environment=EXHIBITOR_IMAGE=mbabineau/zookeeper-exhibitor:3.4.6_1.5.5
+Environment=EXHIBITOR_IMAGE=behance/exhibitor:latest
 
 User=core
 Restart=always

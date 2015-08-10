@@ -1,14 +1,12 @@
 [Unit]
 Description=Marathon
-After=docker.service mesos-master.service
-Requires=docker.service
+After=docker.service zookeeper-exhibitor.service mesos-master.service
+Requires=docker.service 
+Wants=zookeeper-exhibitor.service
 
 [Service]
 Environment=MARATHON_IMAGE=mesosphere/marathon:v0.9.0
-Environment=ZOOKEEPER=<ZK_ELB>
-
-# Example of what it should resolve to
-# Environment=ZOOKEEPER=internal-coreos-control-etcd-852307729.us-west-2.elb.amazonaws.com:2181
+Environment=ZOOKEEPER=localhost:2181
 
 User=core
 Restart=always

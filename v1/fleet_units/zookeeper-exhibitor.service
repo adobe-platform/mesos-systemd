@@ -18,6 +18,7 @@ ExecStart=/usr/bin/sh -c "sudo /usr/bin/docker run \
           -p 8181:8181 -p 2181:2181 -p 2888:2888 -p 3888:3888 \
           -e S3_BUCKET=`etcdctl get /zookeeper/s3_exhibitor_bucket` \
           -e S3_PREFIX=`etcdctl get /zookeeper/s3_exhibitor_prefix` \
+          -e AWS_REGION=`curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq .region` \
           -e HOSTNAME=`curl -s http://169.254.169.254/latest/meta-data/local-ipv4` \
           ${EXHIBITOR_IMAGE}"
 ExecStop=/usr/bin/docker stop zookeeper-exhibitor

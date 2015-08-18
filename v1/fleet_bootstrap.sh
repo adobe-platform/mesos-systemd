@@ -57,6 +57,7 @@ chronos.service
 marathon.service
 mesos-master.service
 mesos-slave.service
+sumologic-control.service
 sumologic.service
 logrotate.service
 newrelic.service

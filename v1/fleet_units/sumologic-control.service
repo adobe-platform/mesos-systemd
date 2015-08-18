@@ -1,5 +1,5 @@
 [Unit]
-Description=Sumologic Collector
+Description=Sumologic Control and Proxy Tier Collector
 After=docker.service
 
 [Service]

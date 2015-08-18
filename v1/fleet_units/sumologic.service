@@ -25,3 +25,4 @@ ExecStop=/usr/bin/docker stop sumologic
 
 [X-Fleet]
 Global=true
+MachineMetadata=role=worker

@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+S3REGION="$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)"
+
+if [ ! -z $SECURE_FILES ]; then
+    sudo docker run --rm \
+        -v /home/core/:/data/ behance/docker-aws-s3-downloader \
+        $S3REGION $CONTROL_TIER_S3SECURE_BUCKET $SECURE_FILES
+fi
+
+sudo cp ${SCRIPTDIR}/v2/units/control-jenkins.service \
+  /etc/systemd/system/control-jenkins.service
+
+/usr/bin/fleetctl submit ${SCRIPTDIR}/v2/fleet/submit-jenkins.service
+/usr/bin/fleetctl start submit-jenkins.service

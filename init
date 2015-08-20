@@ -1,12 +1,13 @@
 #!/usr/bin/bash
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-S3REGION="$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)"
 
 if [ ! -z $SECURE_FILES ]; then
+    # have to use  us-east-1 - aws tool does not recognize anything else
+    # for S3 download
     sudo docker run --rm \
         -v /home/core/:/data/ behance/docker-aws-s3-downloader \
-        $S3REGION $CONTROL_TIER_S3SECURE_BUCKET $SECURE_FILES
+         us-east-1 $CONTROL_TIER_S3SECURE_BUCKET $SECURE_FILES
 fi
 
 sudo cp ${SCRIPTDIR}/v2/units/control-jenkins.service \

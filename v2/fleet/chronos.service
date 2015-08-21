@@ -1,0 +1,39 @@
+[Unit]
+Description=Chronos
+After=docker.service mesos-master.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+Environment=CHRONOS_IMAGE=mesosphere/chronos:chronos-2.3.4-1.0.81.ubuntu1404-mesos-0.22.1-1.0.ubuntu1404
+# NOTE: chronos doesn't need the `zk://`
+Environment=ZOOKEEPER=localhost:2181
+
+User=core
+Restart=always
+RestartSec=20
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill chronos
+ExecStartPre=-/usr/bin/docker rm chronos
+ExecStartPre=/usr/bin/docker pull ${CHRONOS_IMAGE}
+ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
+    --name chronos \
+    --net=host \
+    --env LIBPROCESS_IP=`curl -s http://169.254.169.254/latest/meta-data/local-ipv4` \
+    --env LIBPROCESS_PORT=4401 \
+    ${CHRONOS_IMAGE} \
+    /usr/bin/chronos \
+    run_jar \
+    --http_port 4400 \
+    --master zk://${ZOOKEEPER}/mesos \
+    --mesos_framework_name chronos-`cat /etc/hostname` \
+    --zk_hosts ${ZOOKEEPER}"
+
+ExecStop=/usr/bin/docker stop chronos
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=control

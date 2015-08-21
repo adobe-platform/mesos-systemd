@@ -33,5 +33,5 @@ echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ${HOMEDIR}/.ssh/config
 sudo cp ${SCRIPTDIR}/v2/units/control-jenkins.service \
   /etc/systemd/system/control-jenkins.service
 
-/usr/bin/fleetctl submit ${SCRIPTDIR}/v2/fleet/submit-jenkins.service
-/usr/bin/fleetctl start submit-jenkins.service
+/usr/bin/fleetctl submit ${SCRIPTDIR}/v2/fleet/control-jenkins.service
+/usr/bin/fleetctl start control-jenkins.service

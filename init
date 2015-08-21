@@ -35,3 +35,14 @@ sudo cp ${SCRIPTDIR}/v2/units/control-jenkins.service \
 
 /usr/bin/fleetctl submit ${SCRIPTDIR}/v2/fleet/control-jenkins.service
 /usr/bin/fleetctl start control-jenkins.service
+
+sudo cp ${SCRIPTDIR}/v2/profile.d/* /etc/profile.d/.
+sudo cp ${SCRIPTDIR}/v2/motd.d/* /etc/motd.d/.
+
+if [ -f /etc/environment ]; then
+    source /etc/environment
+fi
+for script in $(ls ${SCRIPTDIR}/v2/scripts)
+do
+    sudo /bin/bash ${SCRIPTDIR}/v2/scripts/${script}
+done

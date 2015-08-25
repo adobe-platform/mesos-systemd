@@ -17,7 +17,7 @@ if [[ -d "$USERS_DIRECTORY" ]]; then
     username=$(basename ${user%.*})
     echo "Adding user $username"
 
-    sudo useradd -p "*" -U -m $username -G sudo
+    sudo useradd -p "*" -U -m $username -G sudo,docker
     sudo update-ssh-keys -u $username -a $username $user
   done
 

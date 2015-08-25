@@ -2,6 +2,10 @@
 
 source /etc/environment
 
+if [ "${NODE_ROLE}" != "control" ]; then
+    exit 0
+fi
+
 etcdctl setdir FD
 etcdctl set /FD/FD_API_SERVER_PORT 2001
 etcdctl set /FD/FD_CHRONOS_MASTER $FLIGHT_DIRECTOR_CHRONOS_ENDPOINT

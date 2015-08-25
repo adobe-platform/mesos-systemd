@@ -30,8 +30,16 @@ fi
 # TODO: maybe...re-evaluate this
 echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ${HOMEDIR}/.ssh/config
 
-sudo cp ${SCRIPTDIR}/v2/units/control-jenkins.service \
-  /etc/systemd/system/control-jenkins.service
+/usr/bin/fleetctl submit ${SCRIPTDIR}/v2/fleet/control-jenkins.service
+/usr/bin/fleetctl start control-jenkins.service
 
-/usr/bin/fleetctl submit ${SCRIPTDIR}/v2/fleet/submit-jenkins.service
-/usr/bin/fleetctl start submit-jenkins.service
+sudo cp ${SCRIPTDIR}/v2/profile.d/* /etc/profile.d/.
+sudo cp ${SCRIPTDIR}/v2/motd.d/* /etc/motd.d/.
+
+if [ -f /etc/environment ]; then
+    source /etc/environment
+fi
+for script in $(ls ${SCRIPTDIR}/v2/setup)
+do
+    sudo /bin/bash ${SCRIPTDIR}/v2/setup/${script}
+done

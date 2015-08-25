@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /etc/environment
+
 etcdctl setdir CP
 etcdctl set /CP/CP_APPLICATIONS "$CAPCOM_APPS"
 etcdctl set /CP/CP_HOST 127.0.0.1

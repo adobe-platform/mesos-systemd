@@ -50,3 +50,9 @@ for script in $(ls ${SCRIPTDIR}/v2/setup)
 do
     sudo /bin/bash ${SCRIPTDIR}/v2/setup/${script}
 done
+
+for unit in $(ls ${SCRIPTDIR}/v2/fleet)
+do
+    sudo fleetctl submit ${SCRIPTDIR}/v2/fleet/${unit}
+    sudo fleetctl start ${SCRIPTDIR}/v2/fleet/${unit}
+done

@@ -1,7 +1,7 @@
 [Unit]
 Description=MesosSlave
-After=docker.service dockercfg.service
-Requires=docker.service dockercfg.service
+After=docker.service
+Requires=docker.service
 
 [Service]
 EnvironmentFile=/etc/environment

@@ -22,7 +22,6 @@ ExecStart=/usr/bin/sh -c "sudo /usr/bin/docker run \
           -e S3_PREFIX=`etcdctl get /zookeeper/s3_exhibitor_prefix` \
           -e AWS_REGION=`curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq .region` \
           -e HOSTNAME=`curl -s http://169.254.169.254/latest/meta-data/local-ipv4` \
-          -e ZK_DATA_DIR='/var/lib/zookeeper' \
           ${EXHIBITOR_IMAGE}"
 ExecStop=/usr/bin/docker stop zookeeper-exhibitor
 

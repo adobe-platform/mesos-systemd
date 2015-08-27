@@ -1,6 +1,8 @@
 [Unit]
 Description=Chronos
-After=docker.service mesos-master.service
+# implied here that marathon requires mesos-master
+# also, this is to prevent docker pull issues i.e.: serialize startup of these units
+After=docker.service mesos-master.service marathon.service
 Requires=docker.service
 
 [Service]

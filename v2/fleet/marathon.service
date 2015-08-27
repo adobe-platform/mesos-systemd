@@ -13,9 +13,9 @@ User=core
 Restart=always
 RestartSec=20
 TimeoutStartSec=0
+ExecStartPre=/usr/bin/docker pull ${MARATHON_IMAGE}
 ExecStartPre=-/usr/bin/docker kill marathon
 ExecStartPre=-/usr/bin/docker rm marathon
-ExecStartPre=/usr/bin/docker pull ${MARATHON_IMAGE}
 ExecStart=/usr/bin/docker run \
     --name marathon \
     -e LIBPROCESS_PORT=9090 \

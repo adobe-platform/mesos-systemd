@@ -1,0 +1,35 @@
+[Unit]
+Description=Marathon
+After=docker.service zookeeper-exhibitor.service mesos-master.service
+Requires=docker.service 
+Wants=zookeeper-exhibitor.service
+
+[Service]
+EnvironmentFile=/etc/environment
+Environment=MARATHON_IMAGE=mesosphere/marathon:v0.10.0
+Environment=ZOOKEEPER=localhost:2181
+
+User=core
+Restart=always
+RestartSec=20
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill marathon
+ExecStartPre=-/usr/bin/docker rm marathon
+ExecStartPre=/usr/bin/docker pull ${MARATHON_IMAGE}
+ExecStart=/usr/bin/docker run \
+    --name marathon \
+    -e LIBPROCESS_PORT=9090 \
+    --net=host \
+    ${MARATHON_IMAGE} \
+    --master zk://${ZOOKEEPER}/mesos \
+    --zk zk://${ZOOKEEPER}/marathon \
+    --checkpoint \
+    --task_launch_timeout 300000
+ExecStop=/usr/bin/docker stop marathon
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=control

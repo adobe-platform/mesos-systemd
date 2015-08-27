@@ -4,6 +4,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
+EnvironmentFile=/etc/environment
 Environment=MESOS_IMAGE=mesosphere/mesos-master:0.22.1-1.0.ubuntu1404
 Environment=ZOOKEEPER=<ZK_ELB>
 

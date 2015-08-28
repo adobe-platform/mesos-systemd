@@ -5,8 +5,8 @@ Requires=docker.service
 Wants=zookeeper-exhibitor.service
 
 [Service]
+# MARATHON_IMAGE should be defined here. Either that or v2/setup/mesosphere.sh should update it
 EnvironmentFile=/etc/environment
-Environment=MARATHON_IMAGE=mesosphere/marathon:v0.10.0
 Environment=ZOOKEEPER=localhost:2181
 
 User=core

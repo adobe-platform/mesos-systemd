@@ -1,0 +1,20 @@
+[Unit]
+Description=Docker Cleanup
+After=docker.service
+Requires=docker.service
+
+[Service]
+Environment=MAX_DOCKER=25
+
+User=core
+Restart=on-failure
+RestartSec=20
+TimeoutStartSec=0
+ExecStart=/usr/bin/bash -c '/usr/bin/wget -O /home/core/docker-cleanup.sh \
+https://raw.githubusercontent.com/behance/mesos-systemd/master/v2/util/docker-cleanup.sh \
+&& /usr/bin/bash /home/core/docker-cleanup.sh'
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=worker
+MachineMetadata=role=proxy

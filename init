@@ -1,10 +1,5 @@
 #!/usr/bin/bash
 
-if [ "$(etcdctl get bootstrapped)" == "true" ]; then
-    exit 0
-fi
-etcdctl set bootstrapped true
-
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOMEDIR=$(eval echo "~`whoami`")
 

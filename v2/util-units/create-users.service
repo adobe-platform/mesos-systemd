@@ -1,0 +1,21 @@
+[Unit]
+Description=create users
+Requires=docker.service fleet.service
+After=docker.service fleet.service
+
+[Service]
+EnvironmentFile=/etc/environment
+User=core
+Type=oneshot
+RemainAfterExit=false
+
+ExecStartPre=-/usr/bin/rm -rf /home/core/mesos-users
+ExecStartPre=/usr/bin/git clone git@github.com:behance/mesos-users /home/core/mesos-users
+
+ExecStart=/usr/bin/bash -c '/usr/bin/bash /home/core/mesos-systemd/v2/util/add_users.sh /home/core/mesos-users/users'
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true

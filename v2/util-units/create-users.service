@@ -12,6 +12,7 @@ RemainAfterExit=false
 ExecStartPre=-/usr/bin/rm -rf /home/core/mesos-users
 ExecStartPre=/usr/bin/git clone git@github.com:behance/mesos-users /home/core/mesos-users
 
+# TODO: re-visit this - dir should probably be configurable
 ExecStart=/usr/bin/bash -c '/usr/bin/bash /home/core/mesos-systemd/v2/util/add_users.sh /home/core/mesos-users/users'
 
 [Install]

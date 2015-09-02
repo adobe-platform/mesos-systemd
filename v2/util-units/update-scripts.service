@@ -1,0 +1,19 @@
+[Unit]
+Description=update /home/core/mesos-systemd (by completely nuking it)
+Requires=docker.service fleet.service
+After=docker.service fleet.service
+
+[Service]
+EnvironmentFile=/etc/environment
+User=core
+Type=oneshot
+RemainAfterExit=false
+
+ExecStartPre=-/usr/bin/rm -rf /home/core/mesos-systemd
+ExecStart=/usr/bin/git clone git@github.com:behance/mesos-systemd /home/core/mesos-systemd
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true

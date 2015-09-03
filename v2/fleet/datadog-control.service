@@ -1,0 +1,27 @@
+# https://raw.githubusercontent.com/DataDog/docker-dd-agent/master/dd-agent.service
+# make sure the etcd /ddapikey is set!
+[Unit]
+Description=Datadog Agent for Mesos, Marathon & Zookeeper
+After=docker.service
+
+[Service]
+User=core
+Restart=always
+ExecStartPre=/usr/bin/docker pull behance/docker-dd-agent-mesos:latest
+ExecStartPre=-/usr/bin/docker stop dd-agent-mesos
+ExecStartPre=-/usr/bin/docker rm -f dd-agent-mesos
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill dd-agent-mesos
+ExecStartPre=-/usr/bin/docker rm dd-agent-mesos
+ExecStart=/usr/bin/bash -c \
+"if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && sudo /usr/bin/docker run --name dd-agent-mesos -h `hostname` \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v /proc/mounts:/host/proc/mounts:ro \
+-v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
+-e API_KEY=`etcdctl get /ddapikey` \
+behance/docker-dd-agent-mesos"
+ExecStop=/usr/bin/docker stop dd-agent-mesos
+
+[X-Fleet]
+Global=false
+MachineMetadata=role=control

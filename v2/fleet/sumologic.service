@@ -1,6 +1,6 @@
 [Unit]
 Description=Sumologic Collector
-After=docker.service
+After=docker.service bootstrap.service
 
 [Service]
 EnvironmentFile=/etc/environment

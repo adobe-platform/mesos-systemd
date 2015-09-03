@@ -2,7 +2,7 @@
 # make sure the etcd /ddapikey is set!
 [Unit]
 Description=Datadog Agent
-After=docker.service
+After=docker.service bootstrap.service
 
 [Service]
 User=core

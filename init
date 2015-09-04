@@ -40,10 +40,6 @@ if [ ! -d /etc/profile.d ]; then
     sudo mkdir /etc/profile.d
 fi
 sudo cp ${SCRIPTDIR}/v2/profile.d/* /etc/profile.d/.
-if [ ! -d /etc/motd.d ]; then
-    sudo mkdir /etc/motd.d
-fi
-sudo cp ${SCRIPTDIR}/v2/motd.d/* /etc/motd.d/.
 
 if [ -f /etc/environment ]; then
     source /etc/environment

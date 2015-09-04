@@ -8,6 +8,7 @@ Wants=zookeeper-exhibitor.service
 # MARATHON_IMAGE should be defined here. Either that or v2/setup/mesosphere.sh should update it
 EnvironmentFile=/etc/environment
 Environment=ZOOKEEPER=localhost:2181
+Environment=MARATHON_IMAGE=mesosphere/marathon:v0.10.0
 
 User=core
 Restart=always

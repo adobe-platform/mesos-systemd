@@ -10,6 +10,7 @@ Requires=docker.service
 EnvironmentFile=/etc/environment
 # NOTE: chronos doesn't need the `zk://`
 Environment=ZOOKEEPER=localhost:2181
+Environment=CHRONOS_IMAGE=mesosphere/chronos:chronos-2.3.4-1.0.81.ubuntu1404-mesos-0.22.1-1.0.ubuntu1404
 
 User=core
 Restart=always

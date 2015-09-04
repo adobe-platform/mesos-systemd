@@ -5,3 +5,7 @@
 docker pull behance/docker-sumologic
 docker pull behance/docker-dd-agent
 docker pull jenkins
+docker pull mesosphere/mesos-master
+docker pull mesosphere/mesos-slave
+docker pull mesosphere/marathon
+docker pull mesosphere/chronos

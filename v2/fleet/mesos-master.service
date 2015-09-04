@@ -6,6 +6,7 @@ Requires=docker.service
 [Service]
 # MESOS_MASTER_IMAGE should be defined here. Either that or v2/setup/mesosphere.sh should update it
 EnvironmentFile=/etc/environment
+Environment=MESOS_MASTER_IMAGE=mesosphere/mesos-master:0.22.1-1.0.ubuntu1404
 
 User=core
 Restart=always

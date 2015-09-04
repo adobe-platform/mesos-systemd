@@ -1,7 +1,7 @@
 [Unit]
 Description=MesosSlave
-After=docker.service
-Requires=docker.service
+After=docker.service bootstrap.service
+Requires=docker.service bootstrap.service
 
 [Service]
 # MESOS_SLAVE_IMAGE should be defined here. Either that or v2/setup/mesosphere.sh should update it

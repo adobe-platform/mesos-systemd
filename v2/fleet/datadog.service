@@ -7,12 +7,10 @@ After=docker.service bootstrap.service
 [Service]
 User=core
 Restart=always
-ExecStartPre=/usr/bin/docker pull behance/docker-dd-agent:latest
-ExecStartPre=-/usr/bin/docker stop dd-agent
-ExecStartPre=-/usr/bin/docker rm -f dd-agent
 TimeoutStartSec=0
+ExecStartPre=/usr/bin/docker pull behance/docker-dd-agent:latest
 ExecStartPre=-/usr/bin/docker kill dd-agent
-ExecStartPre=-/usr/bin/docker rm dd-agent
+ExecStartPre=-/usr/bin/docker rm -f dd-agent
 ExecStart=/usr/bin/bash -c \
 "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && sudo /usr/bin/docker run --name dd-agent -h `hostname` \
 -v /var/run/docker.sock:/var/run/docker.sock \

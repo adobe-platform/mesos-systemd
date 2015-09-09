@@ -44,6 +44,11 @@ sudo cp ${SCRIPTDIR}/v2/profile.d/* /etc/profile.d/.
 if [ -f /etc/environment ]; then
     source /etc/environment
 fi
+
+if [ "${NODE_ROLE}" != "control" ]; then
+    sudo cp ${SCRIPTDIR}/v2/non-control-profile.d/* /etc/profile.d/.
+fi
+
 for script in $(ls ${SCRIPTDIR}/v2/setup)
 do
     sudo /bin/bash ${SCRIPTDIR}/v2/setup/${script}

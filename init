@@ -41,6 +41,11 @@ if [ ! -d /etc/profile.d ]; then
 fi
 sudo cp ${SCRIPTDIR}/v2/profile.d/* /etc/profile.d/.
 
+if [ "${NODE_ROLE}" != "control" ]; then
+    sudo cp ${SCRIPTDIR}/v2/non-control-profile.d/* /etc/profile.d/.
+fi
+
+
 if [ -f /etc/environment ]; then
     source /etc/environment
 fi

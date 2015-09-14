@@ -51,6 +51,13 @@ do
     sudo /bin/bash ${SCRIPTDIR}/v2/setup/${script}
 done
 
+# fleet units specific to this node
+for unit in $(ls ${SCRIPTDIR}/v2/fleet-local/${NODE_ROLE})
+do
+    sudo fleetctl submit "${SCRIPTDIR}/v2/fleet-local/${NODE_ROLE}/${unit}"
+    sudo fleetctl start "${unit%.service}${COREOS_PRIVATE_IPV4}"
+done
+# general-purpose units
 for unit in $(ls ${SCRIPTDIR}/v2/fleet)
 do
     sudo fleetctl submit ${SCRIPTDIR}/v2/fleet/${unit}

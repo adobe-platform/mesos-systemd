@@ -39,15 +39,12 @@ echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ${HOMEDIR}/.ssh/config
 if [ ! -d /etc/profile.d ]; then
     sudo mkdir /etc/profile.d
 fi
-sudo cp ${SCRIPTDIR}/v2/profile.d/* /etc/profile.d/.
-
+# copy over files first, ignore errors thrown from directories
+sudo cp ${SCRIPTDIR}/v2/profile.d/* /etc/profile.d/. 2>/dev/null || :
 if [ -f /etc/environment ]; then
     source /etc/environment
 fi
-
-if [ "${NODE_ROLE}" != "control" ]; then
-    sudo cp ${SCRIPTDIR}/v2/non-control-profile.d/* /etc/profile.d/.
-fi
+sudo cp --dereference ${SCRIPTDIR}/v2/profile.d/${NODE_ROLE}/* /etc/profile.d/.
 
 for script in $(ls ${SCRIPTDIR}/v2/setup)
 do

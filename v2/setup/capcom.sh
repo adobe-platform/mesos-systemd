@@ -2,7 +2,7 @@
 
 source /etc/environment
 
-if [ "${NODE_ROLE}" != "control" ]; then
+if [ "${NODE_ROLE}" != "proxy" ]; then
     exit 0
 fi
 

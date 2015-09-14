@@ -38,3 +38,4 @@ WantedBy=multi-user.target
 [X-Fleet]
 Global=false
 MachineMetadata=role=control
+MachineMetadata=ip=%i

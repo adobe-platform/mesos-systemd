@@ -1,0 +1,50 @@
+[Unit]
+Description=Flight Director @ %i
+# it's implied that chronos & marathon require mesos
+# look here: https://github.com/behance/mesos-systemd/tree/master/v2/fleet
+After=docker.service chronos.service marathon.service
+Requires=docker.service
+Wants=chronos.service marathon.service
+
+[Service]
+Environment=FD_IMAGE=behance/flight-director:latest
+
+User=core
+Restart=on-failure
+RestartSec=20
+TimeoutStartSec=0
+ExecStartPre=/usr/bin/docker pull ${FD_IMAGE}
+ExecStartPre=-/usr/bin/docker kill flight-director
+ExecStartPre=-/usr/bin/docker rm flight-director
+ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
+    --name flight-director \
+    --net='host' \
+    -e LOG_APP_NAME=flight-director \
+    -e FD_API_SERVER_PORT=`etcdctl get /FD/FD_API_SERVER_PORT` \
+    -e FD_CHRONOS_MASTER=`etcdctl get /FD/FD_CHRONOS_MASTER` \
+    -e FD_DB_DATABASE=`etcdctl get /FD/FD_DB_DATABASE` \
+    -e FD_DB_ENGINE=`etcdctl get /FD/FD_DB_ENGINE` \
+    -e FD_DB_PASSWORD=`etcdctl get /FD/FD_DB_PASSWORD` \
+    -e FD_DB_PATH=`etcdctl get /FD/FD_DB_PATH` \
+    -e FD_DB_USERNAME=`etcdctl get /FD/FD_DB_USERNAME` \
+    -e FD_DEBUG=`etcdctl get /FD/FD_DEBUG` \
+    -e FD_DOCKERCFG_LOCATION=`etcdctl get /FD/FD_DOCKERCFG_LOCATION` \
+    -e FD_EVENT_INTERFACE=`etcdctl get /FD/FD_EVENT_INTERFACE` \
+    -e FD_EVENT_PORT=`etcdctl get /FD/FD_EVENT_PORT` \
+    -e FD_FIXTURES=`etcdctl get /FD/FD_FIXTURES` \
+    -e FD_KV_SERVER=`etcdctl get /FD/FD_KV_SERVER` \
+    -e FD_LOG_LEVEL=`etcdctl get /FD/FD_LOG_LEVEL` \
+    -e FD_LOG_LOCATION=`etcdctl get /FD/FD_LOG_LOCATION` \
+    -e FD_LOG_MARATHON_API_CALLS=`etcdctl get /FD/FD_LOG_MARATHON_API_CALLS` \
+    -e FD_MARATHON_MASTER=`etcdctl get /FD/FD_MARATHON_MASTER` \
+    -e FD_MESOS_MASTER=`etcdctl get /FD/FD_MESOS_MASTER` \
+    ${FD_IMAGE}"
+ExecStop=/usr/bin/docker stop flight-director
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=false
+MachineMetadata=role=control
+MachineMetadata=ip=%i

@@ -12,7 +12,7 @@ fi
 AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
 REGION=${AZ::-1}
 
-METADATA="FLEET_METADATA=region=${REGION},az=${AZ},role=${NODE_ROLE}"
+METADATA="FLEET_METADATA=region=${REGION},az=${AZ},role=${NODE_ROLE},ip=${COREOS_PRIVATE_IPV4}"
 echo -e "[Service]\nEnvironment='${METADATA}'" > $CONF_DIR/21-aws.conf
 
 sudo systemctl daemon-reload

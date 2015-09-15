@@ -1,10 +1,10 @@
 [Unit]
-Description=MesosMaster
+Description=MesosMaster @ %i
 After=docker.service bootstrap.service
 Requires=docker.service bootstrap.service
 
 [Service]
-# MESOS_MASTER_IMAGE should be defined here. Either that or v2/setup/mesosphere.sh should update it
+# ZOOKEEPER_ENDPOINT, NODE_PRODUCT & NODE_TIER should be defined here.
 EnvironmentFile=/etc/environment
 Environment=MESOS_MASTER_IMAGE=mesosphere/mesos-master:0.22.1-1.0.ubuntu1404
 
@@ -34,5 +34,6 @@ ExecStartPost=/usr/bin/docker pull cfortier/utility:latest
 WantedBy=multi-user.target
 
 [X-Fleet]
-Global=true
+Global=false
 MachineMetadata=role=control
+MachineMetadata=ip=%i

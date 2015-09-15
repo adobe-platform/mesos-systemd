@@ -1,12 +1,11 @@
 [Unit]
-Description=MesosSlave
+Description=MesosSlave @ %i
 After=docker.service bootstrap.service
 Requires=docker.service bootstrap.service
 
 [Service]
-# MESOS_SLAVE_IMAGE should be defined here. Either that or v2/setup/mesosphere.sh should update it
+# ZOOKEEPER_ENDPOINT should be defined here.
 EnvironmentFile=/etc/environment
-
 Environment=MESOS_SLAVE_IMAGE=mesosphere/mesos-slave:0.22.1-1.0.ubuntu1404
 
 User=core
@@ -45,5 +44,6 @@ ExecStartPost=/usr/bin/docker pull debian:jessie
 WantedBy=multi-user.target
 
 [X-Fleet]
-Global=true
+Global=false
 MachineMetadata=role=worker
+MachineMetadata=ip=%i

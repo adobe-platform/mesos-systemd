@@ -21,8 +21,8 @@ etcdctl set /CP/CP_KV_TTL 10
 etcdctl set /CP/CP_LOG_LEVEL $CAPCOM_LOG_LEVEL
 etcdctl set /CP/CP_LOG_LOCATION $CAPCOM_LOG_LOCATION
 etcdctl set /CP/CP_PORT 2002
-etcdctl set /CP/CP_PROXY haproxy
-etcdctl set /CP/CP_PROXY_CONFIG_FILE /etc/haproxy/haproxy.cfg
+etcdctl set /CP/CP_PROXY nginx
+etcdctl set /CP/CP_PROXY_CONFIG_FILE /etc/nginx/nginx.conf
 etcdctl set /CP/CP_PROXY_ENABLED true
-etcdctl set /CP/CP_PROXY_RESTART_SCRIPT /restart_haproxy.sh
+etcdctl set /CP/CP_PROXY_RESTART_SCRIPT /restart_nginx.sh
 etcdctl set /CP/CP_PROXY_TIMEOUT 45000

@@ -3,7 +3,9 @@ Description=Sumologic Control and Proxy Tier Collector
 After=docker.service bootstrap.service
 
 [Service]
-EnvironmentFile=/etc/environment
+Environment=NODE_PRODUCT=`etcdctl get /environment/NODE_PRODUCT`
+Environment=NODE_TIER=`etcdctl get /environment/NODE_TIER`
+
 User=core
 Restart=always
 TimeoutStartSec=0

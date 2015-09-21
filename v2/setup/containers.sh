@@ -23,5 +23,6 @@ if [ "${NODE_ROLE}" == "worker" ]; then
 fi
 
 if [ "${NODE_ROLE}" == "proxy" ]; then
-    docker pull behance/capcom # private repo, delete
-fi
+   docker pull behance/mesos-proxy-setup:latest
+   docker pull behance/capcom # private repo, delete
+ fi

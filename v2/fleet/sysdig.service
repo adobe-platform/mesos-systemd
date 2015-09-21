@@ -4,7 +4,11 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-EnvironmentFile=/etc/environment
+Environment=NODE_PRODUCT=`etcdctl get /environment/NODE_PRODUCT`
+Environment=NODE_TIER=`etcdctl get /environment/NODE_TIER`
+Environment=NODE_ROLE=`etcdctl get /environment/NODE_ROLE`
+
+
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill sysdig-agent
 ExecStartPre=-/usr/bin/docker rm sysdig-agent

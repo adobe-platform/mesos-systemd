@@ -5,10 +5,10 @@ Description=Datadog Agent for Mesos, Marathon & Zookeeper
 After=docker.service
 
 [Service]
-# CONTROL_ELB should be set here.
+# CONTROL_ELB should be set in etcd.
 # It should be the host that mesos, marathon & zookeeper run on
 # Look at behance/docker-dd-agent-mesos for what ports those 3 should be running on
-EnvironmentFile=/etc/environment
+
 User=core
 Restart=always
 TimeoutStartSec=0
@@ -18,7 +18,7 @@ ExecStartPre=-/usr/bin/docker rm -f dd-agent-mesos
 ExecStart=/usr/bin/bash -c \
 "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && sudo /usr/bin/docker run --name dd-agent-mesos -h `hostname` \
 -e API_KEY=`etcdctl get /ddapikey` \
--e MESOS_HOST=${CONTROL_ELB} \
+-e MESOS_HOST=`etcdctl get /environment/CONTROL_ELB` \
 behance/docker-dd-agent-mesos"
 ExecStop=/usr/bin/docker stop dd-agent-mesos
 

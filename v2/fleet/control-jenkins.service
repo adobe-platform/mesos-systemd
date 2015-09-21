@@ -4,7 +4,6 @@ Requires=docker.service
 After=docker.service
 
 [Service]
-EnvironmentFile=/etc/environment
 User=core
 Type=simple
 Restart=always

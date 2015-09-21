@@ -1,11 +1,10 @@
 [Unit]
 Description=Marathon @ %i
 After=docker.service zookeeper-exhibitor.service mesos-master.service
-Requires=docker.service 
+Requires=docker.service
 Wants=zookeeper-exhibitor.service
 
 [Service]
-EnvironmentFile=/etc/environment
 Environment=ZOOKEEPER=localhost:2181
 Environment=MARATHON_IMAGE=mesosphere/marathon:v0.10.0
 

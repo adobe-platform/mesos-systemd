@@ -17,6 +17,7 @@ ExecStartPre=-/usr/bin/docker rm capcom
 ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && /usr/bin/docker run \
     --name capcom \
     --net='host' \
+    --privileged \
     -e LOG_APP_NAME=capcom \
     -e CP_APPLICATIONS=`etcdctl get /CP/CP_APPLICATIONS` \
     -e CP_HOST=`etcdctl get /CP/CP_HOST` \

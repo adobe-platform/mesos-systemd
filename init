@@ -26,6 +26,9 @@ if [ ! -z $SECURE_FILES ]; then
     done
 fi
 
+# make sure that root has a .dockercfg
+sudo cp /home/`whoami`/.dockercfg /root/.
+
 # ensure that we have a public key for our RSA key and that it's authorized
 if [ -f /home/`whoami`/.ssh/id_rsa ]; then
     ssh-keygen -f /home/`whoami`/.ssh/id_rsa -y > /home/`whoami`/.ssh/id_rsa.pub

@@ -2,13 +2,16 @@
 
 ENV_FILE="/etc/environment"
 ETCD_PREFIX="/environment"
+IGNORED='^NODE|^COREOS|^#|^FLIGHT_DIRECTOR|^CAPCOM'
 
-while IFS='' read -r line || [[ -n "$line" ]]; do
-    if [ "${line:0:1}" != "#" ]; then
-      key=${line%=*}
-      value=${line#*=}
-
-      etcdkey="$ETCD_PREFIX/$key"
-      etcdctl set $etcdkey $value
+for line in $(cat $ENV_FILE|egrep -v $IGNORED); do
+    if [ "${line:0:1}" == "#" ]; then
+      continue
     fi
-done < $ENV_FILE
+
+    key=${line%=*}
+    value=${line#*=}
+
+    etcdkey="$ETCD_PREFIX/$key"
+    etcdctl set $etcdkey $value
+done

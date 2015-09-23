@@ -1,7 +1,7 @@
 [Unit]
 Description=Marathon @ %i
 After=docker.service zookeeper-exhibitor.service mesos-master.service
-Requires=docker.service 
+Requires=docker.service
 Wants=zookeeper-exhibitor.service
 
 [Service]

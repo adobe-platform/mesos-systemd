@@ -1,0 +1,32 @@
+[Unit]
+Description=HUD for flight-director
+Requires=docker.service
+After=docker.service
+
+[Service]
+User=core
+Type=simple
+Restart=always
+RestartSec=4
+TimeoutStartSec=0
+ExecStartPre=/usr/bin/docker pull behance/flight-director-hud
+ExecStartPre=-/usr/bin/docker kill fd-hud
+ExecStartPre=-/usr/bin/docker rm fd-hud
+
+# -e FDHOST
+# may have to be set depending on the infra.
+# By default, HUD will look at http://localhost:2001 for FD
+ExecStart=/usr/bin/bash -c \
+  "/usr/bin/docker run \
+  --name fd-hud \
+  --net='host' \
+  -p 4200:4200 \
+  behance/flight-director-hud"
+ExecStop=/usr/bin/docker stop fd-hud
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=control

@@ -11,7 +11,7 @@ else
   echo "no containers to cleanup"
 fi
 
-/usr/bin/docker images -a | grep none | awk '{print $3}' | xargs /usr/bin/docker rmi
+/usr/bin/docker images -a  | awk '{print $3}' | xargs /usr/bin/docker rmi
 echo "image cleanup complete"
 
 sudo free -h

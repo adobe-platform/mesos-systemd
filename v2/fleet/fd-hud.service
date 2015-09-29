@@ -24,6 +24,7 @@ ExecStart=/usr/bin/bash -c \
   -e GITHUB_CLIENT_ID=`etcdctl get /HUD/client-id` \
   -e GITHUB_CLIENT_SECRET=`etcdctl get /HUD/client-secret` \
   -p 4200:4200 \
+  -p 15000:15000 \
   $($IMAGE)"
 ExecStop=/usr/bin/docker stop fd-hud
 

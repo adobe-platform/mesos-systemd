@@ -20,6 +20,8 @@ ExecStart=/usr/bin/bash -c \
   "/usr/bin/docker run \
   --name fd-hud \
   -e FDHOST=https://`etcdctl get /environment/EXTERNAL_CONTROL_ELB`:7070 \
+  -e GITHUB_CLIENT_ID=`etcdctl get /HUD/client-id` \
+  -e GITHUB_CLIENT_SECRET=`etcdctl get /HUD/client-secret` \
   -p 4200:4200 \
   behance/flight-director-hud"
 ExecStop=/usr/bin/docker stop fd-hud

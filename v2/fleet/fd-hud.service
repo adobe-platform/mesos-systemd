@@ -9,7 +9,8 @@ Type=simple
 Restart=always
 RestartSec=4
 TimeoutStartSec=0
-ExecStartPre=/usr/bin/docker pull behance/flight-director-hud
+Environment="IMAGE=etcdctl get /images/hud"
+ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill fd-hud
 ExecStartPre=-/usr/bin/docker rm fd-hud
 
@@ -19,10 +20,11 @@ ExecStartPre=-/usr/bin/docker rm fd-hud
 ExecStart=/usr/bin/bash -c \
   "/usr/bin/docker run \
   --name fd-hud \
-  --net='host' \
   -e FDHOST=https://`etcdctl get /environment/EXTERNAL_CONTROL_ELB`:7070 \
+  -e GITHUB_CLIENT_ID=`etcdctl get /HUD/client-id` \
+  -e GITHUB_CLIENT_SECRET=`etcdctl get /HUD/client-secret` \
   -p 4200:4200 \
-  behance/flight-director-hud"
+  $($IMAGE)"
 ExecStop=/usr/bin/docker stop fd-hud
 
 [Install]

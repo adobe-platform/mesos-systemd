@@ -9,7 +9,7 @@ Type=simple
 Restart=always
 RestartSec=4
 TimeoutStartSec=0
-ExecStartPre=/usr/bin/docker pull behance/flight-director-hud
+ExecStartPre=/usr/bin/docker pull behance/flight-director-hud:latest
 ExecStartPre=-/usr/bin/docker kill fd-hud
 ExecStartPre=-/usr/bin/docker rm fd-hud
 
@@ -19,7 +19,6 @@ ExecStartPre=-/usr/bin/docker rm fd-hud
 ExecStart=/usr/bin/bash -c \
   "/usr/bin/docker run \
   --name fd-hud \
-  --net='host' \
   -e FDHOST=https://`etcdctl get /environment/EXTERNAL_CONTROL_ELB`:7070 \
   -p 4200:4200 \
   behance/flight-director-hud"

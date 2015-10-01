@@ -8,3 +8,4 @@ fi
 
 etcdctl set /zookeeper/s3_exhibitor_prefix "zk"
 etcdctl set /zookeeper/s3_exhibitor_bucket $EXHIBITOR_S3BUCKET
+etcdctl set /zookeeper/ensemble_size $CONTROL_CLUSTER_SIZE

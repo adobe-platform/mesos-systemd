@@ -4,8 +4,6 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-Environment=MAX_DOCKER=25
-
 User=core
 Restart=on-failure
 RestartSec=20

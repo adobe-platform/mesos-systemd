@@ -17,4 +17,3 @@ https://raw.githubusercontent.com/behance/mesos-systemd/master/v2/util/docker-cl
 [X-Fleet]
 Global=true
 MachineMetadata=role=worker
-MachineMetadata=role=proxy

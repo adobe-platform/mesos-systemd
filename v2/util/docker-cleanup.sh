@@ -1,17 +1,27 @@
 #!/bin/bash
 
-# this exists because trying to escape bash commands in a sytemd unit is super sadtimes
+# NOTE: this script will need to be sudo'ed for access to /var/lib/docker
 
-if [[ $(/usr/bin/docker ps -a | grep Exited | awk '{print $1 "\\t" $7 "\\t" $10}' | grep week | wc -l) -ne 0 ]]
-then
-  echo "Starting docker cleanup with a max of: $MAX_DOCKER"
-  /usr/bin/docker ps -a | grep Exited | awk '{print $1 "\\t" $7 "\\t" $10}' | grep week | awk '{print $1}' | head -n $MAX_DOCKER | xargs /usr/bin/docker rm -v
-  echo "container cleanup complete"
-else
-  echo "no containers to cleanup"
-fi
+echo "Removing dead containers & volumes"
+docker rm -v $(docker ps -a|grep Exited|cut -d" " -f1) 2> /dev/null
 
-/usr/bin/docker images -a  | awk '{print $3}' | xargs /usr/bin/docker rmi
-echo "image cleanup complete"
+echo "Removing images"
+docker rmi $(docker images -aq) 2> /dev/null
 
+# play on https://github.com/docker/docker/issues/6354#issuecomment-114688663
+FSDRIVER=$(docker info|grep Storage|cut -d: -f2|tr -d [:space:])
+FSLOC=/var/lib/docker/${FSDRIVER}
+cd $FSLOC
+echo "Starting image cleaning for driver:$FSDRIVER in $FSLOC"
+for image in $(ls|grep -v -- '-init'|cut -f2); do
+    docker inspect $image > /dev/null
+    if [ $? == 0 ]; then
+        echo "--> skipping $image"
+        continue
+    fi
+    echo "--> removing $image"
+    rm -r $image;
+done
+
+echo "---- Complete ----"
 sudo free -h

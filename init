@@ -3,6 +3,8 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOMEDIR=$(eval echo "~`whoami`")
 
+source /etc/environment
+
 if [ ! -z $SECURE_FILES ]; then
     # have to use  us-east-1 - aws tool does not recognize anything else
     # for S3 download

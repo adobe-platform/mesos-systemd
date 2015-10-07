@@ -1,8 +1,7 @@
 [Unit]
 Description=Marathon @ %i
-After=docker.service zookeeper-exhibitor.service mesos-master.service
 Requires=docker.service
-Wants=zookeeper-exhibitor.service
+After=docker.service bootstrap.service zk-health@%i.service
 
 [Service]
 Environment=ZOOKEEPER=localhost:2181

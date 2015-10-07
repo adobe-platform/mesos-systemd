@@ -1,5 +1,6 @@
 [Unit]
 Description=Exhibitor/Zookeeper @ %i
+Before=zk-health@%i.service
 After=docker.service
 Requires=docker.service
 

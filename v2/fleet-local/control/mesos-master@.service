@@ -1,7 +1,7 @@
 [Unit]
 Description=MesosMaster @ %i
-After=docker.service bootstrap.service
-Requires=docker.service bootstrap.service
+Requires=docker.service
+After=docker.service bootstrap.service zk-health@%i.service
 
 [Service]
 Environment="IMAGE=etcdctl get /images/mesos-master"

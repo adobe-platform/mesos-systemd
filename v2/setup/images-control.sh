@@ -6,8 +6,6 @@ if [ "${NODE_ROLE}" != "control" ]; then
     exit 0
 fi
 
-export ETCDCTL_PEERS="http://$ETCDCTL_PEERS_ENDPOINT"
-
 etcdctl set /images/chronos      "mesosphere/chronos:chronos-2.4.0-0.1.20150828104228.ubuntu1404-mesos-0.23.0-1.0.ubuntu1404"
 etcdctl set /images/fd           "behance/flight-director:latest"
 etcdctl set /images/hud          "behance/flight-director-hud:latest"

@@ -10,8 +10,10 @@ Wants=chronos@%i.service marathon@%i.service
 Environment="IMAGE=etcdctl get /images/fd"
 User=core
 Restart=on-failure
-RestartSec=20
+RestartSec=8
 TimeoutStartSec=0
+
+ExecStartPre=/usr/bin/systemctl is-active marathon@%i.service
 ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill flight-director
 ExecStartPre=-/usr/bin/docker rm flight-director

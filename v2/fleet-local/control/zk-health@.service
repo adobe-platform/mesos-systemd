@@ -5,6 +5,7 @@ Description=Exhibitor/Zookeeper health checker/block @ %i
 # CoreOS) to wait for this unit to complete
 Before=locksmithd.service marathon@%i.service mesos-master@%i.service
 After=zk-exhibitor@%i.service
+Requires=zk-exhibitor@%i.service
 
 [Service]
 Type=simple

@@ -1,7 +1,7 @@
 [Unit]
 Description=HUD for flight-director
 Requires=docker.service
-After=docker.service flight-director@*.service
+After=docker.service
 
 [Service]
 User=core
@@ -11,7 +11,7 @@ RestartSec=4
 TimeoutStartSec=0
 Environment="IMAGE=etcdctl get /images/hud"
 
-ExecStartPre=/usr/bin/systemctl is-active flight-director@*.service
+ExecStartPre=/usr/bin/systemctl is-active flight-director@*
 ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill fd-hud
 ExecStartPre=-/usr/bin/docker rm fd-hud

@@ -13,6 +13,7 @@ RestartSec=8
 TimeoutStartSec=0
 
 ExecStartPre=/usr/bin/systemctl is-active zk-health.service
+ExecStartPre=/usr/bin/systemctl is-active mesos-master@*
 ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill marathon
 ExecStartPre=-/usr/bin/docker rm marathon

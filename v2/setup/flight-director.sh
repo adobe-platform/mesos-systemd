@@ -30,3 +30,23 @@ etcdctl set /FD/FD_LOG_LOCATION $FLIGHT_DIRECTOR_LOG_LOCATION
 etcdctl set /FD/FD_LOG_MARATHON_API_CALLS false
 etcdctl set /FD/FD_MARATHON_MASTER $FLIGHT_DIRECTOR_MARATHON_ENDPOINT
 etcdctl set /FD/FD_MESOS_MASTER $FLIGHT_DIRECTOR_MESOS_ENDPOINT
+
+etcdctl set /FD/AUTHORIZER_TYPE github
+etcdctl set /FD/GITHUB_TOKEN_URL https://github.com/login/oauth/access_token
+etcdctl set /FD/GITHUB_API https://api.github.com
+etcdctl set /FD/GITHUB_CLIENT_ID ''
+etcdctl set /FD/GITHUB_CLIENT_SECRET ''
+etcdctl set /FD/GITHUB_ALLOWED_TEAMS ''
+
+
+HOMEDIR=$(eval echo "~`whoami`")
+
+sudo docker run --rm \
+    -v ${HOMEDIR}:/data/ behance/docker-aws-s3-downloader \
+     us-east-1 $CONTROL_TIER_S3SECURE_BUCKET .flight-director
+
+# it's expected that these fields are already in the form
+# /KEY/NAMESPACE VALUE
+while read line; do
+    etcdctl set $line
+done < ${HOMEDIR}/.hud

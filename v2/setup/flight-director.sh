@@ -49,4 +49,4 @@ sudo docker run --rm \
 # /KEY/NAMESPACE VALUE
 while read line; do
     etcdctl set $line
-done < ${HOMEDIR}/.hud
+done < ${HOMEDIR}/.flight-director

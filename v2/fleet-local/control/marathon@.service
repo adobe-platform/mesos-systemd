@@ -1,8 +1,7 @@
 [Unit]
 Description=Marathon @ %i
 Requires=docker.service
-After=docker.service bootstrap.service zk-health@%i.service
-Wants=zk-health@%i.service
+After=docker.service bootstrap.service zk-health.service mesos-master@%i.service
 
 [Service]
 Environment=ZOOKEEPER=localhost:2181
@@ -13,7 +12,7 @@ Restart=always
 RestartSec=8
 TimeoutStartSec=0
 
-ExecStartPre=/usr/bin/systemctl is-active zk-health@%i.service
+ExecStartPre=/usr/bin/systemctl is-active zk-health.service
 ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill marathon
 ExecStartPre=-/usr/bin/docker rm marathon

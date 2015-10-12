@@ -11,6 +11,7 @@ RemainAfterExit=false
 
 ExecStartPre=-/usr/bin/rm -rf /home/core/mesos-systemd
 ExecStart=/usr/bin/git clone https://github.com/behance/mesos-systemd /home/core/mesos-systemd
+ExecStart=/usr/bin/sudo bash /home/core/mesos-systemd/v2/util/setup-credentials.sh
 
 [Install]
 WantedBy=multi-user.target

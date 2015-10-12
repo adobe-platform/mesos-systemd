@@ -1,7 +1,7 @@
 [Unit]
 Description=Chronos @ %i
 # implied here that marathon requires mesos-master
-After=docker.service mesos-master.service marathon.service
+After=docker.service mesos-master@%i.service marathon@%i.service
 Requires=docker.service
 
 [Service]

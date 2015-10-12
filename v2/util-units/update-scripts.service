@@ -1,6 +1,6 @@
 [Unit]
 Description=update /home/core/mesos-systemd (by completely nuking it)
-Requires=docker.service fleet.service bootstrap.service
+Requires=docker.service
 After=docker.service fleet.service bootstrap.service
 
 [Service]
@@ -10,7 +10,7 @@ Type=oneshot
 RemainAfterExit=false
 
 ExecStartPre=-/usr/bin/rm -rf /home/core/mesos-systemd
-ExecStart=/usr/bin/git clone git@github.com:behance/mesos-systemd /home/core/mesos-systemd
+ExecStart=/usr/bin/git clone https://github.com/behance/mesos-systemd /home/core/mesos-systemd
 
 [Install]
 WantedBy=multi-user.target

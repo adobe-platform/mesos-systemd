@@ -2,6 +2,7 @@
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOMEDIR=$(eval echo "~`whoami`")
+OWNER=$(whoami)
 
 source /etc/environment
 
@@ -24,17 +25,17 @@ if [ ! -z $SECURE_FILES ]; then
             TARGET="${S3FILE}"
         fi
 
-        sudo chown -R `whoami`:`whoami` ${HOMEDIR}/${TARGET}
+        sudo chown -R ${OWNER}:${OWNER} ${HOMEDIR}/${TARGET}
     done
 fi
 
 # make sure that root has a .dockercfg
-sudo cp /home/`whoami`/.dockercfg /root/.
+sudo cp /home/${OWNER}/.dockercfg /root/.
 
 # ensure that we have a public key for our RSA key and that it's authorized
-if [ -f /home/`whoami`/.ssh/id_rsa ]; then
-    ssh-keygen -f /home/`whoami`/.ssh/id_rsa -y > /home/`whoami`/.ssh/id_rsa.pub
-    cat /home/`whoami`/.ssh/id_rsa.pub >> /home/`whoami`/.ssh/authorized_keys
+if [ -f ${HOMEDIR}/.ssh/id_rsa ]; then
+    ssh-keygen -f ${HOMEDIR}/.ssh/id_rsa -y > ${HOMEDIR}/.ssh/id_rsa.pub
+    cat ${HOMEDIR}/.ssh/id_rsa.pub >> ${HOMEDIR}/.ssh/authorized_keys
 fi
 
 # ignore requests against github.com

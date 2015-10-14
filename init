@@ -3,6 +3,9 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOMEDIR=$(eval echo "~`whoami`")
 
+etcdctl set /environment/SCRIPTS-FORK behance
+etcdctl set /environment/SCRIPTS-REV  $(cd $SCRIPTDIR && git rev-parse HEAD && cd -)
+
 bash ${SCRIPTDIR}/v2/util/setup-credentials.sh
 
 if [ ! -d /etc/profile.d ]; then

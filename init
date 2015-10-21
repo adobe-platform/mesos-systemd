@@ -18,19 +18,19 @@ if [ -f /etc/environment ]; then
 fi
 sudo cp --dereference ${SCRIPTDIR}/v2/profile.d/${NODE_ROLE}/* /etc/profile.d/.
 
-for script in $(ls ${SCRIPTDIR}/v2/setup)
+for script in $(ls ${SCRIPTDIR}/v2/setup|grep -e '.sh$')
 do
     sudo /bin/bash ${SCRIPTDIR}/v2/setup/${script}
 done
 
 # fleet units specific to this node
-for unit in $(ls ${SCRIPTDIR}/v2/fleet-local/${NODE_ROLE})
+for unit in $(ls ${SCRIPTDIR}/v2/fleet-local/${NODE_ROLE}|grep -e '.service$')
 do
     sudo fleetctl submit "${SCRIPTDIR}/v2/fleet-local/${NODE_ROLE}/${unit}"
     sudo fleetctl start "${unit%.service}${COREOS_PRIVATE_IPV4}"
 done
 # general-purpose units
-for unit in $(ls ${SCRIPTDIR}/v2/fleet)
+for unit in $(ls ${SCRIPTDIR}/v2/fleet|grep -e '.service$')
 do
     sudo fleetctl submit ${SCRIPTDIR}/v2/fleet/${unit}
     sudo fleetctl start ${SCRIPTDIR}/v2/fleet/${unit}

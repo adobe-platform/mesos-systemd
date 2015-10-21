@@ -19,7 +19,7 @@ sudo /usr/bin/docker run --name sumologic-journald \
 -p 514:514/udp \
 -e PATH_EXPRESSION=/syslog/syslog \
 -e SUMO_NAME=${NODE_PRODUCT}-${NODE_TIER}-cluster \
--e SUMO_CATEGORY=be/${NODE_PRODUCT}/${NODE_TIER}/journald-logs \
+-e SUMO_CATEGORY=be/${NODE_PRODUCT}/${NODE_TIER}/${NODE_ROLE}/journald-logs \
 -e SUMO_COLLECTOR_NAME=mesos_journald_collector \
 -e SUMO_ACCESS_ID=`etcdctl get /sumologic_id` \
 -e SUMO_ACCESS_KEY=`etcdctl get /sumologic_secret` \

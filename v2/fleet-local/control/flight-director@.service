@@ -46,7 +46,9 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   -e GITHUB_CLIENT_SECRET=`etcdctl get /FD/GITHUB_CLIENT_SECRET` \
   -e AUTHORIZER_TYPE=`etcdctl get /FD/AUTHORIZER_TYPE` \
   $($IMAGE)"
-ExecStop=/usr/bin/docker stop flight-director
+
+ExecStop=-/usr/bin/docker stop flight-director
+ExecStop=/usr/bin/fleetctl destroy flight-director@%i
 
 [Install]
 WantedBy=multi-user.target

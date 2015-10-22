@@ -36,9 +36,6 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
     --log_dir=/var/log/mesos \
     --master=zk://`etcdctl get /environment/ZOOKEEPER_ENDPOINT`/mesos \
     --work_dir=/var/lib/mesos/slave"
-ExecStartPost=/usr/bin/docker pull behance/utility:latest
-ExecStartPost=/usr/bin/docker pull ubuntu:14.04
-ExecStartPost=/usr/bin/docker pull debian:jessie
 ExecStop=/usr/bin/docker stop mesos_slave
 
 [Install]

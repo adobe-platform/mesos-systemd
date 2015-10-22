@@ -25,3 +25,4 @@ done
 
 echo "---- Complete ----"
 sudo free -h
+sudo df -Th

@@ -17,6 +17,7 @@ ExecStartPre=/usr/bin/systemctl is-active mesos-master@*
 ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill marathon
 ExecStartPre=-/usr/bin/docker rm marathon
+
 ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --name marathon \
   -e LIBPROCESS_PORT=9090 \
@@ -26,7 +27,9 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --zk zk://${ZOOKEEPER}/marathon \
   --checkpoint \
   --task_launch_timeout 300000"
-ExecStop=/usr/bin/docker stop marathon
+
+ExecStop=-/usr/bin/docker stop marathon
+ExecStop=/usr/bin/fleetctl destroy marathon@%i
 
 [Install]
 WantedBy=multi-user.target

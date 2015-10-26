@@ -1,6 +1,6 @@
 [Unit]
-Description=Capcom/{HAProxy NGinx} @ %i
-After=docker.service
+Description=Capcom @ %i
+After=docker.service proxy@%i.service
 Requires=docker.service
 
 [Service]

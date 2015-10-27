@@ -25,7 +25,7 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   $($IMAGE) \
   --master zk://${ZOOKEEPER}/mesos \
   --zk zk://${ZOOKEEPER}/marathon \
-  --http_credentials ${ZOOKEEPER_USER}:${ZOOKEEPER_PASSWORD} \
+  --http_credentials ${MARATHON_USER}:${MARATHON_PASSWORD} \
   --checkpoint \
   --task_launch_timeout 300000"
 

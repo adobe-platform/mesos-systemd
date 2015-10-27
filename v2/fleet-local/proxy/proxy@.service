@@ -22,7 +22,7 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
   docker run \
     --name proxy \
     --net='host' \
-    -v /etc/nginx:/etc/$($PROXY) \
+    -v /etc/$($PROXY):/etc/$($PROXY) \
        $($IMAGE) $($CMD) 
 
 ExecStop=-/usr/bin/docker stop proxy

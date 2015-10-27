@@ -11,4 +11,4 @@ sudo docker run --rm \
 SYSDIG_KEY=$(sudo cat ${HOMEDIR}/.marathon)
 
 etcdctl set /marathon_user $marathon_user
-etcdctl set /marathon_password $marathon_password
+etcdctl set /marathon_password $MARATHON_PASSWORD

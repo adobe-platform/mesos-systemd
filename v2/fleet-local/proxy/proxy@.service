@@ -1,8 +1,8 @@
 [Unit]
 Description=Proxy { Nginx/HAProxy } @ %i
-After=docker.service
+After=docker.service capcom@%i.service
 Requires=docker.service
-Before=capcom@%i.service
+
 
 [Service]
 User=core
@@ -18,12 +18,12 @@ ExecStartPre=-/usr/bin/docker kill proxy
 ExecStartPre=-/usr/bin/docker rm proxy
 
 # NOTE: it's critical to source the etcdctl.sh file so that etcd connects to the correct cluster.
-ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
+ExecStart=/usr/bin/sh -c 'source /etc/profile.d/etcdctl.sh && \
   docker run \
     --name proxy \
-    --net='host' \
+    --net="host" \
     -v /etc/$($PROXY):/etc/$($PROXY) \
-       $($IMAGE) $($CMD) 
+       $($IMAGE) $($CMD) '
 
 ExecStop=-/usr/bin/docker stop proxy
 ExecStop=/usr/bin/fleetctl destroy proxy@%i

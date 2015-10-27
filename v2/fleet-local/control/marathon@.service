@@ -6,6 +6,8 @@ After=docker.service bootstrap.service zk-health.service mesos-master@%i.service
 [Service]
 Environment=ZOOKEEPER=localhost:2181
 Environment="IMAGE=etcdctl get /images/marathon"
+Environment="USER=etcdctl get /marathon/username"
+Environment="PW=etcdctl get /marathon/password"
 
 User=core
 Restart=always
@@ -21,13 +23,11 @@ ExecStartPre=-/usr/bin/docker rm marathon
 ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --name marathon \
   -e LIBPROCESS_PORT=9090 \
-  -e MARATHON_USER=`etcdctl get /marathon_user` \
-  -e MARATHON_PASSWORD=`/etcdctl get /marathon_password` \
   --net=host \
   $($IMAGE) \
   --master zk://${ZOOKEEPER}/mesos \
   --zk zk://${ZOOKEEPER}/marathon \
-  --http_credentials ${MARATHON_USER}:${MARATHON_PASSWORD} \
+  --http_credentials ${USER}:${PW} \
   --checkpoint \
   --task_launch_timeout 300000"
 

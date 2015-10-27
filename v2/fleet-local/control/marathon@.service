@@ -21,14 +21,13 @@ ExecStartPre=-/usr/bin/docker rm marathon
 ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --name marathon \
   -e LIBPROCESS_PORT=9090 \
-  -e marathon_user=`etcdctl get /marathon_user` \
-  -e marathon_password=`/etcdctl get marathon_password` \
-  -e FD_DB_PASSWORD=`etcdctl get /FD/FD_DB_PASSWORD` \
+  -e MARATHON_USER=`etcdctl get /marathon_user` \
+  -e MARATHON_PASSWORD=`/etcdctl get /marathon_password` \
   --net=host \
   $($IMAGE) \
   --master zk://${ZOOKEEPER}/mesos \
   --zk zk://${ZOOKEEPER}/marathon \
-  --http_credentials ${marathon_user}:${marathon_password} \
+  --http_credentials ${MARATHON_USER}:${MARATHON_PASSWORD} \
   --checkpoint \
   --task_launch_timeout 300000"
 

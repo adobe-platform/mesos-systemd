@@ -2,11 +2,12 @@
 Description=Proxy { Nginx/HAProxy } @ %i
 After=docker.service
 Requires=docker.service
+Before=capcom@%i.service
 
 [Service]
 User=core
 Restart=always
-RestartSec=20
+RestartSec=5
 TimeoutStartSec=0
 Environment="IMAGE=etcdctl get /images/proxy"  
 

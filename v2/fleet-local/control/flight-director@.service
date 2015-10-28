@@ -48,7 +48,6 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   $($IMAGE)"
 
 ExecStop=-/usr/bin/docker stop flight-director
-ExecStop=/usr/bin/fleetctl destroy flight-director@%i
 
 [Install]
 WantedBy=multi-user.target

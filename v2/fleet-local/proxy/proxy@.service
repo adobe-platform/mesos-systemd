@@ -26,7 +26,6 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
     $($IMAGE)"
 
 ExecStop=-/usr/bin/docker stop proxy
-ExecStop=/usr/bin/fleetctl destroy proxy@%i
 
 [Install]
 WantedBy=multi-user.target

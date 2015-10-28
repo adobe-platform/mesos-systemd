@@ -29,7 +29,6 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --task_launch_timeout 300000"
 
 ExecStop=-/usr/bin/docker stop marathon
-ExecStop=/usr/bin/fleetctl destroy marathon@%i
 
 [Install]
 WantedBy=multi-user.target

@@ -32,7 +32,6 @@ ExecStart=/usr/bin/sh -c "sudo /usr/bin/docker run \
   --zk=zk://`etcdctl get /environment/ZOOKEEPER_ENDPOINT`/mesos"
 
 ExecStop=-/usr/bin/docker stop mesos_master
-ExecStop=/usr/bin/fleetctl destroy mesos-master@%i
 
 [Install]
 WantedBy=multi-user.target

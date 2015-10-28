@@ -19,7 +19,7 @@ ExecStartPre=-/usr/bin/docker rm proxy
 
 # NOTE: it's critical to source the etcdctl.sh file so that etcd connects to the correct cluster.
 ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
-  $($CMD) | xargs docker run \
+  echo $($CMD) | xargs docker run \
     --name proxy \
     --net='host' \
     -v /etc/$($PROXY):/etc/$($PROXY) \

@@ -1,7 +1,8 @@
 [Unit]
-Description=Capcom/{HAProxy NGinx} @ %i
+Description=Capcom @ %i
 After=docker.service
 Requires=docker.service
+Before=proxy@%i.service
 
 [Service]
 User=core
@@ -20,6 +21,8 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
     --name capcom \
     --net='host' \
     --privileged \
+    -v /etc/nginx:/etc/nginx \
+    -v /var/run/docker.sock:/var/run/docker.sock \
     -e LOG_APP_NAME=capcom \
     -e CP_APPLICATIONS=`etcdctl get /CP/CP_APPLICATIONS` \
     -e CP_HOST=`etcdctl get /CP/CP_HOST` \

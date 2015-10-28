@@ -40,7 +40,6 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
     $($IMAGE)"
 
 ExecStop=-/usr/bin/docker stop capcom
-ExecStop=/usr/bin/fleetctl destroy capcom@%i
 
 [Install]
 WantedBy=multi-user.target

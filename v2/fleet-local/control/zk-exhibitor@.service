@@ -30,7 +30,6 @@ ExecStart=/usr/bin/sh -c "sudo /usr/bin/docker run \
   $($IMAGE)"
 
 ExecStop=-/usr/bin/docker stop zookeeper-exhibitor
-ExecStop=/usr/bin/fleetctl destroy zk-exhibitor@%i
 
 [Install]
 WantedBy=multi-user.target

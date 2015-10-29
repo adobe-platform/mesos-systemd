@@ -4,7 +4,7 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOMEDIR=$(eval echo "~`whoami`")
 
 etcdctl set /environment/SCRIPTS-FORK behance
-etcdctl set /environment/SCRIPTS-REV  $(cd $SCRIPTDIR && git rev-parse HEAD && cd -)
+etcdctl set /environment/SCRIPTS-REV  $(cd $SCRIPTDIR && git branch|grep '\*'|cut -d' ' -f2 && cd -)
 
 bash ${SCRIPTDIR}/v2/util/setup-credentials.sh
 

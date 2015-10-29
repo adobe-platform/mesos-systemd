@@ -9,8 +9,8 @@ sudo docker run --rm \
      us-east-1 $CONTROL_TIER_S3SECURE_BUCKET .marathon
 
 
-etcdctl set /marathon/username $USER
-etcdctl set /marathon/password $PW
+#etcdctl set /marathon/username $USER
+#etcdctl set /marathon/password $PW
 
 # it's expected that these fields are already in the form
 # /KEY/NAMESPACE VALUE

@@ -14,6 +14,7 @@ ExecStartPre=-/usr/bin/docker rm -f sumologic
 ExecStart=/usr/bin/bash -c \
     "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && \
     sudo /usr/bin/docker run --name sumologic \
+    --hostname=$COREOS_PUBLIC_IPV4 \
     -v /var/lib/docker/containers/:/tmp/clogs/:ro \
     -e SUMO_NAME=docker_cluster \
     -e SUMO_CATEGORY=be/${NODE_PRODUCT}/${NODE_TIER}/container-logs \

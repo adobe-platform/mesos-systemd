@@ -7,6 +7,7 @@ EnvironmentFile=/etc/environment
 User=core
 Restart=always
 TimeoutStartSec=0
+ExecStartPre=/usr/bin/systemctl is-active bootstrap
 ExecStartPre=/usr/bin/docker pull behance/docker-sumologic
 ExecStartPre=-/usr/bin/docker kill sumologic
 ExecStartPre=-/usr/bin/docker rm -f sumologic

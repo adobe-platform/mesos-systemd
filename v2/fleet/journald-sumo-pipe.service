@@ -8,6 +8,8 @@ EnvironmentFile=/etc/environment
 TimeoutStartSec=0
 Restart=always
 RestartSec=5s
+
+ExecStartPre=/usr/bin/systemctl is-active bootstrap
 ExecStart=/bin/sh -c '\
 journalctl -f|\
 while read line;\

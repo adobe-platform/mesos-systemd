@@ -8,6 +8,7 @@ After=docker.service
 User=core
 Restart=always
 TimeoutStartSec=0
+ExecStartPre=/usr/bin/systemctl is-active bootstrap
 ExecStartPre=/usr/bin/docker pull behance/docker-dd-agent-proxy:latest
 ExecStartPre=-/usr/bin/docker kill dd-agent-proxy
 ExecStartPre=-/usr/bin/docker rm -f dd-agent-proxy

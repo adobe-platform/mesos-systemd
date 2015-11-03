@@ -6,6 +6,7 @@ Requires=docker.service
 [Service]
 EnvironmentFile=/etc/environment
 TimeoutStartSec=0
+ExecStartPre=/usr/bin/systemctl is-active bootstrap
 ExecStartPre=-/usr/bin/docker kill sysdig-agent
 ExecStartPre=-/usr/bin/docker rm sysdig-agent
 ExecStartPre=/usr/bin/docker pull sysdig/agent

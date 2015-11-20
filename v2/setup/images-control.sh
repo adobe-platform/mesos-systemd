@@ -6,6 +6,12 @@ if [ "${NODE_ROLE}" != "control" ]; then
     exit 0
 fi
 
+if [ "$(etcdctl get images-control-bootstrapped)" == "true" ]; then
+    echo "control-tier images already bootstrapped, skipping"
+    exit 0
+fi
+etcdctl set images-control-bootstrapped true
+
 etcdctl set /images/chronos      "mesosphere/chronos:chronos-2.4.0-0.1.20150828104228.ubuntu1404-mesos-0.23.0-1.0.ubuntu1404"
 etcdctl set /images/fd           "behance/flight-director:latest"
 etcdctl set /images/hud          "behance/flight-director-hud:latest"

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # NOTE: this needs to be run with sudo privileges
+# $1 must be the SCRIPTDIR
 
 echo "-------Control node found, setting up etcd peers-------"
 
@@ -16,5 +17,6 @@ EOF
 chown root:root $DROPIN_FILE
 chmod 0644 $DROPIN_FILE
 
+SCRIPTDIR=$1
 cp "${SCRIPTDIR}/v2/util-units/etcd-peers.service" /etc/systemd/system/
 systemctl start etcd-peers

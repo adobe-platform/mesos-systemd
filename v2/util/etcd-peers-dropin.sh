@@ -23,3 +23,11 @@ systemctl daemon-reload
 SCRIPTDIR=$1
 cp "${SCRIPTDIR}/v2/util-units/etcd-peers.service" /etc/systemd/system/
 systemctl start etcd-peers
+
+echo "-------Waiting for etcd2 to start-------"
+until etcdctl cluster-health
+do
+  sleep 8
+done
+
+echo "-------etcd2 started, continuing with bootstrapping-------"

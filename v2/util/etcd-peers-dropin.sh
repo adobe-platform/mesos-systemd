@@ -17,6 +17,9 @@ EOF
 chown root:root $DROPIN_FILE
 chmod 0644 $DROPIN_FILE
 
+# Sometime this is needed?
+systemctl daemon-reload
+
 SCRIPTDIR=$1
 cp "${SCRIPTDIR}/v2/util-units/etcd-peers.service" /etc/systemd/system/
 systemctl start etcd-peers

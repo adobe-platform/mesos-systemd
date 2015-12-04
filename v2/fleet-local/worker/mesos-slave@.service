@@ -29,6 +29,8 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
     -v /usr/bin/docker:/usr/bin/docker:ro \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v /lib64/libdevmapper.so.1.02:/lib/libdevmapper.so.1.02:ro \
+    -v /lib64/libsystemd.so.0.10.2:/lib/libsystemd.so.0:ro \
+    -v /lib64/libgcrypt.so.20.0.3:/lib/libgcrypt.so.20:ro \
     -v /var/lib/mesos/slave:/var/lib/mesos/slave \
     $($IMAGE) \
     --ip=`curl -s http://169.254.169.254/latest/meta-data/local-ipv4` \

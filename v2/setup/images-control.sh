@@ -12,7 +12,7 @@ if [ "$(etcdctl get images-control-bootstrapped)" == "true" ]; then
 fi
 etcdctl set images-control-bootstrapped true
 
-etcdctl set /images/chronos      "mesosphere/chronos:chronos-2.4.0-0.1.20150828104228.ubuntu1404-mesos-0.23.0-1.0.ubuntu1404"
+etcdctl set /images/chronos      "behance/chronos:chronos-2.4.0-0.1.20151007110204.ubuntu1404-mesos-0.25.0-0.2.70.ubuntu1404"
 etcdctl set /images/fd           "behance/flight-director:latest"
 etcdctl set /images/hud          "behance/flight-director-hud:latest"
 etcdctl set /images/marathon     "mesosphere/marathon:v0.11.1"

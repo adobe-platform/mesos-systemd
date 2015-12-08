@@ -9,6 +9,7 @@ User=core
 Restart=on-failure
 RestartSec=20
 TimeoutStartSec=0
+EnvironmentFile=/etc/environment
 Environment="IMAGE=etcdctl get /images/capcom"
 Environment="PROXY=etcdctl get /CP/CP_PROXY"  
 
@@ -36,6 +37,7 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
     -e CP_PROXY=`etcdctl get /CP/CP_PROXY` \
     -e CP_PROXY_CONFIG_FILE=`etcdctl get /CP/CP_PROXY_CONFIG_FILE` \
     -e CP_PROXY_ENABLED=`etcdctl get /CP/CP_PROXY_ENABLED` \
+    -e CP_PROXY_GROUP=$PROXY_GROUP \
     -e CP_PROXY_RESTART_SCRIPT=`etcdctl get /CP/CP_PROXY_RESTART_SCRIPT` \
     -e CP_PROXY_TIMEOUT=`etcdctl get /CP/CP_PROXY_TIMEOUT` \
     $($IMAGE)"

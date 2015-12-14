@@ -56,6 +56,6 @@ sudo docker run --rm \
 # 5) Restart flight-director fleet-units via jenkins for changes to take effect
 
 
-while read line; do
+while read line || [[ -n "$line" ]]; do
     etcdctl set $line
 done < ${HOMEDIR}/.flight-director

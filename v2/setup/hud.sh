@@ -10,6 +10,6 @@ sudo docker run --rm \
 
 # it's expected that these fields are already in the form
 # /KEY/NAMESPACE VALUE
-while read line; do
+while read line || [[ -n "$line" ]]; do
     etcdctl set $line
 done < ${HOMEDIR}/.hud

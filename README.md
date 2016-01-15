@@ -1,6 +1,31 @@
 # mesos-systemd
 
-Behance scripts to bootstrap a CoreOS cluster & run Mesos/Marathon/Chronos/Zookeeper-Exhibitor
+Adobe Platform scripts to bootstrap a CoreOS [`cluster`](https://github.com/adobe-platform/mesos-cluster) & run Mesos/Marathon/Chronos/Zookeeper-Exhibitor
+Provides node-level services as [`Fleet Units`](https://coreos.com/using-coreos/clustering/) for every machine in the cluster.
+Most services (logging, metrics, monitoring) run on all nodes, some only run on specific tiers based on the metadata that is injected into Fleet.
+
+All Nodes:
+- Datadog (monitoring)
+- Sysdig (monitoring)
+- Sumologic (log collector)
+- Logrotate
+- Docker image cleanup
+- SSHD
+
+Control Tier Nodes:
+- Mesos Master
+- Marathon
+- Exhibitor (for Zookeeper)
+- Chronos
+- [`Flight Director`](https://github.com/adobe-platform/flight-director)
+
+Proxy Tier Nodes:
+- [`CAPCOM`](https://github.com/adobe-platform/capcom)
+- Heatshield Proxy
+
+Worker Tier Nodes:
+- Mesos Slave
+
 
 DISCLAIMER:
 ====
@@ -12,14 +37,14 @@ V2 Concepts
 
 The purpose of this repository is to house all setup scripts and systemd/fleetd units in a central location, separate of our infrastructure provisioning scripts (cloudformation).
 
-All setup behavior is defined in the [`init`](https://github.com/behance/mesos-systemd/blob/master/init) script.
+All setup behavior is defined in the [`init`](https://github.com/adobe-platform/mesos-systemd/blob/master/init) script.
 
 Assumptions:
 
 - Your infrastructure has 3 tiers: `control`, `proxy`, `worker`
 - ALL nodes run a `bootstrap.service`, whatever that may be.
 - Some of the scripts require `/etc/environment` to contain certain variables (usually cloudformation parameters such as route53 entries)
-- S3 buckets are set correctly and all required credential files (SSH keys, datadog & sumologic credentials) are properly provided to `init` & can be downloaded using [behance/docker-aws-s3-downloader](https://github.com/behance/docker-aws-s3-downloader)
+- S3 buckets are set correctly and all required credential files (SSH keys, datadog & sumologic credentials) are properly provided to `init` & can be downloaded using [behance/docker-aws-s3-downloader](https://github.com/adobe-platform/docker-aws-s3-downloader)
 
 #### `init` bootstrap
 

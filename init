@@ -15,8 +15,12 @@ if [ "$NODE_ROLE" = "control" ]; then
   sudo bash ${SCRIPTDIR}/v2/util/etcd2-setup.sh $SCRIPTDIR
 fi
 
-etcdctl set /environment/SCRIPTS-FORK behance
-etcdctl set /environment/SCRIPTS-REV  $(cd $SCRIPTDIR && git branch|grep '\*'|cut -d' ' -f2 && cd -)
+# 4 == 404 - key not found
+etcdctl get /environment/SCRIPTS-FORK
+if [[ $? = 4 ]]; then
+  etcdctl set /environment/SCRIPTS-FORK adobe-platform
+  etcdctl set /environment/SCRIPTS-REV  $(cd $SCRIPTDIR && git branch|grep '\*'|cut -d' ' -f2 && cd -)
+fi
 
 if [ ! -d /etc/profile.d ]; then
     sudo mkdir /etc/profile.d

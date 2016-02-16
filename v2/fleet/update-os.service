@@ -1,0 +1,16 @@
+# Force update CoreOS. Should not affect clusters that are being spun up, unless the AMI is
+# out of date...in which case the machines will reboot.
+# Primarily for machines that are just coming up with an older version of CoreOS. As soon as
+# they come up this fleet unit will be launched on them, forcing a reboot.
+[Unit]
+Description=Force update CoreOS
+
+[Service]
+Type=oneshot
+SuccessExitStatus=0 1
+RemainAfterExit=yes
+
+ExecStart=/usr/bin/bash -c "update_engine_client -update|grep NEED_REBOOT && shutdown -r"
+
+[X-Fleet]
+Global=true

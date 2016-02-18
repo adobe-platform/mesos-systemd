@@ -1,0 +1,10 @@
+[Unit]
+Description=Runs Amazon ECR Login every 6 hours
+
+[Timer]
+OnUnitActiveSec=6h
+Unit=aws-ecr-login.service
+
+[X-Fleet]
+Global=false
+MachineMetadata=role=worker

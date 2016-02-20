@@ -1,4 +1,5 @@
 [Unit]
+# ECR login is only valid for 12 hours.  Repeat every six hours to be safe.
 Description=Runs Amazon ECR Login every 6 hours
 
 [Timer]

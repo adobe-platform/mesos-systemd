@@ -8,16 +8,15 @@ After=network-online.target
 [Service]
 Type=oneshot
 User=core
-Environment=AWS_ACCOUNT_ID=338163644222
-Environment=REGION=us-east-1
+Environment="AWS_ACCOUNT_ID=etcdctl get /ECR/registry-account"
+Environment="REGION=etcdctl get /ECR/region"
 ExecStartPre=/usr/bin/docker pull behance/utility:latest
 ExecStartPre=-/usr/bin/docker kill ecr-login
 ExecStartPre=-/usr/bin/docker rm -f ecr-login
 ExecStart=/bin/bash -c \
-    "if [[ -n \"${AWS_ACCOUNT_ID}\" ]]; then eval $(/usr/bin/docker run --name ecr-login behance/utility aws ecr get-login --registry-ids ${AWS_ACCOUNT_ID} --region ${REGION}); fi"
+    'source /etc/profile.d/etcdctl.sh && if [[ -n "$($AWS_ACCOUNT_ID)\" ]]; then eval $(/usr/bin/docker run --name ecr-login behance/utility aws ecr get-login --registry-ids $($AWS_ACCOUNT_ID) --region $($REGION)); fi'
 ExecStop=/usr/bin/docker stop ecr-login
 
 [X-Fleet]
 Global=true
-#Global=false
 MachineMetadata=role=worker

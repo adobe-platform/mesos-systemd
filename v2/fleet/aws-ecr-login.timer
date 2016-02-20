@@ -6,5 +6,5 @@ OnUnitActiveSec=6h
 Unit=aws-ecr-login.service
 
 [X-Fleet]
-Global=false
+Global=true
 MachineMetadata=role=worker

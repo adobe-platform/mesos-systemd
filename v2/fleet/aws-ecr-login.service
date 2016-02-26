@@ -8,16 +8,19 @@ After=network-online.target
 [Service]
 Type=oneshot
 User=core
-Environment="ECR_AWS_ACCOUNT_ID=etcdctl get /ECR/registry-account"
-Environment="REGION=etcdctl get /ECR/region"
-ExecStartPre=/usr/bin/docker pull behance/utility:latest
+ExecStartPre=/usr/bin/docker pull behance/ecr-login:latest
 ExecStartPre=-/usr/bin/docker kill ecr-login
 ExecStartPre=-/usr/bin/docker rm -f ecr-login
-# ecr get-login command outputs 'docker login -u AWS -p ...'
+# ecr-login fetches ECR creds and formats them correctly for .dockercfg
 ExecStart=/bin/bash -c \
     'source /etc/profile.d/etcdctl.sh && \
-    if [[ -n "$($ECR_AWS_ACCOUNT_ID)\" ]]; \
-    then eval $(/usr/bin/docker run --name ecr-login behance/utility aws ecr get-login --registry-ids $($ECR_AWS_ACCOUNT_ID) --region $($REGION)); \
+    if [[ -n `etcdctl get /ECR/registry-account` ]]; then \
+    docker run \
+    --name ecr-login \
+    -e "TEMPLATE=templates/dockercfg.tmpl" \
+    -e "AWS_REGION=`etcdctl get /ECR/region`" \
+    -e "REGISTRIES=`etcdctl get /ECR/registry-account`" \
+    behance/ecr-login >/home/core/.dockercfg; \
     fi'
 ExecStop=/usr/bin/docker stop ecr-login
 

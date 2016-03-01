@@ -42,7 +42,7 @@ do
     sudo fleetctl start "${unit%.service}${COREOS_PRIVATE_IPV4}"
 done
 # general-purpose units
-for unit in $(ls ${SCRIPTDIR}/v2/fleet|grep -e '.service$')
+for unit in $(ls ${SCRIPTDIR}/v2/fleet|grep -e '.service$\|.timer$')
 do
     sudo fleetctl submit ${SCRIPTDIR}/v2/fleet/${unit}
     sudo fleetctl start ${SCRIPTDIR}/v2/fleet/${unit}

@@ -2,7 +2,7 @@
 
 source /etc/environment
 
-if [ "${NODE_ROLE}" != "control" ]; then
+if [ "${NODE_ROLE}" != "control" ]  && [ "${NODE_ROLE}" != "it-hybrid" ]; then
     exit 0
 fi
 

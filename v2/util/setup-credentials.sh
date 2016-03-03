@@ -12,7 +12,7 @@ if [ ! -z $SECURE_FILES ]; then
     AWS_CREDS=""
     if [ ! -z $AWS_ACCESS_KEY ]; then
         AWS_CREDS=" -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY \
-         -e AWS_SECRET_KEY=$AWS_SECRET_ACCESS_KEY  "
+         -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY "
     fi
     sudo docker run --rm \
         -v ${HOMEDIR}:/data/  $AWS_CREDS behance/docker-aws-s3-downloader \

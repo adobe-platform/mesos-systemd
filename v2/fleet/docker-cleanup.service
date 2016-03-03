@@ -14,3 +14,4 @@ ExecStart=/usr/bin/sudo bash /home/core/mesos-systemd/v2/util/docker-cleanup.sh
 [X-Fleet]
 Global=true
 MachineMetadata=role=worker
+MachineMetadata=role=it-hybrid

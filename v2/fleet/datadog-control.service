@@ -24,3 +24,4 @@ ExecStop=/usr/bin/docker stop dd-agent-mesos
 [X-Fleet]
 Global=false
 MachineMetadata=role=control
+MachineMetadata=role=it-hybrid

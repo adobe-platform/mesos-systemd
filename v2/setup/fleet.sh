@@ -9,7 +9,9 @@ fi
 
 # https://gist.github.com/skippy/d539442ada90be06459c
 # TODO: discuss anything else that would be useful here
-AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+if [[ -z $ZONE ]]; then
+	AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+fi
 REGION=${AZ::-1}
 
 METADATA="FLEET_METADATA=region=${REGION},az=${AZ},role=${NODE_ROLE},ip=${COREOS_PRIVATE_IPV4}"

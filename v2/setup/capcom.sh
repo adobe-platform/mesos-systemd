@@ -30,7 +30,7 @@ etcdctl set /CP/CP_PROXY_RESTART_SCRIPT /restart_nginx_docker.sh
 etcdctl set /CP/CP_PROXY_TIMEOUT 60000
 etcdctl set /CP/CP_PROXY_DOCKER_COMMAND "nginx -g 'daemon off;'"
 
-
+HOMEDIR=$(eval echo "~`whoami`")
 
 AWS_CREDS=""
 if [ ! -z $AWS_ACCESS_KEY ]; then

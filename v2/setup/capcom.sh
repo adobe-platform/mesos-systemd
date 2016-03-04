@@ -54,5 +54,5 @@ sudo docker run --rm \
 
 
 while read line || [[ -n "$line" ]]; do
-    etcdctl set ${line}
+    etcdctl set ${!line}
 done < ${HOMEDIR}/.capcom

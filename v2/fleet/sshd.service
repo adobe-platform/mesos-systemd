@@ -15,6 +15,3 @@ WantedBy=multi-user.target
 
 [X-Fleet]
 Global=true
-MachineMetadata=role=control
-MachineMetadata=role=proxy
-MachineMetadata=role=worker

@@ -16,3 +16,4 @@ OnUnitActiveSec=4h
 [X-Fleet]
 Global=true
 MachineMetadata=role=worker
+MachineMetadata=role=it-hybrid

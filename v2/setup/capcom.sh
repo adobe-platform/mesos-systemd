@@ -53,6 +53,10 @@ sudo docker run --rm \
 # 5) Restart flight-director fleet-units via jenkins for changes to take effect
 
 
+printf "#!/bin/bash\nsource /etc/environment\n" >  ${HOMEDIR}/.capcom_runnable.sh
 while read line || [[ -n "$line" ]]; do
-    etcdctl set $line
+    printf "etcdctl set $line \n" >> ${HOMEDIR}/.capcom_runnable.sh
 done < ${HOMEDIR}/.capcom
+chmod +x ${HOMEDIR}/.capcom_runnable.sh
+${HOMEDIR}/.capcom_runnable.sh
+rm ${HOMEDIR}/.capcom_runnable.sh

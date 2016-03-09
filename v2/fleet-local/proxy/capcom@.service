@@ -40,6 +40,7 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
     -e CP_PROXY_GROUP=$PROXY_GROUP \
     -e CP_PROXY_RESTART_SCRIPT=`etcdctl get /CP/CP_PROXY_RESTART_SCRIPT` \
     -e CP_PROXY_TIMEOUT=`etcdctl get /CP/CP_PROXY_TIMEOUT` \
+    -e CP_SSL_CERT_LOCATION=`etcdctl get /CP/CP_SSL_CERT_LOCATION` \
     $($IMAGE)"
 
 ExecStop=-/usr/bin/docker stop capcom

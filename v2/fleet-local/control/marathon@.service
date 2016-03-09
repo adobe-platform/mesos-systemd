@@ -28,7 +28,7 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   -e LIBPROCESS_PORT=9090 \
   --net=host \
   $($IMAGE) \
-  --master zk://${ZOOKEEPER}/mesos \
+  --master zk://$($zk_username):$($zk_password)@${ZOOKEEPER}/mesos \
   --zk zk://$($zk_username):$($zk_password)@${ZOOKEEPER}/marathon \
   --http_credentials $($USER):$($PW) \
   --checkpoint \

@@ -21,7 +21,7 @@ chmod 0644 $DROPIN_FILE
 systemctl daemon-reload
 
 SCRIPTDIR=$1
-cp "${SCRIPTDIR}/v2/util-units/etcd-peers.service" /etc/systemd/system/
+cp "${SCRIPTDIR}/v3/util-units/etcd-peers.service" /etc/systemd/system/
 systemctl start etcd-peers
 
 echo "-------Waiting for etcd2 to start-------"

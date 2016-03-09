@@ -22,7 +22,7 @@ ExecStart=/usr/bin/bash -c "\
   git clone https://github.com/$($FORK)/mesos-systemd $GITDIR && \
   cd $GITDIR && git checkout $($SHA)"
 
-ExecStart=/usr/bin/sudo bash $GITDIR/v2/util/setup-credentials.sh
+ExecStart=/usr/bin/sudo bash $GITDIR/v3/util/setup-credentials.sh
 
 [Install]
 WantedBy=multi-user.target

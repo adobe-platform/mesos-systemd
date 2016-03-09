@@ -1,0 +1,37 @@
+[Unit]
+Description=run cluster-control jenkins
+Requires=docker.service
+After=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+User=core
+Type=simple
+Restart=always
+RestartSec=4
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/sudo rm -rf /home/core/control-jenkins
+ExecStartPre=/usr/bin/git clone git@github.com:adobe-platform/control-jenkins /home/core/control-jenkins
+ExecStartPre=-/usr/bin/docker kill jenkins
+ExecStartPre=-/usr/bin/docker rm jenkins
+ExecStart=/usr/bin/bash -c \
+  '/usr/bin/docker run \
+  --name jenkins \
+  -v /home/core/.ssh:/var/jenkins_home/.ssh \
+  -v /home/core/control-jenkins:/var/jenkins_home \
+  -e RUNNING_HOST=`curl -s http://169.254.169.254/latest/meta-data/local-hostname` \
+  -e RUNNING_USER=core \
+  -e HOST_SCRIPT_DIR=/home/core/mesos-systemd/v2 \
+  --env-file=/etc/environment \
+  -p 8081:8080 \
+  -u root \
+  jenkins'
+ExecStop=/usr/bin/docker stop jenkins
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=false
+MachineMetadata=role=control
+MachineMetadata=role=it-hybrid

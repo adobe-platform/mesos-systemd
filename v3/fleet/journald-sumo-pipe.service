@@ -1,0 +1,24 @@
+[Unit]
+Description=journald to sumologic pipe
+After=bootstrap.service sumologic-journald.service
+Wants=sumologic-journald.service
+
+[Service]
+EnvironmentFile=/etc/environment
+TimeoutStartSec=0
+Restart=always
+RestartSec=5s
+
+ExecStartPre=/usr/bin/systemctl is-active bootstrap
+ExecStart=/bin/sh -c '\
+journalctl -f|\
+while read line;\
+do\
+  echo "APP_NAME=journald INSTANCE=$COREOS_PRIVATE_IPV4 LOG=$line"|ncat --udp localhost 514;\
+done'
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true

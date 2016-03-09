@@ -1,0 +1,31 @@
+[Unit]
+Description=update /home/core/mesos-systemd (by completely nuking it)
+Requires=docker.service
+After=docker.service fleet.service bootstrap.service
+
+[Service]
+EnvironmentFile=/etc/environment
+Environment="GITDIR=/home/core/mesos-systemd"
+Environment="FORK=etcdctl get /environment/SCRIPTS-FORK"
+Environment="SHA=etcdctl get /environment/SCRIPTS-SHA"
+User=core
+Type=oneshot
+RemainAfterExit=false
+
+ExecStartPre=-/usr/bin/rm -rf $GITDIR
+# sourcing etcdctl is for non-control nodes only.
+# TODO: maybe enable etcd for all nodes?
+ExecStart=/usr/bin/bash -c "\
+  if [ -f /etc/profile.d/etcdctl.sh ]; then \
+      source /etc/profile.d/etcdctl.sh; \
+  fi && \
+  git clone https://github.com/$($FORK)/mesos-systemd $GITDIR && \
+  cd $GITDIR && git checkout $($SHA)"
+
+ExecStart=/usr/bin/sudo bash $GITDIR/v2/util/setup-credentials.sh
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true

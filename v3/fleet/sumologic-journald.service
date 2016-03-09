@@ -1,0 +1,32 @@
+[Unit]
+Description=Sumologic Collector
+Requires=docker.service
+Before=journald-sumo-pipe.service
+After=docker.service bootstrap.service
+
+[Service]
+EnvironmentFile=/etc/environment
+User=core
+Restart=always
+TimeoutStartSec=0
+ExecStartPre=/usr/bin/systemctl is-active bootstrap
+ExecStartPre=/usr/bin/docker pull behance/docker-sumologic:syslog-latest
+ExecStartPre=-/usr/bin/docker kill sumologic-journald
+ExecStartPre=-/usr/bin/docker rm -f sumologic-journald
+ExecStart=/usr/bin/bash -c \
+"if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && \
+sudo /usr/bin/docker run --name sumologic-journald \
+--hostname=$COREOS_PRIVATE_IPV4 \
+-p 514:514 \
+-p 514:514/udp \
+-e PATH_EXPRESSION=/syslog/syslog \
+-e SUMO_NAME=${NODE_PRODUCT}-${NODE_TIER}-cluster \
+-e SUMO_CATEGORY=be/${NODE_PRODUCT}/${NODE_TIER}/${NODE_ROLE}/journald-logs \
+-e SUMO_COLLECTOR_NAME=mesos_journald_collector \
+-e SUMO_ACCESS_ID=`etcdctl get /sumologic_id` \
+-e SUMO_ACCESS_KEY=`etcdctl get /sumologic_secret` \
+behance/docker-sumologic:syslog-latest"
+ExecStop=/usr/bin/docker stop sumologic-journald
+
+[X-Fleet]
+Global=true

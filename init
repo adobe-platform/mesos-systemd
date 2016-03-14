@@ -23,6 +23,10 @@ if [ "$NODE_ROLE" = "control" ]; then
   sudo bash ${SCRIPTDIR}/$VERSION/util/etcd2-setup.sh $SCRIPTDIR
 fi
 
+if [ "$NODE_ROLE" = "it-hybrid" ]; then
+  sudo bash ${SCRIPTDIR}/itv1/util/etcd2-setup.sh $SCRIPTDIR
+fi
+
 # 4 == 404 - key not found
 etcdctl get /environment/SCRIPTS-FORK
 if [[ $? = 4 ]]; then

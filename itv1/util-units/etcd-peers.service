@@ -9,7 +9,7 @@ ExecStartPre=/usr/bin/docker pull behance/etcd-it-cluster:latest
 ExecStartPre=/usr/bin/docker run --rm -v /etc/sysconfig/:/etc/sysconfig/ \
  -e MIN_SERVER_ID=$MIN_SERVER_ID \
  -e IT_AUTH_HEADER=$IT_AUTH_HEADER \
-   monsantoco/etcd-aws-cluster:latest
+   behance/etcd-it-cluster:latest
    
 ExecStart=/usr/bin/systemctl start etcd2
 

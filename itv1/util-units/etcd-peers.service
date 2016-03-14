@@ -6,11 +6,11 @@ EnvironmentFile=/etc/environment
 Restart=on-failure
 RestartSec=10
 ExecStartPre=/usr/bin/docker pull behance/etcd-it-cluster:latest
-ExecStartPre=/usr/bin/docker run --rm -v /etc/sysconfig/:/etc/sysconfig/ \
+ExecStartPre=/usr/bin/sh -c "source /etc/environment && sudo /usr/bin/docker run --rm -v /etc/sysconfig/:/etc/sysconfig/ \
  -v /etc/hostname:/etc/hostname \
  -e MIN_SERVER_ID=$MIN_SERVER_ID \
  -e IT_AUTH_HEADER=$IT_AUTH_HEADER \
-   behance/etcd-it-cluster:latest
+   behance/etcd-it-cluster:latest"
    
 ExecStart=/usr/bin/systemctl start etcd2
 

@@ -1,0 +1,38 @@
+[Unit]
+Description=Proxy { Nginx/HAProxy } @ %i
+After=docker.service capcom@%i.service
+Requires=docker.service
+
+
+[Service]
+User=core
+Restart=always
+RestartSec=5
+TimeoutStartSec=0
+Environment="IMAGE=etcdctl get /images/proxy"  
+Environment="PROXY=etcdctl get /CP/CP_PROXY"  
+Environment="CMD=etcdctl get /CP/CP_PROXY_DOCKER_COMMAND"  
+
+ExecStartPre=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && docker pull $($IMAGE)"
+ExecStartPre=-/usr/bin/docker kill proxy
+ExecStartPre=-/usr/bin/docker rm proxy
+
+# NOTE: it's critical to source the etcdctl.sh file so that etcd connects to the correct cluster.
+ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
+  echo $($CMD) | xargs docker run \
+    --name proxy \
+    --net='host' \
+    -m 12G \
+    -v /etc/$($PROXY):/etc/$($PROXY) \
+    $($IMAGE)"
+
+ExecStop=-/usr/bin/docker stop proxy
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=false
+MachineMetadata=role=proxy
+MachineMetadata=role=it-hybrid
+MachineMetadata=ip=%i

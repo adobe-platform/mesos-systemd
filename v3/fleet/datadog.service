@@ -1,0 +1,26 @@
+# https://raw.githubusercontent.com/DataDog/docker-dd-agent/master/dd-agent.service
+# make sure the etcd /ddapikey is set!
+[Unit]
+Description=Datadog Agent
+After=docker.service bootstrap.service
+
+[Service]
+User=core
+Restart=always
+TimeoutStartSec=0
+RestartSec=10
+ExecStartPre=/usr/bin/systemctl is-active bootstrap
+ExecStartPre=/usr/bin/docker pull behance/docker-dd-agent:latest
+ExecStartPre=-/usr/bin/docker kill dd-agent
+ExecStartPre=-/usr/bin/docker rm -f dd-agent
+ExecStart=/usr/bin/bash -c \
+"if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && sudo /usr/bin/docker run --name dd-agent -h `hostname` \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v /proc/:/host/proc/:ro \
+-v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
+-e API_KEY=`etcdctl get /ddapikey` \
+behance/docker-dd-agent"
+ExecStop=/usr/bin/docker stop dd-agent
+
+[X-Fleet]
+Global=true

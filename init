@@ -2,17 +2,25 @@
 
 echo "-------Beginning bootstrap script-------"
 
+if [ -z "$1" ]; then
+  VERSION="v2"
+else
+  VERSION="$1"
+fi
+
+echo "Using version: $VERSION"
+
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOMEDIR=$(eval echo "~`whoami`")
 
-bash ${SCRIPTDIR}/v2/util/setup-credentials.sh
+bash ${SCRIPTDIR}/$VERSION/util/setup-credentials.sh
 
 if [ -f /etc/environment ]; then
     source /etc/environment
 fi
 
 if [ "$NODE_ROLE" = "control" ]; then
-  sudo bash ${SCRIPTDIR}/v2/util/etcd2-setup.sh $SCRIPTDIR
+  sudo bash ${SCRIPTDIR}/$VERSION/util/etcd2-setup.sh $SCRIPTDIR
 fi
 
 # 4 == 404 - key not found
@@ -26,24 +34,24 @@ if [ ! -d /etc/profile.d ]; then
     sudo mkdir /etc/profile.d
 fi
 # copy over files first, ignore errors thrown from directories
-sudo cp ${SCRIPTDIR}/v2/profile.d/* /etc/profile.d/. 2>/dev/null || :
+sudo cp ${SCRIPTDIR}/$VERSION/profile.d/* /etc/profile.d/. 2>/dev/null || :
 
-sudo cp --dereference ${SCRIPTDIR}/v2/profile.d/${NODE_ROLE}/* /etc/profile.d/.
+sudo cp --dereference ${SCRIPTDIR}/$VERSION/profile.d/${NODE_ROLE}/* /etc/profile.d/.
 
-for script in $(ls ${SCRIPTDIR}/v2/setup|grep -e '.sh$')
+for script in $(ls ${SCRIPTDIR}/$VERSION/setup|grep -e '.sh$')
 do
-    sudo /bin/bash ${SCRIPTDIR}/v2/setup/${script}
+    sudo /bin/bash ${SCRIPTDIR}/$VERSION/setup/${script}
 done
 
 # fleet units specific to this node
-for unit in $(ls ${SCRIPTDIR}/v2/fleet-local/${NODE_ROLE}|grep -e '.service$')
+for unit in $(ls ${SCRIPTDIR}/$VERSION/fleet-local/${NODE_ROLE}|grep -e '.service$')
 do
-    sudo fleetctl submit "${SCRIPTDIR}/v2/fleet-local/${NODE_ROLE}/${unit}"
+    sudo fleetctl submit "${SCRIPTDIR}/$VERSION/fleet-local/${NODE_ROLE}/${unit}"
     sudo fleetctl start "${unit%.service}${COREOS_PRIVATE_IPV4}"
 done
 # general-purpose units
-for unit in $(ls ${SCRIPTDIR}/v2/fleet|grep -e '.service$\|.timer$')
+for unit in $(ls ${SCRIPTDIR}/$VERSION/fleet|grep -e '.service$\|.timer$')
 do
-    sudo fleetctl submit ${SCRIPTDIR}/v2/fleet/${unit}
-    sudo fleetctl start ${SCRIPTDIR}/v2/fleet/${unit}
+    sudo fleetctl submit ${SCRIPTDIR}/$VERSION/fleet/${unit}
+    sudo fleetctl start ${SCRIPTDIR}/$VERSION/fleet/${unit}
 done

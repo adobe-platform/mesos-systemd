@@ -8,6 +8,7 @@ Environment="IMAGE=etcdctl get /images/mesos-master"
 Environment="zk_username=etcdctl get /zookeeper/ZK_USERNAME"
 Environment="zk_password=etcdctl get /zookeeper/ZK_PASSWORD"
 Environment="zookeeper_endpoint=etcdctl get /environment/ZOOKEEPER_ENDPOINT"
+Environment="HOMEDIR=$(eval echo "~`whoami`")"
 # NODE_PRODUCT & NODE_TIER should be defined here.
 EnvironmentFile=/etc/environment
 
@@ -28,6 +29,8 @@ ExecStart=/usr/bin/sh -c "sudo /usr/bin/docker run \
   --net=host \
   -v /var/lib/mesos/master:/var/lib/mesos/master \
   $($IMAGE) \
+  --authenticate_slaves=true \
+  --credentials=${HOMEDIR}/.mesos-master \
   --cluster=$NODE_PRODUCT-$NODE_TIER \
   --hostname=`curl -s http://169.254.169.254/latest/meta-data/public-hostname` \
   --log_dir=/var/log/mesos \

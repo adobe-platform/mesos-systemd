@@ -24,4 +24,4 @@ Environment="secret=etcdctl get secret"
 sudo mkdir /etc/mesos-master
 sudo touch /etc/mesos-master/passwd
 
-echo "$($principal) $($secrets)" >> /etc/mesos-master/passwd
+echo "$($principal) $($secret)" >> /etc/mesos-master/passwd

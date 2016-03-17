@@ -19,6 +19,6 @@ TABLE=`sudo echo $SECRETS_TABLE`
 docker pull behance/docker-aws-secrets-downloader:latest
 
 for K in "${!SECRETMAP[@]}"; do
-        PLAINTEXT=`sudo docker run docker-aws-secrets-downloader --table $TABLE --name $K`
+        PLAINTEXT=`sudo docker run behance/docker-aws-secrets-downloader --table $TABLE --name $K`
         etcdctl set ${SECRETMAP[$K]} $PLAINTEXT &>/dev/null
 done

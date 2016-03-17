@@ -31,6 +31,7 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
     --pid=host \
     --privileged \
     -v /home/core/.dockercfg:/root/.dockercfg:ro \
+    -v /home/core/mesos-master/passwd:/home/core/mesos-master/passwd \
     -v /sys:/sys \
     -v /usr/bin/docker:/usr/bin/docker:ro \
     -v /var/run/docker.sock:/var/run/docker.sock \

@@ -30,7 +30,6 @@ ExecStart=/usr/bin/sh -c "sudo /usr/bin/docker run \
   -v /var/lib/mesos/master:/var/lib/mesos/master \
   -v /home/core/mesos-master/passwd:/home/core/mesos-master/passwd \
   $($IMAGE) \
-  --authenticate \
   --authenticate_slaves \
   --credentials=/home/core/mesos-master/passwd \
   --cluster=$NODE_PRODUCT-$NODE_TIER \

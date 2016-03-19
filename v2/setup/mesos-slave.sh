@@ -19,15 +19,9 @@ while read line; do
     etcdctl set $line
 done < ${HOMEDIR}/.mesos-slave
 
-
-principal=$(etcdctl get principal)
-secret=$(etcdctl get secret)
-
-mkdir $HOMEDIR/mesos-slave
-touch $HOMEDIR/mesos-slave/passwd
+Environment="principal-slave=etcdctl get principal-slave"
+Environment="secret-slave=etcdctl get secret-slave"
 
 
-
-echo "$(eval echo $principal) $(eval echo $secret)" > $HOMEDIR/mesos-slave/passwd
 
 

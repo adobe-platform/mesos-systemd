@@ -19,8 +19,8 @@ while read line; do
     etcdctl set $line
 done < ${HOMEDIR}/.mesos-slave
 
-Environment="principal-slave=etcdctl get principal-slave"
-Environment="secret-slave=etcdctl get secret-slave"
+Environment="principalslave=etcdctl get principalslave"
+Environment="secretslave=etcdctl get secretslave"
 
 
 

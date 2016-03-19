@@ -4,12 +4,12 @@ source /etc/environment
 
 HOMEDIR=$(eval echo "~`whoami`")
 
-principal-slave=$(etcdctl get principal-slave)
-secret-slave=$(etcdctl get secret-slave)
+principalslave=$(etcdctl get principalslave)
+secretslave=$(etcdctl get secretslave)
 
 mkdir $HOMEDIR/mesos-slave
 touch $HOMEDIR/mesos-slave/passwd
 
 
 
-echo "$(eval echo $principal-slave) $(eval echo $secret-slave)" > $HOMEDIR/mesos-slave/passwd
+echo "$(eval echo $principalslave) $(eval echo $secretslave)" > $HOMEDIR/mesos-slave/passwd

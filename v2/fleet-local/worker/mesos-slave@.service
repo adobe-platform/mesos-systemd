@@ -1,6 +1,6 @@
 [Unit]
 Description=MesosSlave @ %i
-After=docker.service bootstrap.service
+After=docker.service bootstrap.service create-users.service
 Requires=docker.service bootstrap.service
 
 [Service]

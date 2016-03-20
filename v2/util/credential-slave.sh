@@ -12,4 +12,4 @@ touch $HOMEDIR/mesos-slave/passwd
 
 
 
-echo "$(eval echo $principalslave) $(eval echo $secretslave)" > $HOMEDIR/mesos-slave/passwd
+echo "$(eval echo $principalslave) $(eval echo $secretslave)" >> $HOMEDIR/mesos-slave/passwd

@@ -36,34 +36,3 @@ etcdctl get /FD/FD_ALLOW_MARATHON_UNVERIFIED_TLS false
 etcdctl set /FD/AUTHORIZER_TYPE github
 etcdctl set /FD/GITHUB_TOKEN_URL https://github.com/login/oauth/access_token
 etcdctl set /FD/GITHUB_API https://api.github.com
-etcdctl set /FD/GITHUB_CLIENT_ID ''
-etcdctl set /FD/GITHUB_CLIENT_SECRET ''
-etcdctl set /FD/GITHUB_ALLOWED_TEAMS ''
-
-
-HOMEDIR=$(eval echo "~`whoami`")
-
-AWS_CREDS=""
-if [ ! -z $AWS_ACCESS_KEY ]; then
-    AWS_CREDS=" -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY \
-     -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_KEY "
-fi
-
-sudo docker run --rm \
-    -v ${HOMEDIR}:/data/ $AWS_CREDS behance/docker-aws-s3-downloader \
-     us-east-1 $CONTROL_TIER_S3SECURE_BUCKET .flight-director
-
-# it's expected that these fields are already in the form
-# /KEY/NAMESPACE VALUE
-
-# To edit the fields in .flight-director:
-# 1) Download the current version of .flight-director from S3: be-secure-<tier>/.flight-director
-# 2) Edit this file locally
-# 3) Verify changes with peers
-# 4) Upload edited file back to S3: be-secure-tier/.flight-director
-# 5) Restart flight-director fleet-units via jenkins for changes to take effect
-
-
-while read line || [[ -n "$line" ]]; do
-    etcdctl set $line
-done < ${HOMEDIR}/.flight-director

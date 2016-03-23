@@ -22,12 +22,16 @@ ExecStartPre=/usr/bin/systemctl is-active mesos-master@*
 ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill marathon
 ExecStartPre=-/usr/bin/docker rm marathon
+ExecStartPre=/usr/bin/bash /home/core/mesos-systemd/v2/util/credential-framework.sh
 
 ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --name marathon \
   -e LIBPROCESS_PORT=9090 \
   --net=host \
+  -v /home/core/mesos-framework/passwd:/home/core/mesos-framework/passwd \
   $($IMAGE) \
+  --mesos_authentication_principal principalframework \
+  --mesos_authentication_secret_file /home/core/mesos-framework/passwd \
   --master zk://$($zk_username):$($zk_password)@${ZOOKEEPER}/mesos \
   --zk zk://$($zk_username):$($zk_password)@${ZOOKEEPER}/marathon \
   --http_credentials $($USER):$($PW) \

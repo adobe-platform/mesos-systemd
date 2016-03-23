@@ -10,7 +10,7 @@ Environment=ZOOKEEPER=localhost:2181
 Environment="IMAGE=etcdctl get /images/chronos"
 Environment="zk_username=etcdctl get /zookeeper/ZK_USERNAME"
 Environment="zk_password=etcdctl get /zookeeper/ZK_PASSWORD"
-Environment="principalframework=$(etcdctl get principalframework)"
+Environment="principalframework=etcdctl get principalframework"
 
 User=core
 Restart=always

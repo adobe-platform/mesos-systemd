@@ -33,7 +33,7 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   $($IMAGE) \
   --mesos_authentication_principal $($principalframework) \
   --mesos_authentication_secret_file /home/core/mesos-framework/passwd \
-  --master zk://$($zk_username):$($zk_password)@54.210.147.153:2181,54.172.156.176:2181,54.85.21.53:2181,52.23.235.241:2181,54.85.95.86:2181/mesos \
+  --master zk://$($zk_username):$($zk_password)@10.43.1.159:2181,10.43.2.170:2181,10.43.2.169:2181,10.43.3.250:2181,10.43.4.32:2181/mesos \
   --zk zk://$($zk_username):$($zk_password)@${ZOOKEEPER}/marathon \
   --http_credentials $($USER):$($PW) \
   --checkpoint \

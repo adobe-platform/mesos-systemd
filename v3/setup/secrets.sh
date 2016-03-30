@@ -1,24 +1,30 @@
 #!/bin/bash
 
-declare -A SECRETMAP
-
-SECRETMAP[DATADOG_KEY]="/ddapikey"
-SECRETMAP[FD_GITHUB_CLIENT_ID]="/FD/GITHUB_CLIENT_ID"
-SECRETMAP[FD_GITHUB_CLIENT_SECRET]="/FD/GITHUB_CLIENT_SECRET"
-SECRETMAP[FD_GITHUB_ALLOWED_TEAMS]="/FD/GITHUB_ALLOWED_TEAMS"
-SECRETMAP[HUD_GITHUB_CLIENT_ID]="/HUD/client-id"
-SECRETMAP[HUD_GITHUB_CLIENT_SECRET]="/HUD/client-secret"
-SECRETMAP[MARATHON_USERNAME]="/marathon/username"
-SECRETMAP[MARATHON_PASSWORD]="/marathon/password"
-SECRETMAP[SUMOLOGIC_ACCESS_ID]="/sumologic_id"
-SECRETMAP[SUMOLOGIC_SECRET]="/sumologic_secret"
-SECRETMAP[SYSDIG_KEY]="/sysdigkey"
-
 TABLE=`sudo echo $SECRETS_TABLE`
-
 docker pull behance/docker-aws-secrets-downloader:latest
 
-for K in "${!SECRETMAP[@]}"; do
-        PLAINTEXT=`sudo docker run behance/docker-aws-secrets-downloader --table $TABLE --name $K`
-        etcdctl set ${SECRETMAP[$K]} $PLAINTEXT &>/dev/null
+# Get all available secrets and configs
+AV_SECRETS=`sudo docker run behance/docker-aws-secrets-downloader --table $TABLE --key secrets`
+AV_CONFIGS=`sudo docker run behance/docker-aws-secrets-downloader --table $TABLE --key configs`
+
+echo "$AV_SECRETS" | while read line ; do
+	SECRET=`sudo docker run behance/docker-aws-secrets-downloader --table $TABLE --key secrets --name $line`
+	SECRET_TYPE=`echo $SECRET | awk -F " " '{print $2}'`
+	SECRET_PATH=`echo $SECRET | awk -F " " '{print $3}'`
+	SECRET_VAL=`echo $SECRET | awk -F " " '{print $4}'`
+
+	if [[ "$SECRET_TYPE" = "etcd" ]]; then
+		etcdctl set $SECRET_PATH $SECRET_VAL &>/dev/null
+	fi
 done
+
+echo "$AV_CONFIGS" | while read line ; do
+	CONFIG=`docker run behance/docker-aws-secrets-downloader --table $TABLE --key configs --name $line`
+	CONFIG_PATH=`echo $CONFIG | awk -F " " '{print $1}'`
+	CONFIG_VAL=`echo $CONFIG | awk -F " " '{print $2}'`
+
+	echo "etcdctl set $CONFIG_PATH $CONFIG_VAL"
+	etcdctl set $CONFIG_PATH $CONFIG_VAL &>/dev/null
+done
+
+exit 0

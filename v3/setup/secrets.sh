@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source /etc/environment
+
 TABLE=`sudo echo $SECRETS_TABLE`
 docker pull behance/docker-aws-secrets-downloader:latest
 
@@ -14,6 +16,7 @@ echo "$AV_SECRETS" | while read line ; do
 	SECRET_VAL=`echo $SECRET | awk -F " " '{print $4}'`
 
 	if [[ "$SECRET_TYPE" = "etcd" ]]; then
+		echo "Setting ETCD value for secret: $SECRET_PATH"
 		etcdctl set $SECRET_PATH $SECRET_VAL &>/dev/null
 	fi
 done
@@ -23,7 +26,7 @@ echo "$AV_CONFIGS" | while read line ; do
 	CONFIG_PATH=`echo $CONFIG | awk -F " " '{print $1}'`
 	CONFIG_VAL=`echo $CONFIG | awk -F " " '{print $2}'`
 
-	echo "etcdctl set $CONFIG_PATH $CONFIG_VAL"
+	echo "Setting ETCD value for config: $CONFIG_PATH"
 	etcdctl set $CONFIG_PATH $CONFIG_VAL &>/dev/null
 done
 

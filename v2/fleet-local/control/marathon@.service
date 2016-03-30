@@ -34,7 +34,7 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --mesos_authentication_principal $($principalframework) \
   --mesos_authentication_secret_file /home/core/mesos-framework/passwd \
   --master zk://$($zk_username):$($zk_password)@10.43.1.159:2181,10.43.2.170:2181,10.43.2.169:2181,10.43.3.250:2181,10.43.4.32:2181/mesos \
-  --zk zk://$($zk_username):$($zk_password)@${ZOOKEEPER}/marathon \
+  --zk zk://$($zk_username):$($zk_password)@10.43.1.159:2181,10.43.2.170:2181,10.43.2.169:2181,10.43.3.250:2181,10.43.4.32:2181/marathon \
   --http_credentials $($USER):$($PW) \
   --checkpoint \
   --task_launch_timeout 300000"

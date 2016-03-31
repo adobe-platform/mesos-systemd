@@ -13,8 +13,6 @@ echo "Using version: $VERSION"
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOMEDIR=$(eval echo "~`whoami`")
 
-bash ${SCRIPTDIR}/$VERSION/util/setup-credentials.sh
-
 if [ -f /etc/environment ]; then
     source /etc/environment
 fi
@@ -33,6 +31,8 @@ if [[ $? = 4 ]]; then
   etcdctl set /environment/SCRIPTS-FORK adobe-platform
   etcdctl set /environment/SCRIPTS-REV  $(cd $SCRIPTDIR && git branch|grep '\*'|cut -d' ' -f2 && cd -)
 fi
+
+bash ${SCRIPTDIR}/$VERSION/util/setup-credentials.sh
 
 if [ ! -d /etc/profile.d ]; then
     sudo mkdir /etc/profile.d

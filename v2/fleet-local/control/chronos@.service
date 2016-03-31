@@ -36,7 +36,7 @@ ExecStart=/usr/bin/sh -c "docker run \
   --mesos_authentication_secret_file /home/core/mesos-framework/passwd \
   --master zk://$($zk_username):$($zk_password)@$($zookeeper_endpoint)/mesos \
   --mesos_framework_name chronos-`hostname` \
-  --zk_hosts $($zookeeper_endpoint)"
+  --zk_hosts ${ZOOKEEPER}"
 
 ExecStop=/usr/bin/docker stop chronos
 

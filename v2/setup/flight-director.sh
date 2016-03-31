@@ -33,7 +33,7 @@ etcdctl set /FD/FD_MESOS_MASTER "$FLIGHT_DIRECTOR_MESOS_ENDPOINT"
 etcdctl get /FD/FD_MARATHON_MASTER_PROTOCOL http
 etcdctl get /FD/FD_ALLOW_MARATHON_UNVERIFIED_TLS false
 
-etcdctl set /FD/AUTHORIZER_TYPE github
+etcdctl set /FD/AUTHORIZER_TYPE airlock
 etcdctl set /FD/GITHUB_TOKEN_URL https://github.com/login/oauth/access_token
 etcdctl set /FD/GITHUB_API https://api.github.com
 etcdctl set /FD/GITHUB_CLIENT_ID ''
@@ -65,5 +65,5 @@ sudo docker run --rm \
 
 
 while read line || [[ -n "$line" ]]; do
-    etcdctl set $line
+    etcdctl set -- \"$line\"
 done < ${HOMEDIR}/.flight-director

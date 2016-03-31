@@ -1,11 +1,10 @@
 [Unit]
 Description=run cluster-control jenkins
-Requires=docker.service bootstrap.service
+Requires=docker.service
 After=docker.service
 
 [Service]
 EnvironmentFile=/etc/environment
-Environment="principalframework=etcdctl get principalframework"
 User=core
 Type=simple
 Restart=always
@@ -15,19 +14,15 @@ ExecStartPre=-/usr/bin/sudo rm -rf /home/core/control-jenkins
 ExecStartPre=/usr/bin/git clone git@github.com:adobe-platform/control-jenkins /home/core/control-jenkins
 ExecStartPre=-/usr/bin/docker kill jenkins
 ExecStartPre=-/usr/bin/docker rm jenkins
-ExecStartPre=/usr/bin/bash /home/core/mesos-systemd/v2/util/credential-framework.sh
 ExecStart=/usr/bin/bash -c \
   '/usr/bin/docker run \
   --name jenkins \
   -v /home/core/.ssh:/var/jenkins_home/.ssh \
   -v /home/core/control-jenkins:/var/jenkins_home \
-  -v /home/core/mesos-framework/passwd:/home/core/mesos-framework/passwd \
   -e RUNNING_HOST=`curl -s http://169.254.169.254/latest/meta-data/public-hostname` \
   -e RUNNING_USER=core \
   -e HOST_SCRIPT_DIR=/home/core/mesos-systemd/v2 \
   --env-file=/etc/environment \
-  --mesos_authentication_principal $($principalframework) \
-  --mesos_authentication_secret_file /home/core/mesos-framework/passwd \
   -p 8081:8080 \
   -u root \
   jenkins'

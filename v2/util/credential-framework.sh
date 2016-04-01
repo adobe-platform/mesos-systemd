@@ -12,4 +12,4 @@ touch $HOMEDIR/mesos-framework/passwd
 
 
 
-echo "$(eval echo $secretframework)" > $HOMEDIR/mesos-framework/passwd
+echo -n "$(eval echo $secretframework)" > $HOMEDIR/mesos-framework/passwd

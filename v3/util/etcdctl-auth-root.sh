@@ -54,7 +54,7 @@ curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadusernam
 
 #Give readwrite non root user readwrite role
 
-echo '{"user": "'$(eval echo $etcdctletcdreadwriteusername)'", "grant": ["readonlyrolename"]}' > /home/core/mesos-systemd/v2/util/readwriterolename.json
+echo '{"user": "'$(eval echo $etcdctletcdreadwriteusername)'", "grant": ["readwriterolename"]}' > /home/core/mesos-systemd/v2/util/readwriterolename.json
 
 curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadwriteusername) -XPUT -d "@readwriterolename.json"
 

@@ -16,16 +16,16 @@ etcdctletcdreadwritepassword=$(etcdctl get /etcdctletcdreadwritepassword)
 
 #add a root user
 
-echo '{"username":"'$(eval echo $etcdctlrootusername)'", "password":"'$(eval echo $etcdctlrootpassword)'"}' > root.json
-curl  -u  -L http://127.0.0.1:2379/v2/auth/users/$etcdctlrootusername -XPUT -d "@root.json"
+echo '{"user":"'$(eval echo $etcdctlrootusername)'", "password":"'$(eval echo $etcdctlrootpassword)'"}' > /home/core/mesos-systemd/v2/util/root.json
+curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctlrootusername) -XPUT -d "@root.json"
 
 #add a non root read only user
-echo '{"username":"'$(eval echo $etcdctletcdreadusername)'", "password":"'$(eval echo $etcdctletcdreadpassword)'"}' > etcdreaduser.json
-curl  -u  -L http://127.0.0.1:2379/v2/auth/users/$etcdctletcdusername -XPUT -d "@etcdreaduser.json"
+echo '{"user":"'$(eval echo $etcdctletcdreadusername)'", "password":"'$(eval echo $etcdctletcdreadpassword)'"}' > /home/core/mesos-systemd/v2/util/etcdreaduser.json
+curl   -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadusername) -XPUT -d "@etcdreaduser.json"
 
 #add a non root readwrite user
-echo '{"username":"'$(eval echo $etcdctletcdreadwriteusername)'", "password":"'$(eval echo $etcdctletcdreadwritepassword)'"}' > etcdwriteuser.json
-curl  -u  -L http://127.0.0.1:2379/v2/auth/users/$etcdctletcdusername -XPUT -d "@etcdwriteuser.json"
+echo '{"user":"'$(eval echo $etcdctletcdreadwriteusername)'", "password":"'$(eval echo $etcdctletcdreadwritepassword)'"}' > /home/core/mesos-systemd/v2/util/etcdwriteuser.json
+curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadwriteusername) -XPUT -d "@etcdwriteuser.json"
 
 
 #Create a read only role:
@@ -48,15 +48,15 @@ etcdctl role grant readwriterolename -path '/*' -readwrite
 
 #Give read only non root user read only role
 
-echo '{"user": "'$(eval echo $etcdctletcdreadusername)'", "grant": ["readonlyrolename"]}' > readonlyrolename.json
+echo '{"user": "'$(eval echo $etcdctletcdreadusername)'", "grant": ["readonlyrolename"]}' > /home/core/mesos-systemd/v2/util/readonlyrolename.json
 
-curl  -L http://127.0.0.1:2379/v2/auth/users/$etcdctletcdreadusername -XPUT -d "@readonlyrolename.json"
+curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadusername) -XPUT -d "@readonlyrolename.json"
 
 #Give readwrite non root user readwrite role
 
-echo '{"user": "'$(eval echo $etcdctletcdreadwriteusername)'", "grant": ["readonlyrolename"]}' > readwriterolename.json
+echo '{"user": "'$(eval echo $etcdctletcdreadwriteusername)'", "grant": ["readonlyrolename"]}' > /home/core/mesos-systemd/v2/util/readwriterolename.json
 
-curl  -L http://127.0.0.1:2379/v2/auth/users/$etcdctletcdreadwriteusername -XPUT -d "@readwriterolename.json"
+curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadwriteusername) -XPUT -d "@readwriterolename.json"
 
 #revoke guest role read:write access
 

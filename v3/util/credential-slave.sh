@@ -4,8 +4,8 @@ source /etc/environment
 
 HOMEDIR=$(eval echo "~`whoami`")
 
-principalslave=$(etcdctl get principalslave)
-secretslave=$(etcdctl get secretslave)
+principalslave=$(etcdctl get /frameworkauth/username)
+secretslave=$(etcdctl get /frameworkauth/secret)
 
 mkdir $HOMEDIR/mesos-slave
 touch $HOMEDIR/mesos-slave/passwd

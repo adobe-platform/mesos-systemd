@@ -5,7 +5,7 @@ source /etc/environment
 HOMEDIR=$(eval echo "~`whoami`")
 
 #principal=$(etcdctl get principal)
-secretframework=$(etcdctl get secretframework)
+secretframework=$(etcdctl get /frameworkauth/secret)
 
 mkdir $HOMEDIR/mesos-framework
 touch $HOMEDIR/mesos-framework/passwd

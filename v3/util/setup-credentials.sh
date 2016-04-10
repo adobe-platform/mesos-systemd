@@ -24,7 +24,7 @@ echo "$AV_SECRETS" | while read line ; do
     if [[ "$SECRET_TYPE" = "etcd" ]]; then
         echo "Setting ETCD value for secret: $SECRET_PATH"
         #etcdctl set $SECRET_PATH $SECRET_VAL &>/dev/null
-        printf "etcdctl set %s %s &>/dev/null \n" "$SECRET_PATH" "$SECRET_VAL" >> ${HOMEDIR}/.etcd_loader.sh
+        printf "etcdctl set -- %s \"%s\" &>/dev/null \n" "$SECRET_PATH" "$SECRET_VAL" >> ${HOMEDIR}/.etcd_loader.sh
     fi
 done
 
@@ -35,7 +35,7 @@ echo "$AV_CONFIGS" | while read line ; do
 
     echo "Setting ETCD value for config: $CONFIG_PATH"
     #etcdctl set $CONFIG_PATH $CONFIG_VAL &>/dev/null
-    printf "etcdctl set %s %s &>/dev/null \n" "$CONFIG_PATH" "$CONFIG_VAL" >> ${HOMEDIR}/.etcd_loader.sh
+    printf "etcdctl set %s \"%s\" &>/dev/null \n" "$CONFIG_PATH" "$CONFIG_VAL" >> ${HOMEDIR}/.etcd_loader.sh
 done
 
 chmod +x ${HOMEDIR}/.etcd_loader.sh

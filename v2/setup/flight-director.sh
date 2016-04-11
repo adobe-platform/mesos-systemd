@@ -64,6 +64,11 @@ sudo docker run --rm \
 # 5) Restart flight-director fleet-units via jenkins for changes to take effect
 
 
+
+printf "#!/bin/bash\nsource /etc/environment\n" >  ${HOMEDIR}/.fd_runnable.sh
 while read line || [[ -n "$line" ]]; do
-    etcdctl set -- \"$line\"
+    printf "etcdctl set $line \n" >> ${HOMEDIR}/.fd_runnable.sh
 done < ${HOMEDIR}/.flight-director
+chmod +x ${HOMEDIR}/.fd_runnable.sh
+${HOMEDIR}/.fd_runnable.sh
+rm ${HOMEDIR}/.fd_runnable.sh

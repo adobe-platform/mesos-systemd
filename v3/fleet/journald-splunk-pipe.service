@@ -1,7 +1,7 @@
 [Unit]
 Description=journald to splunk pipe
-#After=bootstrap.service splunk-forwarder.service
-Wants=splunk-forwarder.service
+After=bootstrap.service splunk-journald.service
+Wants=splunk-journald.service
 [Service]
 EnvironmentFile=/etc/environment
 Environment="INSTANCEID=curl -s http://169.254.169.254/latest/meta-data/ami-id"
@@ -10,6 +10,7 @@ TimeoutStartSec=0
 Restart=always
 RestartSec=5s
 ExecStartPre=/usr/bin/systemctl is-active bootstrap
+ExecStartPre=/usr/bin/systemctl is-active splunk-journald
 ExecStart=/bin/sh -c 'journalctl -o json -f | jq --arg instanceid $($INSTANCEID) \'. + {instanceid: $instanceid}\' | jq --arg publichostname $($PUBLICHOSTNAME) \'. + {publichostname: $publichostname}\' | ncat --udp localhost 1514'
 [Install]
 WantedBy=multi-user.target

@@ -1,18 +1,16 @@
 #!/usr/bin/bash
 
 echo "-------Beginning bootstrap script-------"
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+HOMEDIR=$(eval echo "~`whoami`")
 
+# determine version, run appropriate setup-credentials script
 if [ -z "$1" ]; then
   VERSION="v2"
 else
   VERSION="$1"
 fi
-
 echo "Using version: $VERSION"
-
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-HOMEDIR=$(eval echo "~`whoami`")
-
 if [[ "$VERSION" = "v2" ]]; then
   bash ${SCRIPTDIR}/$VERSION/util/setup-credentials.sh
 fi
@@ -21,37 +19,40 @@ if [ -f /etc/environment ]; then
     source /etc/environment
 fi
 
+# environment specific setup scripts
 if [ "$NODE_ROLE" = "control" ]; then
   sudo bash ${SCRIPTDIR}/$VERSION/util/etcd2-setup.sh $SCRIPTDIR
 fi
-
 if [ "$NODE_ROLE" = "it-hybrid" ]; then
   sudo bash ${SCRIPTDIR}/itv1/util/etcd2-setup.sh $SCRIPTDIR
 fi
 
-# 4 == 404 - key not found
-etcdctl get /environment/SCRIPTS-FORK
-if [[ $? = 4 ]]; then
-  etcdctl set /environment/SCRIPTS-FORK adobe-platform
-  etcdctl set /environment/SCRIPTS-REV  $(cd $SCRIPTDIR && git branch|grep '\*'|cut -d' ' -f2 && cd -)
-fi
-
+# profile.d setup
 if [ ! -d /etc/profile.d ]; then
     sudo mkdir /etc/profile.d
 fi
 # copy over files first, ignore errors thrown from directories
 sudo cp ${SCRIPTDIR}/$VERSION/profile.d/* /etc/profile.d/. 2>/dev/null || :
-
 sudo cp --dereference ${SCRIPTDIR}/$VERSION/profile.d/${NODE_ROLE}/* /etc/profile.d/.
 
+# mass run all setup scripts
 for script in $(ls ${SCRIPTDIR}/$VERSION/setup|grep -e '.sh$')
 do
     sudo /bin/bash ${SCRIPTDIR}/$VERSION/setup/${script}
 done
 
-# This must be after setup scripts are run so that defaults don't overwrite custom-provided etcd vals
+# etcd overrides
+# This must be after setup scripts are run so that defaults don't overwrite
+# custom-provided etcd vals
 if [[ "$VERSION" = "v3" ]]; then
   bash ${SCRIPTDIR}/$VERSION/util/setup-credentials.sh
+fi
+etcdctl get /environment/SCRIPTS-FORK
+if [[ $? = 4 ]]; then
+  # 4 == 404 - key not found
+  # case where a node is joining a pre-existing cluster
+  etcdctl set /environment/SCRIPTS-FORK adobe-platform
+  etcdctl set /environment/SCRIPTS-REV  $(cd $SCRIPTDIR && git branch|grep '\*'|cut -d' ' -f2 && cd -)
 fi
 
 # fleet units specific to this node

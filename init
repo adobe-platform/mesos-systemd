@@ -11,14 +11,14 @@ if [ -z "$1" ]; then
 else
   VERSION="$1"
 fi
-bash ${SCRIPTDIR}/$VERSION/util/setup-credentials.sh || :
+${SCRIPTDIR}/$VERSION/util/setup-credentials.sh || :
 
 # ENVIRONMENT SPECIFIC SETUP SCRIPTS
 if [ "$NODE_ROLE" = "control" ]; then
-  sudo bash ${SCRIPTDIR}/$VERSION/util/etcd2-setup.sh $SCRIPTDIR
+  sudo ${SCRIPTDIR}/$VERSION/util/etcd2-setup.sh $SCRIPTDIR
 fi
 if [ "$NODE_ROLE" = "it-hybrid" ]; then
-  sudo bash ${SCRIPTDIR}/itv1/util/etcd2-setup.sh $SCRIPTDIR
+  sudo ${SCRIPTDIR}/itv1/util/etcd2-setup.sh $SCRIPTDIR
 fi
 
 # SETUP profile.d
@@ -29,13 +29,13 @@ sudo cp --dereference ${SCRIPTDIR}/$VERSION/profile.d/${NODE_ROLE}/* /etc/profil
 # SETUP SCRIPTS
 for script in $(ls ${SCRIPTDIR}/$VERSION/setup|grep -e '.sh$')
 do
-    sudo /bin/bash ${SCRIPTDIR}/$VERSION/setup/${script}
+    sudo ${SCRIPTDIR}/$VERSION/setup/${script}
 done
 
 # ETCD OVERRIDES
 # This must be after setup scripts are run so that defaults don't overwrite
 # custom-provided etcd vals
-bash ${SCRIPTDIR}/$VERSION/util/seed-etcd.sh || :
+${SCRIPTDIR}/$VERSION/util/seed-etcd.sh || :
 etcdctl get /environment/SCRIPTS-FORK
 if [[ $? = 4 ]]; then
   # 4 == 404 - key not found

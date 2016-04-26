@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/bash -xe
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOMEDIR=$(eval echo "~`whoami`")

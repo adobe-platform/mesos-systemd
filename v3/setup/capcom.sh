@@ -7,12 +7,12 @@ if [ "${NODE_ROLE}" != "control" ]  && [ "${NODE_ROLE}" != "it-hybrid" ]; then
     exit 0
 fi
 
-if [ "$(etcdctl get /capcom/config/bootstrapped)" == "true" ]; then
+if [ "$(etcdctl get /bootstrap.service/capcom)" == "true" ]; then
     exit 0
 fi
+etcdctl set /bootstrap.service/capcom              true
 
 etcdctl setdir capcom
-etcdctl set /capcom/config/bootstrapped            true
 etcdctl set /capcom/config/applications            '[]'
 etcdctl set /capcom/config/host                    127.0.0.1
 etcdctl set /capcom/config/db-path                 ./capcom.db

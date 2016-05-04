@@ -21,6 +21,8 @@ if [ -f ${HOMEDIR}/.ssh/id_rsa ]; then
     cat ${HOMEDIR}/.ssh/id_rsa.pub >> ${HOMEDIR}/.ssh/authorized_keys
 fi
 
+AV_SECRETS=`sudo docker run behance/docker-aws-secrets-downloader --table $TABLE --key secrets`
+
 # Save the RDS password to environment variable in control tier
 # TODO: :(
 if [[ "$NODE_ROLE" = "control" && $AV_SECRETS == *"RDSPASSWORD"* ]]; then

@@ -45,7 +45,7 @@ if [[ $? = 4 ]]; then
   # case where a node is joining a pre-existing cluster
   SCRIPTS_REV=$(cd $SCRIPTDIR && git branch|grep '\*'|cut -d' ' -f2 && cd -)
   etcdctl set /environment/SCRIPTS-FORK adobe-platform
-  etcdctl set /environment/SCRIPTS-REV  $SCRIPTS_REV
+  etcdctl set /environment/SCRIPTS-SHA  $SCRIPTS_REV
 fi
 
 # FLEET UNITS SPECIFIC TO THIS NODE

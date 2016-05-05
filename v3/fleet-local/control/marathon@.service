@@ -30,7 +30,7 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --name marathon \
   -e LIBPROCESS_PORT=9090 \
   --net=host \
-  -v /opt/mesos/framework-secret:/opt/mesos/framework-secret \
+  -v /opt/mesos/framework-secret:/opt/mesos/framework-secret:ro \
   $($IMAGE) \
   --mesos_authentication_principal $($MESOS_USERNAME) \
   --mesos_authentication_secret_file /opt/mesos/framework-secret \

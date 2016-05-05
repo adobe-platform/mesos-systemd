@@ -29,5 +29,5 @@ ExecStop=-/usr/bin/docker stop iam-proxy
 WantedBy=multi-user.target
 
 [X-Fleet]
-Global=false
+Global=true
 MachineMetadata=role=worker

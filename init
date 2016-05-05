@@ -21,7 +21,8 @@ if [ "$NODE_ROLE" = "it-hybrid" ]; then
 fi
 
 # Worker tier - must run the IAM proxy setup before any other containers
-if [ "$NODE_ROLE" = "worker" ] && [ "$VERSION" = "v3" ]; then
+# Version v2 of util scripts does not have this file
+if [[ "$NODE_ROLE" = "worker" && -f ${SCRIPTDIR}/$VERSION/util/iam-proxy.sh ]]; then
   sudo ${SCRIPTDIR}/$VERSION/util/iam-proxy.sh $SCRIPTDIR
 fi
 

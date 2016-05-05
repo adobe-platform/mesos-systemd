@@ -6,8 +6,8 @@ After=docker.service bootstrap.service zk-health.service mesos-master@%i.service
 [Service]
 Environment=ZOOKEEPER=localhost:2181
 Environment="IMAGE=etcdctl get /images/marathon"
-Environment="USER=etcdctl get /marathon/username"
-Environment="PASSWORD=etcdctl get /marathon/password"
+Environment="USER=etcdctl get /marathon/config/username"
+Environment="PASSWORD=etcdctl get /marathon/config/password"
 Environment="MESOS_USERNAME=etcdctl get /mesos/config/username"
 Environment="ZK_USERNAME=etcdctl get /zookeeper/config/username"
 Environment="ZK_PASSWORD=etcdctl get /zookeeper/config/password"

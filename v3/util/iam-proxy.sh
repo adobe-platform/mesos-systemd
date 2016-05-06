@@ -6,8 +6,7 @@ if [ "${NODE_ROLE}" != "worker" ]; then
     exit 0
 fi
 
-etcdctl set /images/iam-proxy  	 "behance/iam-docker:latest"
-docker pull $(etcdctl get /images/iam-proxy)
+docker pull "behance/iam-docker:latest"
 
 export NETWORK="bridge"
 export GATEWAY="$(ifconfig docker0 | grep "inet " | awk -F: '{print $1}' | awk '{print $2}')"

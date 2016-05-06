@@ -19,9 +19,7 @@ export INTERFACE="docker0"
 
 sudo iptables -t nat -I PREROUTING -p tcp -d 169.254.169.254 --dport 80 -j DNAT --to-destination "$GATEWAY":8080 -i "$INTERFACE"
 
-# Sometimes this is needed?
-systemctl daemon-reload
+sudo fleetctl submit "${SCRIPTDIR}/v3/util-units/iam-proxy.service"
+sudo fleetctl start "iam-proxy.service"
 
-SCRIPTDIR=$1
-cp "${SCRIPTDIR}/v3/util-units/iam-proxy.service" /etc/systemd/system/
-systemctl start iam-proxy
+exit 0

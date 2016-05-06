@@ -4,7 +4,6 @@ After=docker.service bootstrap.service
 Requires=docker.service bootstrap.service
 
 [Service]
-Environment="IMAGE=etcdctl get /images/iam-proxy"
 EnvironmentFile=/etc/environment
 
 User=core
@@ -12,7 +11,7 @@ Restart=always
 RestartSec=20
 TimeoutStartSec=0
 
-ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
+ExecStartPre=/usr/bin/sh -c "docker pull behance/iam-docker:latest"
 ExecStartPre=-/usr/bin/docker kill iam-proxy
 ExecStartPre=-/usr/bin/docker rm iam-proxy
 
@@ -21,7 +20,7 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --volume /var/run/docker.sock:/var/run/docker.sock \
   --restart=always \
   --net=host \
-  $($IMAGE)
+  behance/iam-docker:latest"
 
 ExecStop=-/usr/bin/docker stop iam-proxy
 

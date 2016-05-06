@@ -7,6 +7,7 @@ After=network-online.target
 
 [Service]
 Type=oneshot
+EnvironmentFile=/etc/environment
 User=core
 ExecStartPre=/usr/bin/docker pull behance/ecr-login:latest
 ExecStartPre=-/usr/bin/docker kill ecr-login
@@ -16,6 +17,7 @@ ExecStart=/bin/bash -c \
     'source /etc/profile.d/etcdctl.sh && \
     if [[ -n `etcdctl get /ECR/registry-account` ]]; then \
     docker run \
+    --label com.swipely.iam-docker.iam-profile="$CONTAINERS_ROLE" \
     --name ecr-login \
     -e "TEMPLATE=templates/dockercfg.tmpl" \
     -e "AWS_REGION=`etcdctl get /ECR/region`" \

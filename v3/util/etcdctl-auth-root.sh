@@ -3,12 +3,12 @@
 
 source /etc/environment
 
-etcdctlrootusername=$(etcdctl get /etcdctlrootusername)
-etcdctlrootpassword=$(etcdctl get /etcdctlrootpassword)
-etcdctletcdreadusername=$(etcdctl get /etcdctletcdreadusername)
-etcdctletcdreadpassword=$(etcdctl get /etcdctletcdreadpassword)
-etcdctletcdreadwriteusername=$(etcdctl get /etcdctletcdreadwriteusername)
-etcdctletcdreadwritepassword=$(etcdctl get /etcdctletcdreadwritepassword)
+etcdctlrootusername=$(etcdctl get /etcdctl/config/etcdctlrootusername)
+etcdctlrootpassword=$(etcdctl get /etcdctl/config/etcdctlrootpassword)
+etcdctletcdreadusername=$(etcdctl get /etcdctl/config/etcdctletcdreadusername)
+etcdctletcdreadpassword=$(etcdctl get /etcdctl/config/etcdctletcdreadpassword)
+etcdctletcdreadwriteusername=$(etcdctl get /etcdctl/config/etcdctletcdreadwriteusername)
+etcdctletcdreadwritepassword=$(etcdctl get /etcdctl/config/etcdctletcdreadwritepassword)
 
 
 
@@ -60,9 +60,10 @@ curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadwriteus
 
 #revoke guest role read:write access
 
-etcdctl role revoke guest -path '/*' -readwrite
+#etcdctl role revoke guest -path '/*' -readwrite
 
 #enable authentication
-curl  -L http://127.0.0.1:2379/v2/auth/enable -XPUT
+#curl  -L http://127.0.0.1:2379/v2/auth/enable -XPUT
 
 
+#etcdctl auth enable

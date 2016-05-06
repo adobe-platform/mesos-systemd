@@ -14,12 +14,12 @@ ExecStartPre=-/usr/bin/docker rm -f ecr-login
 # ecr-login fetches ECR creds and formats them correctly for .dockercfg
 ExecStart=/bin/bash -c \
     'source /etc/profile.d/etcdctl.sh && \
-    if [[ -n `etcdctl get /ECR/registry-account` ]]; then \
+    if [[ -n `etcdctl get /ECR/config/registry-account` ]]; then \
     docker run \
     --name ecr-login \
     -e "TEMPLATE=templates/dockercfg.tmpl" \
-    -e "AWS_REGION=`etcdctl get /ECR/region`" \
-    -e "REGISTRIES=`etcdctl get /ECR/registry-account`" \
+    -e "AWS_REGION=`etcdctl get /ECR/config/region`" \
+    -e "REGISTRIES=`etcdctl get /ECR/config/registry-account`" \
     behance/ecr-login >/home/core/.dockercfg; \
     fi'
 ExecStop=/usr/bin/docker stop ecr-login

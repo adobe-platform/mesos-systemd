@@ -19,8 +19,8 @@ ExecStart=/usr/bin/bash -c \
     -e SUMO_NAME=docker_cluster \
     -e SUMO_CATEGORY=be/${NODE_PRODUCT}/${NODE_TIER}/control-logs \
     -e SUMO_COLLECTOR_NAME=mesos_app_collector \
-    -e SUMO_ACCESS_ID=`etcdctl get /sumologic_id` \
-    -e SUMO_ACCESS_KEY=`etcdctl get /sumologic_secret` \
+    -e SUMO_ACCESS_ID=`etcdctl get /sumologic/config/access-id` \
+    -e SUMO_ACCESS_KEY=`etcdctl get /sumologic/config/access-key` \
     behance/docker-sumologic"
 ExecStop=/usr/bin/docker stop sumologic-control
 

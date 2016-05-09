@@ -19,6 +19,9 @@ etcdctletcdreadwritepassword=$(etcdctl get /etcdctl/config/etcdctletcdreadwritep
 echo '{"user":"'$(eval echo $etcdctlrootusername)'", "password":"'$(eval echo $etcdctlrootpassword)'"}' > /home/core/mesos-systemd/v2/util/root.json
 curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctlrootusername) -XPUT -d "@root.json"
 
+echo $(eval echo $etcdctlrootusername) > /home/core/.etcdrootuser
+echo $(eval echo $etcdctlrootpassword) > /home/core/.etcdrootpassword
+
 #add a non root read only user
 echo '{"user":"'$(eval echo $etcdctletcdreadusername)'", "password":"'$(eval echo $etcdctletcdreadpassword)'"}' > /home/core/mesos-systemd/v2/util/etcdreaduser.json
 curl   -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadusername) -XPUT -d "@etcdreaduser.json"

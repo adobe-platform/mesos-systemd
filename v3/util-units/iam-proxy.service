@@ -13,7 +13,7 @@ TimeoutStartSec=0
 
 ExecStartPre=/usr/bin/sh -c "docker pull behance/iam-docker:latest"
 ExecStartPre=-/usr/bin/docker kill iam-proxy
-ExecStartPre=-/usr/bin/docker rm iam-proxy
+ExecStartPre=-/usr/bin/docker rm -f iam-proxy
 
 ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --name=iam-proxy \

@@ -2,6 +2,8 @@
 
 source /etc/environment
 
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 if [ "${NODE_ROLE}" != "worker" ]; then
     exit 0
 fi
@@ -21,8 +23,8 @@ sudo iptables -t nat -I PREROUTING -p tcp -d 169.254.169.254 --dport 80 -j DNAT 
 # sudo fleetctl submit "${SCRIPTDIR}/v3/util-units/iam-proxy.service"
 # sudo fleetctl start "iam-proxy.service"
 
-cp "${SCRIPTDIR}/v3/util-units/iam-proxy.service" /etc/systemd/system/
-systemctl start iam-proxy.service
+sudo cp "${SCRIPTDIR}/../util-units/iam-proxy.service" /etc/systemd/system/
+sudo systemctl start iam-proxy.service
 
 # Wait until service is active
 until [ "`/usr/bin/docker inspect -f {{.State.Running}} iam-proxy`" == "true" ]; do

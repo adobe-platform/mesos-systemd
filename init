@@ -54,6 +54,25 @@ if [[ $? = 4 ]]; then
   etcdctl set /environment/SCRIPTS-SHA  $SCRIPTS_REV
 fi
 
+# start services specified in $(etcdctl get /environment/services)
+# mapped to the /opt directory of these scripts
+etcdctl get /environment/services
+if [[ $? = 4 ]]; then
+  etcdctl set /environment/services "sumologic datadog"
+fi
+for service in $(etcdctl get /environment/services)
+do
+    servicedir=${SCRIPTDIR}/${VERSION}/opt/${service}
+    if [[ ! -d $servicedir ]]; then
+        continue
+    fi
+    for unit in $(ls $servicedir|grep -e '.service$\|.timer$')
+    do
+        sudo fleetctl submit $servicedir/$unit
+        sudo fleetctl start $unit
+    done
+done
+
 # FLEET UNITS SPECIFIC TO THIS NODE
 for unit in $(ls ${SCRIPTDIR}/$VERSION/fleet-local/${NODE_ROLE}|grep -e '.service$')
 do

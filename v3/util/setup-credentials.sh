@@ -10,7 +10,7 @@ source /etc/environment
 # because of the IAM proxy metadata service.
 IAM_ROLE_LABEL=""
 
-if [ "${NODE_ROLE}" = "worker" && ! -z $CONTAINERS_ROLE ]; then
+if [[ "${NODE_ROLE}" = "worker" && ! -z "$CONTAINERS_ROLE" ]]; then
     IAM_ROLE_LABEL=" --label com.swipely.iam-docker.iam-profile=\"$CONTAINERS_ROLE\" "
 fi
 

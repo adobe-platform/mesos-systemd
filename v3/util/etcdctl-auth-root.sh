@@ -70,3 +70,4 @@ curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadwriteus
 
 
 #etcdctl auth enable
+#curl -u $(/usr/bin/bash etcduser.sh):$(/usr/bin/bash etcdpassword.sh) -L http://127.0.0.1:2379/v2/auth/enable -XGET

@@ -20,6 +20,12 @@ if [ "$NODE_ROLE" = "it-hybrid" ]; then
   sudo ${SCRIPTDIR}/itv1/util/etcd2-setup.sh $SCRIPTDIR
 fi
 
+# Worker tier - must run the IAM proxy setup before any other containers
+# Version v2 of util scripts does not have this file
+if [[ "$NODE_ROLE" = "worker" && -f ${SCRIPTDIR}/$VERSION/util/iam-proxy.sh ]]; then
+  sudo ${SCRIPTDIR}/$VERSION/util/iam-proxy.sh $SCRIPTDIR
+fi
+
 # run appropriate setup-credentials script
 # must happen after etcd2 peers so that etcdctl can actually be used
 ${SCRIPTDIR}/$VERSION/util/setup-credentials.sh || :

@@ -12,18 +12,6 @@ IAM_ROLE_LABEL=""
 
 if [[ "${NODE_ROLE}" = "worker" && ! -z "$CONTAINERS_ROLE" ]]; then
     IAM_ROLE_LABEL=' --label com.swipely.iam-docker.iam-profile='"$CONTAINERS_ROLE"' '
-
-    # Wait until the iam-proxy service becomes available
-    while true; do
-    	echo "Waiting for iam-proxy fleet unit to start..."
-    	OUTPUT=`fleetctl list-units | grep iam-proxy.service | grep running`
-    	if [[ ! -z "$OUTPUT" ]]; then
-    		echo "iam-proxy fleet unit running"
-    		break
-    	fi
-    	echo "iam-proxy fleet unit not yet running..."
-    	sleep 5
-    done
 fi
 
 TABLE=`sudo echo $SECRETS_TABLE`

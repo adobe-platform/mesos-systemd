@@ -18,7 +18,16 @@ export INTERFACE="docker0"
 
 sudo iptables -t nat -I PREROUTING -p tcp -d 169.254.169.254 --dport 80 -j DNAT --to-destination "$GATEWAY":8080 -i "$INTERFACE"
 
-sudo fleetctl submit "${SCRIPTDIR}/v3/util-units/iam-proxy.service"
-sudo fleetctl start "iam-proxy.service"
+# sudo fleetctl submit "${SCRIPTDIR}/v3/util-units/iam-proxy.service"
+# sudo fleetctl start "iam-proxy.service"
+
+cp "${SCRIPTDIR}/v3/util-units/iam-proxy.service" /etc/systemd/system/
+systemctl start iam-proxy.service
+
+# Wait until service is active
+until [ "`/usr/bin/docker inspect -f {{.State.Running}} iam-proxy`" == "true" ]; do
+	echo "Waiting for iam-proxy service..."
+    sleep 5;
+done;
 
 exit 0

@@ -5,8 +5,8 @@ source /etc/environment
 
 #Disable authentication
 
-curl  -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
-curl -u $(/usr/bin/bash etcduser.sh):$(/usr/bin/bash etcdpassword.sh) -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
+#curl  -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
+#curl -u $(/usr/bin/bash etcduser.sh):$(/usr/bin/bash etcdpassword.sh) -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
 
 etcdctlrootusername=$(etcdctl get /etcdctl/config/etcdctlrootusername)
 etcdctlrootpassword=$(etcdctl get /etcdctl/config/etcdctlrootpassword)
@@ -70,9 +70,7 @@ curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadwriteus
 
 #etcdctl role revoke guest -path '/*' -readwrite
 
-#Disable authentication
-curl  -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
-curl -u $(/usr/bin/bash etcduser.sh):$(/usr/bin/bash etcdpassword.sh) -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
+
 
 #Enable authentication
 

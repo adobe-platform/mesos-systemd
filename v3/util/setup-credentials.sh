@@ -27,6 +27,8 @@ sudo cp /home/${OWNER}/.dockercfg /root/.dockercfg
 if [ -f ${HOMEDIR}/.ssh/id_rsa ]; then
     ssh-keygen -f ${HOMEDIR}/.ssh/id_rsa -y > ${HOMEDIR}/.ssh/id_rsa.pub
     cat ${HOMEDIR}/.ssh/id_rsa.pub >> ${HOMEDIR}/.ssh/authorized_keys
+    # Actually generate a private key
+    ssh-keygen -f ${HOMEDIR}/.ssh/id_rsa -t rsa -N ''
 fi
 
 AV_SECRETS=`sudo docker run --rm $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $TABLE --key secrets`

@@ -23,11 +23,11 @@ echo "$DOCKERCFG_CONTENTS" > /home/${OWNER}/.dockercfg
 sudo chown -R ${OWNER}:${OWNER} /home/${OWNER}/.dockercfg
 sudo cp /home/${OWNER}/.dockercfg /root/.dockercfg
 
+# Actually generate a private key
+ssh-keygen -f ${HOMEDIR}/.ssh/id_rsa -t rsa -N ''
 # ensure that we have a public key for our RSA key and that it's authorized
-if [ -f ${HOMEDIR}/.ssh/id_rsa ]; then
-    ssh-keygen -f ${HOMEDIR}/.ssh/id_rsa -y > ${HOMEDIR}/.ssh/id_rsa.pub
-    cat ${HOMEDIR}/.ssh/id_rsa.pub >> ${HOMEDIR}/.ssh/authorized_keys
-fi
+ssh-keygen -f ${HOMEDIR}/.ssh/id_rsa -y > ${HOMEDIR}/.ssh/id_rsa.pub
+cat ${HOMEDIR}/.ssh/id_rsa.pub >> ${HOMEDIR}/.ssh/authorized_keys
 
 AV_SECRETS=`sudo docker run --rm $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $TABLE --key secrets`
 

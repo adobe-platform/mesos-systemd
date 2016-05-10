@@ -3,6 +3,11 @@
 
 source /etc/environment
 
+#Disable authentication
+
+curl  -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
+curl -u $(/usr/bin/bash etcduser.sh):$(/usr/bin/bash etcdpassword.sh) -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
+
 etcdctlrootusername=$(etcdctl get /etcdctl/config/etcdctlrootusername)
 etcdctlrootpassword=$(etcdctl get /etcdctl/config/etcdctlrootpassword)
 etcdctletcdreadusername=$(etcdctl get /etcdctl/config/etcdctletcdreadusername)
@@ -16,18 +21,18 @@ etcdctletcdreadwritepassword=$(etcdctl get /etcdctl/config/etcdctletcdreadwritep
 
 #add a root user
 
-echo '{"user":"'$(eval echo $etcdctlrootusername)'", "password":"'$(eval echo $etcdctlrootpassword)'"}' > /home/core/mesos-systemd/v2/util/root.json
+echo '{"user":"'$(eval echo $etcdctlrootusername)'", "password":"'$(eval echo $etcdctlrootpassword)'"}' > /home/core/mesos-systemd/v3/util/root.json
 curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctlrootusername) -XPUT -d "@root.json"
 
 echo $(eval echo $etcdctlrootusername) > /home/core/.etcdrootuser
 echo $(eval echo $etcdctlrootpassword) > /home/core/.etcdrootpassword
 
 #add a non root read only user
-echo '{"user":"'$(eval echo $etcdctletcdreadusername)'", "password":"'$(eval echo $etcdctletcdreadpassword)'"}' > /home/core/mesos-systemd/v2/util/etcdreaduser.json
+echo '{"user":"'$(eval echo $etcdctletcdreadusername)'", "password":"'$(eval echo $etcdctletcdreadpassword)'"}' > /home/core/mesos-systemd/v3/util/etcdreaduser.json
 curl   -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadusername) -XPUT -d "@etcdreaduser.json"
 
 #add a non root readwrite user
-echo '{"user":"'$(eval echo $etcdctletcdreadwriteusername)'", "password":"'$(eval echo $etcdctletcdreadwritepassword)'"}' > /home/core/mesos-systemd/v2/util/etcdwriteuser.json
+echo '{"user":"'$(eval echo $etcdctletcdreadwriteusername)'", "password":"'$(eval echo $etcdctletcdreadwritepassword)'"}' > /home/core/mesos-systemd/v3/util/etcdwriteuser.json
 curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadwriteusername) -XPUT -d "@etcdwriteuser.json"
 
 
@@ -51,13 +56,13 @@ etcdctl role grant readwriterolename -path '/*' -readwrite
 
 #Give read only non root user read only role
 
-echo '{"user": "'$(eval echo $etcdctletcdreadusername)'", "grant": ["readonlyrolename"]}' > /home/core/mesos-systemd/v2/util/readonlyrolename.json
+echo '{"user": "'$(eval echo $etcdctletcdreadusername)'", "grant": ["readonlyrolename"]}' > /home/core/mesos-systemd/v3/util/readonlyrolename.json
 
 curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadusername) -XPUT -d "@readonlyrolename.json"
 
 #Give readwrite non root user readwrite role
 
-echo '{"user": "'$(eval echo $etcdctletcdreadwriteusername)'", "grant": ["readwriterolename"]}' > /home/core/mesos-systemd/v2/util/readwriterolename.json
+echo '{"user": "'$(eval echo $etcdctletcdreadwriteusername)'", "grant": ["readwriterolename"]}' > /home/core/mesos-systemd/v3/util/readwriterolename.json
 
 curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadwriteusername) -XPUT -d "@readwriterolename.json"
 
@@ -65,8 +70,13 @@ curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $etcdctletcdreadwriteus
 
 #etcdctl role revoke guest -path '/*' -readwrite
 
-#enable authentication
-#curl  -L http://127.0.0.1:2379/v2/auth/enable -XPUT
+#Disable authentication
+curl  -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
+curl -u $(/usr/bin/bash etcduser.sh):$(/usr/bin/bash etcdpassword.sh) -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
+
+#Enable authentication
+
+curl  -L http://127.0.0.1:2379/v2/auth/enable -XPUT
 
 
 #etcdctl auth enable

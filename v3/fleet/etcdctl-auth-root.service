@@ -1,7 +1,7 @@
 [Unit]
 Description=Get etcdctl authentication
-After=docker.service bootstrap.service
-Requires=docker.service
+After=docker.service fleet.service bootstrap.service
+Requires=docker.service fleet.service bootstrap.service update-scripts.service
 
 
 [Service]

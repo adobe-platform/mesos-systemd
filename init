@@ -47,7 +47,7 @@ done
 ${SCRIPTDIR}/$VERSION/util/seed-etcd.sh || :
 
 # The mesos-credentials.sh script must run after seed-etcd.sh
-${SCRIPTDIR}/$VERSION/util/mesos-credentials.sh || :
+sudo ${SCRIPTDIR}/$VERSION/util/mesos-credentials.sh || :
 
 etcdctl get /environment/SCRIPTS-FORK
 if [[ $? = 4 ]]; then

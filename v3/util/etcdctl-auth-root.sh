@@ -9,10 +9,10 @@ source /etc/environment
 
 etcdctlrootusername=$(etcdctl get /etcdctl/config/etcdctl-root-user)
 etcdctlrootpassword=$(etcdctl get /etcdctl/config/etcdctl-root-password)
-etcdctletcdreadusername=$(etcdctl get /etcdctl/config/etcdctl-read-user)
-etcdctletcdreadpassword=$(etcdctl get /etcdctl/config/etcdctl-read-password)
-etcdctletcdreadwriteusername=$(etcdctl get /etcdctl/config/etcdctl-read-write-user)
-etcdctletcdreadwritepassword=$(etcdctl get /etcdctl/config/etcdctl-read-write-password)
+etcdctletcdreadusername=$(etcdctl get /etcdctl/config/read-user)
+etcdctletcdreadpassword=$(etcdctl get /etcdctl/config/read-password)
+etcdctletcdreadwriteusername=$(etcdctl get /etcdctl/config/write-user)
+etcdctletcdreadwritepassword=$(etcdctl get /etcdctl/config/write-password)
 
 #add a root user
 

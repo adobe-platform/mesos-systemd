@@ -7,8 +7,8 @@ source /etc/environment
 
 #curl  -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
 
-etcdctlrootusername=$(etcdctl get /etcdctl/config/etcdctl-root-user)
-etcdctlrootpassword=$(etcdctl get /etcdctl/config/etcdctl-root-password)
+etcdctlrootusername=$(etcdctl get /etcdctl/config/root-user)
+etcdctlrootpassword=$(etcdctl get /etcdctl/config/root-password)
 etcdctletcdreadusername=$(etcdctl get /etcdctl/config/read-user)
 etcdctletcdreadpassword=$(etcdctl get /etcdctl/config/read-password)
 etcdctletcdreadwriteusername=$(etcdctl get /etcdctl/config/write-user)

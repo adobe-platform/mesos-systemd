@@ -1,3 +1,6 @@
+# Temporary timer to restart capcom periodically so it doesn't fail to reload nginx config due to memory consumption.
+# Remove when memory leak is fixed.
+
 [Unit]
 Description=CAPCOM Restart
 After=docker.service

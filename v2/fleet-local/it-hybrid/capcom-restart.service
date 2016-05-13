@@ -1,0 +1,14 @@
+[Unit]
+Description=Capcom Restart
+After=docker.service
+Requires=docker.service
+
+[Service]
+User=core
+RestartSec=20
+TimeoutStartSec=0
+ExecStart=/usr/bin/sudo docker kill capcom
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=it-hybrid

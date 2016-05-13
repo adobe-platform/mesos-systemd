@@ -7,12 +7,18 @@ source /etc/environment
 
 #curl  -L http://127.0.0.1:2379/v2/auth/enable -XDELETE
 
+
 ROOT_USERNAME=$(etcdctl get /etcdctl/config/root-user)
 ROOT_PASSWORD=$(etcdctl get /etcdctl/config/root-password)
 READ_USERNAME=$(etcdctl get /etcdctl/config/read-user)
 READ_PASSWORD=$(etcdctl get /etcdctl/config/read-password)
 WRITE_USERNAME=$(etcdctl get /etcdctl/config/write-user)
 WRITE_PASSWORD=$(etcdctl get /etcdctl/config/write-password)
+
+CRED_DIR="/opt/mesos"
+if [[ ! -d $CRED_DIR ]]; then
+    sudo mkdir $CRED_DIR -p
+fi
 
 #add a root user
 
@@ -26,7 +32,7 @@ curl   -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $READ_USERNAME) -XPUT 
 
 #add a non root readwrite user
 echo '{"user":"'$(eval echo $WRITE_USERNAME)'", "password":"'$(eval echo $WRITE_PASSWORD)'"}' > /opt/etcdctl/write-user.json
-curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $WRITE_USERNAME) -XPUT -d "@//opt/etcdctl/write-user.json"
+curl  -L http://127.0.0.1:2379/v2/auth/users/$(eval echo $WRITE_USERNAME) -XPUT -d "@/opt/etcdctl/write-user.json"
 
 #Create a read only role:
 
@@ -69,6 +75,6 @@ curl  -L http://127.0.0.1:2379/v2/auth/enable -XPUT
 #Get authentication Status
 #curl -u $(echo "$(cat root.json |jq '.user')" | sed -e 's/^"//'  -e 's/"$//'):$(echo "$(cat root.json |jq '.password')" | sed -e 's/^"//'  -e 's/"$//') -L http://127.0.0.1:2379/v2/auth/users -XGET
 
-sudo chmod 0600 /opt/etcdctl/*
-sudo chown -R $(whoami):$(whoami) /opt/etcdctl
+sudo chmod 0600 $CRED_DIR/*
+sudo chown -R $(whoami):$(whoami) $CRED_DIR
 

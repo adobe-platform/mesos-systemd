@@ -7,7 +7,7 @@ Requires=docker.service fleet.service bootstrap.service
 [Service]
 User=core
 TimeoutStartSec=0
-ExecStart=/usr/bin/bash /home/core/mesos-systemd/v3/util/etcdctl-auth-root.sh
+#ExecStart=/usr/bin/bash /home/core/mesos-systemd/v3/util/etcdctl-auth-root.sh
 
 [X-Fleet]
 Global=true

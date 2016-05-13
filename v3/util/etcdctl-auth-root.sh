@@ -69,3 +69,6 @@ curl  -L http://127.0.0.1:2379/v2/auth/enable -XPUT
 #Get authentication Status
 #curl -u $(echo "$(cat root.json |jq '.user')" | sed -e 's/^"//'  -e 's/"$//'):$(echo "$(cat root.json |jq '.password')" | sed -e 's/^"//'  -e 's/"$//') -L http://127.0.0.1:2379/v2/auth/users -XGET
 
+sudo chmod 0600 /opt/etcdctl/*
+sudo chown -R $(whoami):$(whoami) /opt/etcdctl
+

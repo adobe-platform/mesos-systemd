@@ -7,7 +7,7 @@ Requires=docker.service
 User=core
 RestartSec=20
 TimeoutStartSec=0
-ExecStart=/usr/bin/sudo docker kill capcom
+ExecStart=/usr/bin/sudo docker stop capcom
 
 [X-Fleet]
 Global=true

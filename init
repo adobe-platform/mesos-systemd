@@ -62,7 +62,7 @@ fi
 # mapped to the /opt directory of these scripts
 etcdctl get /environment/services
 if [[ $? = 4 ]]; then
-  etcdctl set /environment/services "sumologic datadog"
+  etcdctl set /environment/services "sumologic datadog splunk"
 fi
 for service in $(etcdctl get /environment/services)
 do

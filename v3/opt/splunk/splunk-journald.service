@@ -4,13 +4,12 @@ Requires=docker.service
 Before=journald-splunk-pipe.service
 After=docker.service bootstrap.service
 [Service]
-Environment="IMAGE=etcdctl get /images/splunkforwarder"
 EnvironmentFile=/etc/environment
 User=core
 Restart=always
 TimeoutStartSec=0
 ExecStartPre=/usr/bin/systemctl is-active bootstrap
-ExecStartPre=/usr/bin/docker pull $($IMAGE)
+ExecStartPre=/usr/bin/docker pull adobeplatform/docker-splunk:latest
 ExecStartPre=-/usr/bin/docker kill splunk-journald
 ExecStartPre=-/usr/bin/docker rm -f splunk-journald
 ExecStart=/usr/bin/bash -c \
@@ -21,7 +20,7 @@ sudo /usr/bin/docker run --name splunk-journald \
 -e SPLUNK_START_ARGS="--accept-license" \
 -e SPLUNK_FORWARD_SERVER=`etcdctl get /splunk/SPLUNK_FORWARD_SERVER` \
 -e SPLUNK_ADD='udp 1514 -sourcetype journald -hostname ${COREOS_PRIVATE_IPV4} -index os -connection_host none' \
-$($IMAGE)"
+adobeplatform/docker-splunk:latest"
 ExecStop=/usr/bin/docker stop splunk-journald
 [X-Fleet]
 Global=true

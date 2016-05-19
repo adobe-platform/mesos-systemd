@@ -15,7 +15,7 @@ if [[ "${NODE_ROLE}" = "worker" && ! -z "$CONTAINERS_ROLE" ]]; then
 fi
 
 TABLE=`sudo echo $SECRETS_TABLE`
-docker pull behance/docker-aws-secrets-downloader:latest
+docker pull index.docker.io/behance/docker-aws-secrets-downloader:latest
 
 # Create a dockercfg
 DOCKERCFG_CONTENTS=`sudo docker run --rm $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $TABLE --key secrets --name DOCKERCFG --format plain`

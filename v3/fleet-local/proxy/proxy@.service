@@ -14,7 +14,7 @@ Environment="PROXY=etcdctl get /capcom/config/proxy"
 Environment="CMD=etcdctl get /capcom/config/proxy-docker-command"
 Environment="MEMORY=$((`grep MemTotal /proc/meminfo | awk '{print $2}'`*3/4/1048576))"
 
-ExecStartPre=/usr/bin/bash -c "if [ $MEMORY -eq 0 ]; then MEMORY=1; fi"
+ExecStartPre=/usr/bin/bash -c "if [[ $MEMORY -eq 0 || -z $MEMORY ]]; then MEMORY=1; fi"
 ExecStartPre=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && docker pull $($IMAGE)"
 ExecStartPre=-/usr/bin/docker kill proxy
 ExecStartPre=-/usr/bin/docker rm proxy

@@ -1,0 +1,25 @@
+# https://raw.githubusercontent.com/DataDog/docker-dd-agent/master/dd-agent.service
+# make sure the etcd /ddapikey is set!
+[Unit]
+Description=Datadog Agent for Mesos master
+After=docker.service
+
+[Service]
+# CONTROL_ELB should be set in etcd
+# It should be run on all mesos master nodes
+# Look at behance/docker-dd-agent-mesos for what ports those 3 should be running on
+User=core
+Restart=always
+TimeoutStartSec=0
+ExecStartPre=/usr/bin/docker pull index.docker.io/behance/docker-dd-agent-mesos-master:latest
+ExecStartPre=-/usr/bin/docker kill dd-agent-mesos-master
+ExecStartPre=-/usr/bin/docker rm -f dd-agent-mesos-master
+ExecStart=/usr/bin/bash -c \
+"if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && sudo /usr/bin/docker run --name dd-agent-mesos-master -h `hostname` \
+-e API_KEY=`etcdctl get /datadog/config/api-key` \
+behance/docker-dd-agent-mesos-master"
+ExecStop=/usr/bin/docker stop dd-agent-mesos-master
+
+[X-Fleet]
+MachineMetadata=role=control
+MachineMetadata=role=it-hybrid

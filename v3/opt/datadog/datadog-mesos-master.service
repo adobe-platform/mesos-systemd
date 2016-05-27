@@ -7,7 +7,7 @@ After=docker.service
 [Service]
 # CONTROL_ELB should be set in etcd
 # It should be run on all mesos master nodes
-# Look at adobeplatform/docker-dd-agent-mesos for what ports those 3 should be running on
+# Look at adobeplatform/docker-dd-agent-mesos-master for what ports those 3 should be running on
 User=core
 Restart=always
 TimeoutStartSec=0

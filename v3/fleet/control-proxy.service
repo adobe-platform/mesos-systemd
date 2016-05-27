@@ -1,0 +1,31 @@
+[Unit]
+Description=run apigateway as control proxy
+Requires=docker.service
+After=docker.service bootstrap.service zk-health.service
+
+[Service]
+Environment="IMAGE=etcdctl get /images/control-proxy"
+Environment="INTERNAL_CONTROL_ELB=etcdctl get /environment/CONTROL_ELB"
+EnvironmentFile=/etc/environment
+User=core
+Type=simple
+Restart=always
+RestartSec=4
+TimeoutStartSec=0
+ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
+ExecStartPre=-/usr/bin/docker kill control-proxy
+ExecStartPre=-/usr/bin/docker rm control-proxy
+ExecStart=/usr/bin/bash -c \
+  '/usr/bin/docker run \
+  --name control-proxy \
+  -e MESOS_MASTER_HOST=http://$($INTERNAL_CONTROL_ELB):5050 \
+  -p 7070:80 \
+  $($IMAGE)'
+ExecStop=/usr/bin/docker stop control-proxy
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=control

@@ -21,6 +21,8 @@ ExecStart=/usr/bin/bash -c \
 -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
 -e API_KEY=`etcdctl get /datadog/config/api-key` \
 -e HOST_IP=`hostname -i` \
+-e MARATHON_USERNAME=`etcdctl get /marathon/config/username` \
+-e MARATHON_PASSWORD=`etcdctl get /marathon/config/password` \
 adobeplatform/docker-dd-agent-mesos-master"
 ExecStop=/usr/bin/docker stop dd-agent-mesos-master
 

@@ -5,6 +5,7 @@ After=docker.service bootstrap.service zk-health.service
 
 [Service]
 Environment="IMAGE=etcdctl get /images/control-proxy"
+Environment="INTERNAL_CONTROL_ELB=etcdctl get /images/control-proxy"
 EnvironmentFile=/etc/environment
 User=core
 Type=simple
@@ -17,7 +18,7 @@ ExecStartPre=-/usr/bin/docker rm control-proxy
 ExecStart=/usr/bin/bash -c \
   '/usr/bin/docker run \
   --name control-proxy \
-  -e MESOS_MASTER_HOST=http://`etcdctl get /environment/CONTROL_ELB`:5050 \
+  -e MESOS_MASTER_HOST=http://$($INTERNAL_CONTROL_ELB):5050 \
   -p 7070:80 \
   $($IMAGE)'
 ExecStop=/usr/bin/docker stop control-proxy

@@ -15,12 +15,14 @@ ExecStartPre=/usr/bin/docker pull index.docker.io/adobeplatform/docker-dd-agent-
 ExecStartPre=-/usr/bin/docker kill dd-agent-mesos-slave
 ExecStartPre=-/usr/bin/docker rm -f dd-agent-mesos-slave
 ExecStart=/usr/bin/bash -c \
-"if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && sudo /usr/bin/docker run --name dd-agent-mesos-slave -h `hostname` \
+"if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && sudo -E /usr/bin/docker run --name dd-agent-mesos-slave -h `hostname` \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v /proc/:/host/proc/:ro \
 -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro \
 -e API_KEY=`etcdctl get /datadog/config/api-key` \
 -e HOST_IP=`hostname -i` \
+--log-opt max-size=`etcdctl get /docker/config/logs-max-size` \
+--log-opt max-file=`etcdctl get /docker/config/logs-max-file` \
 adobeplatform/docker-dd-agent-mesos-slave"
 ExecStop=/usr/bin/docker stop dd-agent-mesos-slave
 

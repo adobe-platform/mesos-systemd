@@ -4,8 +4,10 @@ Description=Write a file with the etcd peers that we should bootstrap to
 [Service]
 Restart=on-failure
 RestartSec=10
+EnvironmentFile=/etc/sysconfig/etcd
 ExecStartPre=/usr/bin/docker pull index.docker.io/monsantoco/etcd-aws-cluster:latest
-ExecStartPre=/usr/bin/docker run --rm -v /etc/sysconfig/:/etc/sysconfig/ monsantoco/etcd-aws-cluster:latest
+ExecStartPre=/bin/bash -c "/usr/bin/docker run --rm ${ETCD_LOGGER} -v /etc/sysconfig/:/etc/sysconfig/ monsantoco/etcd-aws-cluster:latest"
+
 ExecStart=/usr/bin/systemctl start etcd2
 
 [Install]

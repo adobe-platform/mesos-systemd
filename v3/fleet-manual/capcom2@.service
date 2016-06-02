@@ -18,6 +18,8 @@ ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
     --name capcom2 \
     --net='host' \
     --privileged \
+    --log-opt max-size=$(etcdctl get /docker/config/logs-max-size) \
+    --log-opt max-file=$(etcdctl get /docker/config/logs-max-file) \
     -e LOG_APP_NAME=capcom \
     -e CP_APPLICATIONS=$(etcdctl get /capcom/config/applications) \
     -e CP_HOST=`etcdctl get /CP/CP_HOST` \

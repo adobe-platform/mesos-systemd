@@ -15,7 +15,9 @@ ExecStartPre=/usr/bin/docker pull index.docker.io/behance/docker-dd-agent-mesos:
 ExecStartPre=-/usr/bin/docker kill dd-agent-mesos
 ExecStartPre=-/usr/bin/docker rm -f dd-agent-mesos
 ExecStart=/usr/bin/bash -c \
-"if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && sudo /usr/bin/docker run --name dd-agent-mesos -h `hostname` \
+"if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && sudo -E /usr/bin/docker run --name dd-agent-mesos -h `hostname` \
+--log-opt max-size=`etcdctl get /docker/config/logs-max-size` \
+--log-opt max-file=`etcdctl get /docker/config/logs-max-file` \
 -e API_KEY=`etcdctl get /datadog/config/api-key` \
 -e MESOS_HOST=`etcdctl get /environment/CONTROL_ELB` \
 behance/docker-dd-agent-mesos"

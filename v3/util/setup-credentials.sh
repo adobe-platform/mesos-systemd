@@ -5,7 +5,9 @@ HOMEDIR=$(eval echo "~`whoami`")
 OWNER=$(whoami)
 
 source /etc/environment
-
+if [ -f /etc/profile.d/etcdctl.sh ]; then 
+      source /etc/profile.d/etcdctl.sh
+fi
 # On the worker tier, the containers need to be launched with a role
 # because of the IAM proxy metadata service.
 IAM_ROLE_LABEL=""
@@ -18,7 +20,7 @@ TABLE=`sudo echo $SECRETS_TABLE`
 docker pull index.docker.io/behance/docker-aws-secrets-downloader:latest
 
 # Create a dockercfg
-DOCKERCFG_CONTENTS=`sudo docker run --rm $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $TABLE --key secrets --name DOCKERCFG --format plain`
+DOCKERCFG_CONTENTS=$(sudo docker run --log-opt max-size=`etcdctl get /docker/config/logs-max-size` --log-opt max-file=`etcdctl get /docker/config/logs-max-file`  --rm $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $TABLE --key secrets --name DOCKERCFG --format plain)
 echo "$DOCKERCFG_CONTENTS" > /home/${OWNER}/.dockercfg
 sudo chown -R ${OWNER}:${OWNER} /home/${OWNER}/.dockercfg
 sudo cp /home/${OWNER}/.dockercfg /root/.dockercfg
@@ -32,12 +34,12 @@ fi
 ssh-keygen -f ${HOMEDIR}/.ssh/id_rsa -y > ${HOMEDIR}/.ssh/id_rsa.pub
 cat ${HOMEDIR}/.ssh/id_rsa.pub >> ${HOMEDIR}/.ssh/authorized_keys
 
-AV_SECRETS=`sudo docker run --rm $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $TABLE --key secrets`
+AV_SECRETS=$(sudo docker run --rm --log-opt max-size=`etcdctl get /docker/config/logs-max-size` --log-opt max-file=`etcdctl get /docker/config/logs-max-file`  $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $TABLE --key secrets)
 
 # Save the RDS password to environment variable in control tier
 # TODO: :(
 if [[ "$NODE_ROLE" = "control" && $AV_SECRETS == *"RDSPASSWORD"* ]]; then
-    RDSPASSWORD=`sudo docker run --rm $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $TABLE --key secrets --name RDSPASSWORD --format plain`
+    RDSPASSWORD=$(sudo docker run --log-opt max-size=`etcdctl get /docker/config/logs-max-size` --log-opt max-file=`etcdctl get /docker/config/logs-max-file`  --rm $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $TABLE --key secrets --name RDSPASSWORD --format plain)
     etcdctl set /environment/RDSPASSWORD $RDSPASSWORD
 fi
 

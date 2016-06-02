@@ -14,8 +14,10 @@ ExecStartPre=-/usr/bin/docker kill sumologic-control
 ExecStartPre=-/usr/bin/docker rm -f sumologic-control
 ExecStart=/usr/bin/bash -c \
     "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && \
-    sudo /usr/bin/docker run --name sumologic-control \
+    sudo -E /usr/bin/docker run --name sumologic-control \
     --hostname=$COREOS_PRIVATE_IPV4 \
+    --log-opt max-size=`etcdctl get /docker/config/logs-max-size` \
+    --log-opt max-file=`etcdctl get /docker/config/logs-max-file` \
     -v /var/lib/docker/containers/:/tmp/clogs/:ro \
     -e SUMO_NAME=docker_cluster \
     -e SUMO_CATEGORY=be/${NODE_PRODUCT}/${NODE_TIER}/control-logs \

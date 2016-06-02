@@ -23,6 +23,8 @@ ExecStart=/usr/bin/bash -c \
 -e HOST_IP=`hostname -i` \
 -e MARATHON_USERNAME=`etcdctl get /marathon/config/username` \
 -e MARATHON_PASSWORD=`etcdctl get /marathon/config/password` \
+--log-opt max-size=`etcdctl get /docker/config/logs-max-size` \
+--log-opt max-file=`etcdctl get /docker/config/logs-max-file` \
 adobeplatform/docker-dd-agent-mesos-master"
 ExecStop=/usr/bin/docker stop dd-agent-mesos-master
 

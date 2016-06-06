@@ -19,8 +19,15 @@ ExecStart=/usr/bin/bash -c "\
   if [ -f /etc/profile.d/etcdctl.sh ]; then \
       source /etc/profile.d/etcdctl.sh; \
   fi && \
-  git clone https://github.com/$($FORK)/mesos-systemd $GITDIR && \
-  cd $GITDIR && git checkout $($SHA)"
+  git clone https://github.com/$($FORK)/mesos-systemd $GITDIR ; \
+  cd $GITDIR ; \
+  echo $($SHA) | grep -q '/' ; \
+  if [ $? -eq 0 ]; then \
+    git checkout -b worker $($SHA) \
+  else \
+     git checkout $($SHA) \
+  fi 
+  "
 
 ExecStart=/usr/bin/sudo bash $GITDIR/v3/util/setup-credentials.sh
 

@@ -4,6 +4,8 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 HOMEDIR=$(eval echo "~`whoami`")
 source /etc/environment || :
+# Turn off coredumps that seem to happen on smaller, overloaded instances leading to closed-loop feedback
+sudo /usr/bin/sed -i 's/#Storage=external/Storage=none/' /etc/systemd/coredump.conf
 
 # determine version
 if [ -z "$1" ]; then
@@ -20,6 +22,23 @@ if [ "$NODE_ROLE" = "it-hybrid" ]; then
   sudo ${SCRIPTDIR}/itv1/util/etcd2-setup.sh $SCRIPTDIR
 fi
 
+if [ "$NODE_ROLE" = "control" ];then
+    etcdctl get /docker/config/logs-max-size
+    if [[ $? = 4 ]]; then
+	etcdctl set /docker/config/logs-max-size 10m
+    fi
+    
+    etcdctl get /docker/config/logs-max-file
+    if [[ $? = 4 ]]; then
+	etcdctl set /docker/config/logs-max-file 10
+    fi
+fi
+
+# SETUP profile.d  -  etcdctl.sh needed by iam-proxy for etcdctl call
+sudo mkdir /etc/profile.d || :
+sudo cp ${SCRIPTDIR}/$VERSION/profile.d/* /etc/profile.d/. 2>/dev/null || :
+sudo cp --dereference ${SCRIPTDIR}/$VERSION/profile.d/${NODE_ROLE}/* /etc/profile.d/.
+
 # Worker tier - must run the IAM proxy setup before any other containers
 # Version v2 of util scripts does not have this file
 if [[ "$NODE_ROLE" = "worker" && -f ${SCRIPTDIR}/$VERSION/util/iam-proxy.sh ]]; then
@@ -30,15 +49,10 @@ fi
 # must happen after etcd2 peers so that etcdctl can actually be used
 ${SCRIPTDIR}/$VERSION/util/setup-credentials.sh || :
 
-# SETUP profile.d
-sudo mkdir /etc/profile.d || :
-sudo cp ${SCRIPTDIR}/$VERSION/profile.d/* /etc/profile.d/. 2>/dev/null || :
-sudo cp --dereference ${SCRIPTDIR}/$VERSION/profile.d/${NODE_ROLE}/* /etc/profile.d/.
-
 # SETUP SCRIPTS
 for script in $(ls ${SCRIPTDIR}/$VERSION/setup|grep -e '.sh$')
 do
-    sudo ${SCRIPTDIR}/$VERSION/setup/${script}
+    sudo -E ${SCRIPTDIR}/$VERSION/setup/${script}
 done
 
 # ETCD OVERRIDES

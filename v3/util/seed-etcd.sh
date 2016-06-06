@@ -1,7 +1,12 @@
 #!/usr/bin/bash -xe
 
 source /etc/environment
+if [ -f /etc/profile.d/etcdctl.sh ]; then 
+      source /etc/profile.d/etcdctl.sh
+fi
+
 docker pull index.docker.io/behance/docker-aws-secrets-downloader:latest
+
 
 # On the worker tier, the containers need to be launched with a role
 # because of the IAM proxy metadata service.
@@ -11,7 +16,7 @@ if [[ "${NODE_ROLE}" = "worker" && ! -z "$CONTAINERS_ROLE" ]]; then
     IAM_ROLE_LABEL=' --label com.swipely.iam-docker.iam-profile='"$CONTAINERS_ROLE"' '    
 fi
 
-DL_TABLE="sudo docker run --rm $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $SECRETS_TABLE"
+DL_TABLE="sudo docker run --rm --log-opt max-size=`etcdctl get /docker/config/logs-max-size` --log-opt max-file=`etcdctl get /docker/config/logs-max-file` $IAM_ROLE_LABEL behance/docker-aws-secrets-downloader --table $SECRETS_TABLE"
 # Get all available secrets and configs
 AV_SECRETS=$($DL_TABLE --key secrets)
 AV_CONFIGS=$($DL_TABLE --key configs)

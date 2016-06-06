@@ -1,5 +1,11 @@
 #!/bin/bash -x
 
+source /etc/environment
+
+if [ "${NODE_ROLE}" != "control" ]; then
+    exit 0
+fi
+
 ENV_FILE="/etc/environment"
 ETCD_PREFIX="/environment"
 IGNORED='^NODE|^COREOS|^#|^FLIGHT_DIRECTOR|^CAPCOM'

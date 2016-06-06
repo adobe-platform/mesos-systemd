@@ -15,8 +15,11 @@ ExecStartPre=/usr/bin/sh -c "docker pull index.docker.io/behance/iam-docker:late
 ExecStartPre=-/usr/bin/docker kill iam-proxy
 ExecStartPre=-/usr/bin/docker rm -f iam-proxy
 
-ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
+ExecStart=/usr/bin/sh -c "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && \
+  /usr/bin/docker run \
   --name=iam-proxy \
+  --log-opt max-size=`etcdctl get /docker/config/logs-max-size` \
+  --log-opt max-file=`etcdctl get /docker/config/logs-max-file` \
   --volume /var/run/docker.sock:/var/run/docker.sock \
   --restart=always \
   --net=host \

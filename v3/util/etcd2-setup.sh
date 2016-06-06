@@ -3,6 +3,22 @@
 # NOTE: this needs to be run with sudo privileges
 # $1 must be the SCRIPTDIR
 
+
+# Can be set via /etc/environment
+if [ -z "${ETCD_LOGGER}" ];then
+   ETCD_LOGGER="--log-opt max-size=10m --log-opt max-file=10"
+fi
+
+mkdir -p /etc/sysconfig
+CFGFILE=/etc/sysconfig/etcd
+
+# Write the preferred logger to a place the service can get the setting
+if [ ! -f $CFGFILE ]; then
+    echo "ETCD_LOGGER=${ETCD_LOGGER}" > $CFGFILE
+    chown root:root $CFGFILE
+    chmod 0644 $CFGFILE
+fi
+
 echo "-------Control node found, setting up etcd peers-------"
 
 mkdir -p /etc/systemd/system/etcd2.service.d

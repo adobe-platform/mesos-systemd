@@ -1,22 +1,32 @@
-[Unit]
-Description=Flight Director @ %i
-# it's implied that chronos & marathon require mesos
-# look here: https://github.com/behance/mesos-systemd/tree/master/v3/fleet
-After=docker.service
-Requires=docker.service
+#!/bin/bash -ex
+source /etc/environment
+if [ -f /etc/profile.d/etcdctl.sh ]; then 
+      source /etc/profile.d/etcdctl.sh
+fi
 
-[Service]
-Environment="IMAGE=etcdctl get /images/flight-director"
-User=core
-Restart=on-failure
-RestartSec=8
-TimeoutStartSec=0
+IMAGE="etcdctl get /images/flight-director"
 
-ExecStartPre=/usr/bin/sh -c "docker pull $($IMAGE)"
-ExecStartPre=-/usr/bin/docker kill flight-director
-ExecStartPre=-/usr/bin/docker rm flight-director
-ExecStart=/usr/bin/sh -c "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && \
-  /usr/bin/docker run \
+# ExecStartPre
+docker pull $($IMAGE)
+if [ $? -ne 0 ] ;then 
+    echo "Pull of $IMAGE failed" >&2
+fi
+ 
+docker ps | grep -q flight-director
+if [ $? -eq 0 ];then
+    # aka ExecStartPre
+   /usr/bin/docker kill flight-director
+fi
+#
+docker ps -a | grep flight-director | grep -q Exit
+if [ $? -eq 0 ];then
+    # aka ExecStartPre
+    /usr/bin/docker rm flight-director
+fi
+
+# aks ExecStart
+
+/usr/bin/docker run \
   --name flight-director \
   --net='host' \
   --log-opt max-size=`etcdctl get /docker/config/logs-max-size` \
@@ -43,18 +53,8 @@ ExecStart=/usr/bin/sh -c "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /et
   -e FD_MARATHON_MASTER=`etcdctl get /flight-director/config/marathon-master` \
   -e FD_MESOS_MASTER=`etcdctl get /flight-director/config/mesos-master` \
   -e AUTHORIZER_TYPE=`etcdctl get /flight-director/config/authorizer-type` \
-  -e FD_AIRLOCK_PUBLIC_KEY=\"`etcdctl get /flight-director/config/airlock-public-key`\" \
+  -e FD_AIRLOCK_PUBLIC_KEY="$(etcdctl get /flight-director/config/airlock-public-key)" \
   -e FD_MARATHON_MASTER_PROTOCOL=`etcdctl get /flight-director/config/marathon-master-protocol` \
   -e FD_MESOS_MASTER_PROTOCOL=`etcdctl get /flight-director/config/mesos-master-protocol` \
   -e FD_ALLOW_MARATHON_UNVERIFIED_TLS=`etcdctl get /flight-director/config/allow-marathon-unverified-tls` \
-  $($IMAGE)"
-
-ExecStop=-/usr/bin/docker stop flight-director
-
-[Install]
-WantedBy=multi-user.target
-
-[X-Fleet]
-Global=false
-MachineMetadata=role=it-hybrid
-MachineMetadata=ip=%i
+  $($IMAGE)

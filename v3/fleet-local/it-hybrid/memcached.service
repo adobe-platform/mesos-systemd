@@ -15,9 +15,11 @@ ExecStartPre=-/usr/bin/docker kill memcached
 ExecStartPre=-/usr/bin/docker rm memcached
 
 # NOTE: it's critical to source the etcdctl.sh file so that etcd connects to the correct cluster.
-ExecStart=/usr/bin/sh -c "source /etc/profile.d/etcdctl.sh && \
+ExecStart=/usr/bin/sh -c "if [[ -f /etc/profile.d/etcdctl.sh ]]; then source /etc/profile.d/etcdctl.sh;fi && \
   echo $($CMD) | xargs docker run \
     --name memcached \
+    --log-opt max-size=`etcdctl get /docker/config/logs-max-size` \
+    --log-opt max-file=`etcdctl get /docker/config/logs-max-file` \
     borja/docker-memcached"
 
 ExecStop=-/usr/bin/docker stop memcached

@@ -15,7 +15,8 @@ cd /home/core && rm -rf mesos-systemd && git clone https://github.com/myfork/mes
 
 - Make your changes.
 - Once done, if using a branch such as origin/worker, we would like a submit a single commit if possible/appropriate.  To generate one you can:
- Note: > See [Rewriting history](https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase-i) for info on consolidating commits.
+ 
+ > Note: See [Rewriting history](https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase-i) for info on consolidating commits.
 
 ```
 # git checkout worker 

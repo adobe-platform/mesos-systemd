@@ -105,7 +105,7 @@ We are planning to deprecate the following in favor other solutions (DynamoDB + 
 | Flight Director | `.flight-director` | `/FD/GITHUB_CLIENT_ID (YOUR GITHUB APP ID)`<br/>`/FD/GITHUB_CLIENT_SECRET (YOUR GITHUB APP SECRET)`<br/>`/FD/GITHUB_ALLOWED_TEAMS org/team` |
 | HUD | `.hud` | `/HUD/client-id (GITHUB_APP_ID can == value in .flight-director)`<br/>`/HUD/client-secret (GITHUB_APP_SECRET can == value in .flight-director)`|
 | Marathon | `.marathon` | `/marathon/username a-username`<br/>`/marathon/password a-password` |
-| AWS ECR | `.ecr` | `/ECR/region (ECR AWS Region)`<br/>`/ECR/registry-account (ECR AWS Account)` |
+| AWS ECR | `.ecr` | `/ECR/region (ECR AWS Region, ex. us-east-1)`<br/>`/ECR/registry-account (ECR AWS Account, ex. 012345678901)` |
 
 ##### MISC
 

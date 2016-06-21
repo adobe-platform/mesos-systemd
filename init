@@ -115,3 +115,13 @@ do
     submit-fleet-unit ${SCRIPTDIR}/$VERSION/fleet/${unit}
     sudo fleetctl start ${SCRIPTDIR}/$VERSION/fleet/${unit}
 done
+
+# hack to destroy harmful units on IT
+if [ "$NODE_ROLE" = "it-hybrid" ]; then
+  fleetctl destroy docker-cleanup.timer
+  fleetctl destroy docker-cleanup.service
+  fleetctl destroy logrotate.service
+  fleetctl destroy update-os.service
+  fleetctl destroy fd-hud.service
+fi
+

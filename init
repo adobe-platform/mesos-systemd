@@ -122,6 +122,6 @@ if [ "$NODE_ROLE" = "it-hybrid" ]; then
   fleetctl destroy docker-cleanup.service
   fleetctl destroy logrotate.service
   fleetctl destroy update-os.service
-  fleetctl fd-hud.service
+  fleetctl destroy fd-hud.service
 fi
 

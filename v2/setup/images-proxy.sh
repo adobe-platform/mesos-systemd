@@ -14,7 +14,7 @@ if [ "$(etcdctl get images-proxy-bootstrapped)" == "true" ]; then
 fi
 etcdctl set images-proxy-bootstrapped true
 
-etcdctl set /images/capcom       "behance/capcom:latest"
+etcdctl set /images/capcom       "behance/capcom:8fa735d310d0a46fc3acc34245c8bf63e8447ef4"
 etcdctl set /images/capcom2      "behance/capcom:latest"
 etcdctl set /images/proxy        "nginx:1.9.5"
 

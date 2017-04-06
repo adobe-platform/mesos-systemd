@@ -12,7 +12,7 @@ if [ "$(etcdctl get images-control-bootstrapped)" == "true" ]; then
 fi
 etcdctl set images-control-bootstrapped true
 
-etcdctl set /images/fd           "behance/flight-director:latest"
+etcdctl set /images/fd           "behance/flight-director:d9e9686bfba8374f015d0c902d8d41401fb7f602"
 etcdctl set /images/hud          "behance/flight-director-hud:latest"
 etcdctl set /images/marathon     "mesosphere/marathon:v0.15.1"
 etcdctl set /images/mesos-master "mesosphere/mesos-master:0.27.0-0.2.190.ubuntu1404"

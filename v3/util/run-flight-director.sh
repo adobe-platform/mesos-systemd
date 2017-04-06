@@ -33,7 +33,6 @@ fi
   --log-opt max-file=`etcdctl get /docker/config/logs-max-file` \
   -e LOG_APP_NAME=flight-director \
   -e FD_API_SERVER_PORT=`etcdctl get /flight-director/config/api-server-port` \
-  -e FD_CHRONOS_MASTER=`etcdctl get /flight-director/config/chronos-master` \
   -e FD_DB_DATABASE=`etcdctl get /flight-director/config/db-name` \
   -e FD_DB_ENGINE=`etcdctl get /flight-director/config/db-engine` \
   -e FD_DB_PASSWORD=`etcdctl get /environment/RDSPASSWORD` \

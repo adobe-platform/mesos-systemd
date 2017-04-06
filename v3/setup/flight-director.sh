@@ -12,7 +12,6 @@ fi
 etcdctl set /bootstrap.service/flight-director true
 etcdctl setdir flight-director
 etcdctl set /flight-director/config/api-server-port 2001
-etcdctl set /flight-director/config/chronos-master "$FLIGHT_DIRECTOR_CHRONOS_ENDPOINT"
 etcdctl set /flight-director/config/db-name "$FLIGHT_DIRECTOR_DB_NAME"
 etcdctl set /flight-director/config/db-engine mysql
 etcdctl set /flight-director/config/db-path "$FLIGHT_DIRECTOR_DB_PATH"

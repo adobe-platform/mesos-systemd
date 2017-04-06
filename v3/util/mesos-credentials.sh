@@ -29,7 +29,7 @@ sudo echo "$CREDS" > $CRED_DIR/credentials
 
 if [[ "${NODE_ROLE}" = "control" ]]; then
     # on a control node - set up credentials for registering frameworks
-    # (i.e.: marathon & chronos)
+    # (i.e.: marathon)
     # TODO: have separate credentials for framework vs worker/master
     sudo echo -n "$CREDS" >> $CRED_DIR/credentials
     sudo echo -n "$(etcdctl get /mesos/config/password)" > $CRED_DIR/framework-secret

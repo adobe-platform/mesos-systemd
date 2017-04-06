@@ -12,7 +12,6 @@ if [ "$(etcdctl get /bootstrap.service/images-control-bootstrapped)" == "true" ]
 fi
 etcdctl set /bootstrap.service/images-control-bootstrapped true
 
-etcdctl set /images/chronos      	"index.docker.io/mesosphere/chronos:chronos-2.4.0-0.1.20150828104228.ubuntu1404-mesos-0.27.0-0.2.190.ubuntu1404"
 etcdctl set /images/flight-director "index.docker.io/behance/flight-director:latest"
 etcdctl set /images/marathon     	"index.docker.io/mesosphere/marathon:v0.15.1"
 etcdctl set /images/mesos-master 	"index.docker.io/mesosphere/mesos-master:0.27.0-0.2.190.ubuntu1404"
@@ -23,7 +22,6 @@ etcdctl set /images/control-proxy   "index.docker.io/behance/apigateway:v0.0.1"
 # pull down images serially to avoid a FS layer clobbering bug in docker 1.6.x
 docker pull index.docker.io/jenkins
 docker pull index.docker.io/behance/docker-dd-agent-mesos
-docker pull $(etcdctl get /images/chronos)
 docker pull $(etcdctl get /images/flight-director)
 docker pull $(etcdctl get /images/marathon)
 docker pull $(etcdctl get /images/mesos-master)

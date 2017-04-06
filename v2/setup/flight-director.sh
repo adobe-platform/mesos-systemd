@@ -13,7 +13,6 @@ etcdctl set fd-bootstrapped true
 
 etcdctl setdir FD
 etcdctl set /FD/FD_API_SERVER_PORT 2001
-etcdctl set /FD/FD_CHRONOS_MASTER "$FLIGHT_DIRECTOR_CHRONOS_ENDPOINT"
 etcdctl set /FD/FD_DB_DATABASE "$FLIGHT_DIRECTOR_DB_NAME"
 etcdctl set /FD/FD_DB_ENGINE mysql
 etcdctl set /FD/FD_DB_PASSWORD "$FLIGHT_DIRECTOR_DB_PASSWORD"

@@ -1,6 +1,6 @@
 [Unit]
 Description=Flight Director @ %i
-# it's implied that chronos & marathon require mesos
+# it's implied that marathon requires mesos
 # look here: https://github.com/behance/mesos-systemd/tree/master/v2/fleet
 After=docker.service
 Requires=docker.service
@@ -20,7 +20,6 @@ ExecStart=/usr/bin/sh -c "/usr/bin/docker run \
   --net='host' \
   -e LOG_APP_NAME=flight-director \
   -e FD_API_SERVER_PORT=`etcdctl get /FD/FD_API_SERVER_PORT` \
-  -e FD_CHRONOS_MASTER=`etcdctl get /FD/FD_CHRONOS_MASTER` \
   -e FD_DB_DATABASE=`etcdctl get /FD/FD_DB_DATABASE` \
   -e FD_DB_ENGINE=`etcdctl get /FD/FD_DB_ENGINE` \
   -e FD_DB_PASSWORD=`etcdctl get /FD/FD_DB_PASSWORD` \

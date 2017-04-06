@@ -1,8 +1,8 @@
 [Unit]
 Description=Flight Director @ %i
-# it's implied that chronos & marathon require mesos
+# it's implied that marathon requires mesos
 # look here: https://github.com/behance/mesos-systemd/tree/master/v3/fleet
-After=docker.service chronos@%i.service marathon@%i.service
+After=docker.service marathon@%i.service
 Requires=docker.service
 
 [Service]

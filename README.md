@@ -1,6 +1,6 @@
 # mesos-systemd
 
-Adobe Platform scripts to bootstrap a CoreOS [`cluster`](https://github.com/adobe-platform/mesos-cluster) & run Mesos/Marathon/Chronos/Zookeeper-Exhibitor.
+Adobe Platform scripts to bootstrap a CoreOS [`cluster`](https://github.com/adobe-platform/mesos-cluster) & run Mesos/Marathon/Zookeeper-Exhibitor.
 
 Provides node-level services as [`Fleet Units`](https://coreos.com/using-coreos/clustering/) for every machine in the cluster.
 
@@ -67,7 +67,6 @@ Services
 - [Mesos](http://mesos.apache.org/) Master
 - [Marathon](https://mesosphere.github.io/marathon/)
 - [Exhibitor (for Zookeeper)](https://github.com/Netflix/exhibitor)
-- [Chronos](http://mesos.github.io/chronos/)
 - [Flight Director](https://github.com/adobe-platform/flight-director) - private Marathon deployment wrapper/manager (stay tuned!)
 - [HUD](https://github.com/adobe-platform/flight-director-hud) - private UI shim for flight-director (stay tuned!)
 
